@@ -4,23 +4,6 @@ MHFacebookImageViewer
 A new Image Viewer inspired by Facebook
 
 
-## Screenshots
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/1_zps03d675b0.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/2_zps690691d1.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/3_zps92f4ec65.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/3a_zpsb3eb5869.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/4_zpsfbe1b387.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/5_zpscbe9b7b4.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/6_zps37e2fad4.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/7_zpsfe0eaae2.png)
-
 
 # Usage:
 
@@ -50,6 +33,16 @@ Just import "MHFacebookImageViewer.h"  and then in your UIImageView after you se
 	}
 
 ### That's it. :)
+
+## Screenshots
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/1_zps03d675b0.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/2_zps690691d1.png)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/3_zps92f4ec65.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/3a_zpsb3eb5869.png)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/4_zpsfbe1b387.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/5_zpscbe9b7b4.png)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/6_zps37e2fad4.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/7_zpsfe0eaae2.png)
+
 
 
 Please let me know if you have any questions. 
