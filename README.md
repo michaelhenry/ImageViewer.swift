@@ -50,8 +50,10 @@ Please let me know if you have any questions.
 Cheers,  
 [Michael Henry Pantaleon](http://www.iamkel.net)
 
-Tweeter: [@michaelhenry119] (https://twitter.com/michaelhenry119)
-Linked in: [ken119](http://ph.linkedin.com/in/ken119) 
+Twitter: [@michaelhenry119](https://twitter.com/michaelhenry119)
+
+Linked in: [ken119](http://ph.linkedin.com/in/ken119)
+
 http://www.iamkel.net
 
 
