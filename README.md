@@ -3,6 +3,9 @@ MHFacebookImageViewer
 
 A new Image Viewer inspired by Facebook
 
+# Demo Video
+
+http://youtu.be/-RVPWoOdOFU
 
 
 # Usage:
