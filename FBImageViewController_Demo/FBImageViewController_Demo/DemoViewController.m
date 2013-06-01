@@ -75,7 +75,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     UIImageView * imageView = (UIImageView*)[cell viewWithTag:1];
    
-    [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i.png",indexPath.row]]];
+    [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",indexPath.row]]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [imageView setupImageViewer];
     imageView.clipsToBounds = YES;
