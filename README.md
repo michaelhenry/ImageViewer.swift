@@ -8,7 +8,10 @@ A new Image Viewer inspired by Facebook
 # Usage:
 
 ## How to use it:
-Just import "MHFacebookImageViewer.h"  and then in your UIImageView after you set the Image just call the [UIImageView  setupImageViewer]
+Just 
+	#import "MHFacebookImageViewer.h"  
+and then in your UIImageView after you set the Image just call the 
+	[UIImageView  setupImageViewer]
 
 
 ## Example (UITableViewController):
@@ -34,15 +37,21 @@ Just import "MHFacebookImageViewer.h"  and then in your UIImageView after you se
 
 ### That's it. :)
 
+
 ## Screenshots
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/1_zps03d675b0.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/2_zps690691d1.png)
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/1_zps2d86ec06.png)  ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/2_zps53fd2fb1.png)
 
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/3_zps92f4ec65.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/3a_zpsb3eb5869.png)
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/3_zps0d1e65d2.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/4_zpsdc876860.png)
 
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/4_zpsfbe1b387.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/5_zpscbe9b7b4.png)
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/5_zpsbe8b2b6b.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/6_zps2835afae.png)
 
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/6_zps37e2fad4.png)![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/MHFacebookImageViewer/7_zpsfe0eaae2.png)
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/7_zps0faffe44.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/8_zps8b82eb8e.png)
 
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/9_zpsefb88194.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/10_zpsec7f3cf4.png)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/11_zps7149e94d.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/12_zps23ef4456.png)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/13_zpsa4bdfd63.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/14_zps8851fde7.png)
 
 
 Please let me know if you have any questions. 
@@ -58,7 +67,7 @@ http://www.iamkel.net
 
 
 
-# Licensing:
+# Licensing
 
 Copyright (c) 2013 Michael Henry Pantaleon (http://www.iamkel.net). All rights reserved.
 
