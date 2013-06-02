@@ -3,9 +3,21 @@ MHFacebookImageViewer
 
 A new Image Viewer inspired by Facebook
 
+
+## Screenshots
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/demo1_zpse8778327.gif)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/Demo2_zps23b37e99.gif)
+
+![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/Demo3_zps54985d8d.gif)
+
+
 # Demo Video
 
-http://youtu.be/-RVPWoOdOFU
+http://youtu.be/NTs2COXxrrA
+
+
 
 # Requirements
 	
@@ -46,22 +58,6 @@ and then in your UIImageView after you set the Image just call the
 	}
 
 ### That's it. :)
-
-
-## Screenshots
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/1_zps2d86ec06.png)  ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/2_zps53fd2fb1.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/3_zps0d1e65d2.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/4_zpsdc876860.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/5_zpsbe8b2b6b.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/6_zps2835afae.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/7_zps0faffe44.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/8_zps8b82eb8e.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/9_zpsefb88194.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/10_zpsec7f3cf4.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/11_zps7149e94d.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/12_zps23ef4456.png)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/13_zpsa4bdfd63.png)   ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/14_zps8851fde7.png)
 
 
 Please let me know if you have any questions. 
