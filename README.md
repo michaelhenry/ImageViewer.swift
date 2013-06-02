@@ -7,14 +7,21 @@ A new Image Viewer inspired by Facebook
 
 http://youtu.be/-RVPWoOdOFU
 
+# Requirements
+	
+	Requires either iOS 5.0 and above.
 
 # Usage:
 
 ## How to use it:
-Just 
+Just
+
 	#import "MHFacebookImageViewer.h"  
+
 and then in your UIImageView after you set the Image just call the 
+
 	[UIImageView  setupImageViewer]
+
 
 
 ## Example (UITableViewController):
@@ -28,7 +35,7 @@ and then in your UIImageView after you set the Image just call the
 	- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 	    static NSString *CellIdentifier = @"image_cell";
-	    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+	    UITableViewCell *cell = UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	    UIImageView * imageView = (UIImageView*)[cell viewWithTag:1];
 	   
 	    [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i.png",indexPath.row]]];
