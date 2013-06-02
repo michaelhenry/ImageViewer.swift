@@ -92,22 +92,32 @@
         <scene sceneID="QjZ-VB-Aft">
             <objects>
                 <tableViewController id="cIG-zf-fwU" customClass="DemoViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="220" sectionHeaderHeight="22" sectionFooterHeight="22" id="d8v-uT-IoA">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="400" sectionHeaderHeight="22" sectionFooterHeight="22" id="d8v-uT-IoA">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="image_cell" rowHeight="222" id="QMo-xP-RYl">
-                                <rect key="frame" x="0.0" y="22" width="320" height="222"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="image_cell" rowHeight="400" id="QMo-xP-RYl">
+                                <rect key="frame" x="0.0" y="22" width="320" height="400"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="221"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="399"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" id="g1A-Jj-0O5">
                                             <rect key="frame" x="5" y="3" width="310" height="216"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="i76-Yu-YuN">
+                                            <rect key="frame" x="9" y="227" width="304" height="168"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <mutableString key="text">Cum, nec sociis sit est! Amet proin cum tincidunt lorem a vel massa eros, a, penatibus? Dictumst sit velit et amet tincidunt pulvinar magna cursus porttitor sagittis. Nisi tincidunt diam, purus elementum sed elementum velit? Nunc! Scelerisque parturient mattis sit lundium tincidunt, turpis velit, pulvinar, amet et turpis, arcu sed placerat? Sagittis elit purus! Nec, adipiscing, nascetur natoque magna adipiscing, enim integer, penatibus! Enim? Scelerisque mattis etiam tincidunt? Purus auctor hac augue? Eu elementum tortor cum nunc sociis? Et a est penatibus et purus mattis aliquam? Vel rhoncus! Vut parturient pulvinar. Proin eu mattis lorem sagittis. Facilisis auctor vel, ut.
+
+</mutableString>
+                                            <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
