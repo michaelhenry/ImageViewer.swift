@@ -72,7 +72,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"image_cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     UIImageView * imageView = (UIImageView*)[cell viewWithTag:1];
    
     [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",indexPath.row]]];
