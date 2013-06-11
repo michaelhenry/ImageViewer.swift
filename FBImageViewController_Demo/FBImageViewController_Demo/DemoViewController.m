@@ -77,7 +77,11 @@
    
     [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",indexPath.row]]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [imageView setupImageViewer];
+    
+    NSInteger randomWidth = arc4random() % 480;
+    NSInteger randomHeight = arc4random() % 480;
+    [imageView setupImageViewerWithImageURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://placehold.it/%ix%i",MAX(320,randomWidth),MAX(320,randomHeight)]]];
+
     imageView.clipsToBounds = YES;
     return cell;
 }
