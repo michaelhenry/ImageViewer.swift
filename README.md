@@ -21,12 +21,14 @@ http://youtu.be/NTs2COXxrrA
 
 # Requirements
 	
-	Requires either iOS 5.0 and above.
-	[AFNetworking](https://github.com/AFNetworking/AFNetworking) - for image lazy loading
+* Requires either iOS 5.0 and above.	
+* [AFNetworking](https://github.com/AFNetworking/AFNetworking) - for image lazy loading
 
-# Usage:
 
-## How to use it:
+
+# Usage
+
+## How to use it
 Just
 
 	#import "MHFacebookImageViewer.h"  
