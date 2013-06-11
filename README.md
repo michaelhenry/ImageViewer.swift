@@ -22,6 +22,7 @@ http://youtu.be/NTs2COXxrrA
 # Requirements
 	
 	Requires either iOS 5.0 and above.
+	[AFNetworking](https://github.com/AFNetworking/AFNetworking) - for image lazy loading
 
 # Usage:
 
@@ -32,8 +33,11 @@ Just
 
 and then in your UIImageView after you set the Image just call the 
 
-	[UIImageView  setupImageViewer]
+	- (void)  setupImageViewer;
 
+or if you want to load other image (for example a hi-res version of that image) 
+
+	- (void) setupImageViewerWithImageURL:(NSURL*)url; 
 
 
 ## Example (UITableViewController):
