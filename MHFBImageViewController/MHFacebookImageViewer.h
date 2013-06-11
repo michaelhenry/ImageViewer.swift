@@ -28,6 +28,7 @@
 
 
 @property (weak, readonly, nonatomic) UIViewController *rootViewController;
+@property (nonatomic,strong) NSURL * imageURL;
 @property(nonatomic,strong) UIImageView * senderView;
 
 - (void)presentFromRootViewController;
@@ -38,5 +39,6 @@
 
 @interface UIImageView(MHFacebookImageViewer)
 - (void) setupImageViewer;
+- (void) setupImageViewerWithImageURL:(NSURL*)url;
 @end
 

@@ -23,6 +23,7 @@
 
 
 #import "MHFacebookImageViewer.h"
+#import "UIImageView+AFNetworking.h"
 static const CGFloat kMinBlackMaskAlpha = 0.3f;
 static const CGFloat kMaxImageScale = 2.5f;
 static const CGFloat kMinImageScale = 1.0f;
@@ -48,6 +49,7 @@ static const CGFloat kMinImageScale = 1.0f;
 @end
 
 @implementation MHFacebookImageViewer
+@synthesize imageURL = _imageURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -103,7 +105,19 @@ static const CGFloat kMinImageScale = 1.0f;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
         [_scrollView addSubview:_imageView];
         
-        [_imageView setImage:self.senderView.image];
+        if(_imageURL) {
+            __block UIImageView * _imageViewInTheBlock = _imageView;
+            __block MHFacebookImageViewer * _justMeInsideTheBlock = self;
+            [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:_imageURL] placeholderImage:self.senderView.image success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [_imageViewInTheBlock setImage:image];
+                _imageViewInTheBlock.frame = [_justMeInsideTheBlock centerFrameFromImage:_imageViewInTheBlock.image];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                NSLog(@"Image From URL Not loaded");
+            }];
+        }else{
+            [_imageView setImage:self.senderView.image];
+        }
+        
         UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
         // Start animation on view did load
         [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
@@ -134,6 +148,8 @@ static const CGFloat kMinImageScale = 1.0f;
                            .size.width oldWidth:image
                            .size.width oldHeight:image.size.height];
     
+    // Just fit it on the size of the screen
+    newImageSize.height = MIN(windowBounds.size.height,newImageSize.height);
     return CGRectMake(0.0f, windowBounds.size.height/2 - newImageSize.height/2, newImageSize.width, newImageSize.height);
 }
 
@@ -401,10 +417,20 @@ static const CGFloat kMinImageScale = 1.0f;
     _scrollView = nil;
     _doneButton = nil;
     _superView = nil;
+    _imageURL = nil;
 }
 
 @end
 
+
+#pragma mark - Custom Gesture Recognizer that will Handle imageURL
+@interface MHFacebookImageViewerTapGestureRecognizer : UITapGestureRecognizer
+@property(nonatomic,strong) NSURL * imageURL;
+@end
+
+@implementation MHFacebookImageViewerTapGestureRecognizer
+@synthesize imageURL;
+@end
 
 #pragma mark - UIImageView Category
 @implementation UIImageView (MHFacebookImageViewer)
@@ -412,17 +438,27 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Initializer for UIImageView
 - (void) setupImageViewer {
     self.userInteractionEnabled = YES;
-    UITapGestureRecognizer *  tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
-    
+    MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+     tapGesture.imageURL = nil;
+    [self addGestureRecognizer:tapGesture];
+    tapGesture = nil;
+}
+
+#pragma mark - Initializer for UIImageView
+- (void) setupImageViewerWithImageURL:(NSURL*)url {
+    self.userInteractionEnabled = YES;
+    MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    tapGesture.imageURL = url;
     [self addGestureRecognizer:tapGesture];
     tapGesture = nil;
 }
 
 #pragma mark - Handle Tap
-- (void) didTap:(UITapGestureRecognizer*)gestureRecognizer {
+- (void) didTap:(MHFacebookImageViewerTapGestureRecognizer*)gestureRecognizer {
     
     MHFacebookImageViewer * imageBrowser = [[MHFacebookImageViewer alloc]init];
     imageBrowser.senderView = self;
+    imageBrowser.imageURL = gestureRecognizer.imageURL;
     if(self.image)
         [imageBrowser presentFromRootViewController];
 }
