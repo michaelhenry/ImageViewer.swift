@@ -113,7 +113,9 @@ static const CGFloat kMinImageScale = 1.0f;
         if(_imageURL) {
             __block UIImageView * _imageViewInTheBlock = _imageView;
             __block MHFacebookImageViewer * _justMeInsideTheBlock = self;
+            __block UIScrollView * _scrollViewInsideBlock = _scrollView;
             [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:_imageURL] placeholderImage:_senderView.image success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [_scrollViewInsideBlock setZoomScale:1.0f animated:YES];
                 [_imageViewInTheBlock setImage:image];
                 _imageViewInTheBlock.frame = [_justMeInsideTheBlock centerFrameFromImage:_imageViewInTheBlock.image];
                 
