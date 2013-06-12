@@ -49,7 +49,12 @@ static const CGFloat kMinImageScale = 1.0f;
 @end
 
 @implementation MHFacebookImageViewer
+@synthesize rootViewController = _rootViewController;
 @synthesize imageURL = _imageURL;
+@synthesize openingBlock = _openingBlock;
+@synthesize closingBlock = _closingBlock;
+@synthesize senderView = _senderView;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -87,11 +92,11 @@ static const CGFloat kMinImageScale = 1.0f;
     [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
     _doneButton.frame = CGRectMake(windowBounds.size.width - (51.0f + 9.0f),15.0f, 51.0f, 26.0f);
     
-    _superView = self.senderView.superview;
+    _superView = _senderView.superview;
     // Compute Original Frame Relative To Screen
-    CGRect newFrame = [self.senderView convertRect:[[UIScreen mainScreen] applicationFrame] toView:nil];
+    CGRect newFrame = [_senderView convertRect:[[UIScreen mainScreen] applicationFrame] toView:nil];
     newFrame.origin = CGPointMake(newFrame.origin.x, newFrame.origin.y);
-    newFrame.size = self.senderView.frame.size;
+    newFrame.size = _senderView.frame.size;
     _originalFrameRelativeToScreen = newFrame;
 }
 
@@ -100,7 +105,7 @@ static const CGFloat kMinImageScale = 1.0f;
     [super viewDidLoad];
     _isAnimating = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.senderView removeFromSuperview];
+        [_senderView removeFromSuperview];
         _imageView = [[UIImageView alloc]initWithFrame:_originalFrameRelativeToScreen];
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
         [_scrollView addSubview:_imageView];
@@ -108,14 +113,15 @@ static const CGFloat kMinImageScale = 1.0f;
         if(_imageURL) {
             __block UIImageView * _imageViewInTheBlock = _imageView;
             __block MHFacebookImageViewer * _justMeInsideTheBlock = self;
-            [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:_imageURL] placeholderImage:self.senderView.image success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:_imageURL] placeholderImage:_senderView.image success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                 [_imageViewInTheBlock setImage:image];
                 _imageViewInTheBlock.frame = [_justMeInsideTheBlock centerFrameFromImage:_imageViewInTheBlock.image];
+                
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 NSLog(@"Image From URL Not loaded");
             }];
         }else{
-            [_imageView setImage:self.senderView.image];
+            [_imageView setImage:_senderView.image];
         }
         
         UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
@@ -134,6 +140,8 @@ static const CGFloat kMinImageScale = 1.0f;
                 [self addPanGestureToView:_imageView];
                 [self addMultipleGesture];
                 _isAnimating = NO;
+                if(_openingBlock)
+                    _openingBlock();
             }
         }];
     });
@@ -269,9 +277,11 @@ static const CGFloat kMinImageScale = 1.0f;
                 
                 [self.view removeFromSuperview];
                 [self removeFromParentViewController];
-                [_superView addSubview:self.senderView ];
+                [_superView addSubview:_senderView ];
                 [UIApplication sharedApplication].statusBarHidden = NO;
                 _isAnimating =NO;
+                if(_closingBlock)
+                    _closingBlock();
                 
             }
         }];
@@ -418,6 +428,8 @@ static const CGFloat kMinImageScale = 1.0f;
     _doneButton = nil;
     _superView = nil;
     _imageURL = nil;
+    _senderView = nil;
+    _rootViewController = nil;
 }
 
 @end
@@ -426,29 +438,42 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Custom Gesture Recognizer that will Handle imageURL
 @interface MHFacebookImageViewerTapGestureRecognizer : UITapGestureRecognizer
 @property(nonatomic,strong) NSURL * imageURL;
+@property(nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
+@property(nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
+
 @end
 
 @implementation MHFacebookImageViewerTapGestureRecognizer
 @synthesize imageURL;
+@synthesize openingBlock;
+@synthesize closingBlock;
 @end
 
+@interface UIImageView()<UITabBarControllerDelegate>
+
+@end
 #pragma mark - UIImageView Category
 @implementation UIImageView (MHFacebookImageViewer)
 
 #pragma mark - Initializer for UIImageView
 - (void) setupImageViewer {
-    self.userInteractionEnabled = YES;
-    MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
-     tapGesture.imageURL = nil;
-    [self addGestureRecognizer:tapGesture];
-    tapGesture = nil;
+    [self setupImageViewerWithCompletionOnOpen:nil onClose:nil];
 }
 
-#pragma mark - Initializer for UIImageView
+- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
+    [self setupImageViewerWithImageURL:nil onOpen:open onClose:close];
+}
+
 - (void) setupImageViewerWithImageURL:(NSURL*)url {
+    [self setupImageViewerWithImageURL:url onOpen:nil onClose:nil];
+}
+
+- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close{
     self.userInteractionEnabled = YES;
     MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
     tapGesture.imageURL = url;
+    tapGesture.openingBlock = open;
+    tapGesture.closingBlock = close;
     [self addGestureRecognizer:tapGesture];
     tapGesture = nil;
 }
@@ -459,6 +484,8 @@ static const CGFloat kMinImageScale = 1.0f;
     MHFacebookImageViewer * imageBrowser = [[MHFacebookImageViewer alloc]init];
     imageBrowser.senderView = self;
     imageBrowser.imageURL = gestureRecognizer.imageURL;
+    imageBrowser.openingBlock = gestureRecognizer.openingBlock;
+    imageBrowser.closingBlock = gestureRecognizer.closingBlock;
     if(self.image)
         [imageBrowser presentFromRootViewController];
 }
