@@ -69,8 +69,7 @@ static const CGFloat kMinImageScale = 1.0f;
 {
     [super loadView];
     [UIApplication sharedApplication].statusBarHidden = YES;
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    CGRect windowBounds = rootViewController.view.bounds;
+    CGRect windowBounds = _rootViewController.view.bounds;
     
     self.view = [[UIView alloc] initWithFrame:windowBounds];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -82,6 +81,7 @@ static const CGFloat kMinImageScale = 1.0f;
     [self.view insertSubview:_blackMask atIndex:0];
     
     _scrollView = [[UIScrollView alloc]initWithFrame:windowBounds];
+    _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _scrollView.delegate = self;
     [self.view addSubview:_scrollView];
     
@@ -126,13 +126,12 @@ static const CGFloat kMinImageScale = 1.0f;
             [_imageView setImage:_senderView.image];
         }
         
-        UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
         // Start animation on view did load
         [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
             _imageView.frame = [self centerFrameFromImage:_imageView.image];
             CGAffineTransform transf = CGAffineTransformIdentity;
             // Root View Controller - move backward
-            rootViewController.view.transform = CGAffineTransformScale(transf, 0.95f, 0.95f);
+            _rootViewController.view.transform = CGAffineTransformScale(transf, 0.95f, 0.95f);
             // Root View Controller - move forward
             self.view.transform = CGAffineTransformScale(transf, 1.05f, 1.05f);
             _blackMask.alpha = 1;
@@ -266,12 +265,11 @@ static const CGFloat kMinImageScale = 1.0f;
     _isAnimating = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hideDoneButton];
-        UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
         _imageView.clipsToBounds = YES;
         [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
             _imageView.frame = _originalFrameRelativeToScreen;
             CGAffineTransform transf = CGAffineTransformIdentity;
-            rootViewController.view.transform = CGAffineTransformScale(transf, 1.0f, 1.0f);
+            _rootViewController.view.transform = CGAffineTransformScale(transf, 1.0f, 1.0f);
             self.view.transform = CGAffineTransformScale(transf, 1.0f, 1.0f);
             _blackMask.alpha = 0.0f;
         }   completion:^(BOOL finished) {
