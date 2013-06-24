@@ -20,10 +20,10 @@ http://youtu.be/NTs2COXxrrA
 
 
 # Requirements
-	
-* Requires either iOS 5.0 and above.	
-* [AFNetworking](https://github.com/AFNetworking/AFNetworking) - for image lazy loading
 
+
+* Requires either iOS 5.0 and above (Please uncheck the Use AutoLayout in the property inspector of The UIStoryboard) ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/ScreenShot2013-06-24at33149PM_zpsec274276.png)
+* [AFNetworking](https://github.com/AFNetworking/AFNetworking) - for image lazy loading
 
 
 # Usage
@@ -33,13 +33,17 @@ Just
 
 	#import "MHFacebookImageViewer.h"  
 
+
 and then in your UIImageView after you set the Image just call the 
 
 	- (void)  setupImageViewer;
+	- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+
 
 or if you want to load other image (for example a hi-res version of that image) 
 
 	- (void) setupImageViewerWithImageURL:(NSURL*)url; 
+	- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 
 
 ## Example (UITableViewController):
