@@ -24,19 +24,24 @@
 
 #import <UIKit/UIKit.h>
 
-
 typedef void (^MHFacebookImageViewerOpeningBlock)(void);
 typedef void (^MHFacebookImageViewerClosingBlock)(void);
 
+
+@class MHFacebookImageViewer;
+@protocol MHFacebookImageViewerDatasource <NSObject>
+@required
+- (NSInteger) numberOfExtraImagesForImageViewer:(MHFacebookImageViewer*) imageViewer;
+- (NSURL*)imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
+@end
+
 @interface MHFacebookImageViewer : UIViewController
-
-
 @property (weak, readonly, nonatomic) UIViewController *rootViewController;
 @property (nonatomic,strong) NSURL * imageURL;
 @property (nonatomic,strong) UIImageView * senderView;
 @property (nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
 @property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
-
+@property (nonatomic,weak) id<MHFacebookImageViewerDatasource> imageDatasource;
 
 - (void)presentFromRootViewController;
 - (void)presentFromViewController:(UIViewController *)controller;
@@ -50,4 +55,6 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 - (void) setupImageViewerWithImageURL:(NSURL*)url;
 - (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 @end
+
+
 
