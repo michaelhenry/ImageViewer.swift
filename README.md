@@ -36,14 +36,24 @@ Just
 
 and then in your UIImageView after you set the Image just call the 
 
+### Single Image Support
+
 	- (void)  setupImageViewer;
+	
 	- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 
 
 or if you want to load other image (for example a hi-res version of that image) 
 
 	- (void) setupImageViewerWithImageURL:(NSURL*)url; 
+
 	- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+
+### Multiple Images Support
+
+	- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+
+	- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 
 
 ## Example (UITableViewController):
