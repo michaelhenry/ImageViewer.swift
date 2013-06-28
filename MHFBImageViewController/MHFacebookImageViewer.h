@@ -1,5 +1,6 @@
 //
 // MHFacebookImageViewer.h
+// Version 2.0
 //
 // Copyright (c) 2013 Michael Henry Pantaleon (http://www.iamkel.net). All rights reserved.
 //
@@ -31,8 +32,9 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 @class MHFacebookImageViewer;
 @protocol MHFacebookImageViewerDatasource <NSObject>
 @required
-- (NSInteger) numberOfExtraImagesForImageViewer:(MHFacebookImageViewer*) imageViewer;
-- (NSURL*)imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
+- (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer;
+- (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
+- (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
 @end
 
 @interface MHFacebookImageViewer : UIViewController
@@ -42,6 +44,8 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 @property (nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
 @property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
 @property (nonatomic,weak) id<MHFacebookImageViewerDatasource> imageDatasource;
+@property (nonatomic,assign) NSInteger initialIndex;
+
 
 - (void)presentFromRootViewController;
 - (void)presentFromViewController:(UIViewController *)controller;
@@ -54,6 +58,8 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 - (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 - (void) setupImageViewerWithImageURL:(NSURL*)url;
 - (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 @end
 
 
