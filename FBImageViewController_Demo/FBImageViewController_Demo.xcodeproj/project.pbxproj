@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		994071B8177D62970033FD4B /* 9_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AE177D62970033FD4B /* 9_iphone.png */; };
+		994071B9177D62970033FD4B /* 8_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AF177D62970033FD4B /* 8_iphone.png */; };
+		994071BA177D62970033FD4B /* 7_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B0177D62970033FD4B /* 7_iphone.png */; };
+		994071BB177D62970033FD4B /* 6_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B1177D62970033FD4B /* 6_iphone.png */; };
+		994071BC177D62970033FD4B /* 5_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B2177D62970033FD4B /* 5_iphone.png */; };
+		994071BD177D62970033FD4B /* 4_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B3177D62970033FD4B /* 4_iphone.png */; };
+		994071BE177D62970033FD4B /* 3_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B4177D62970033FD4B /* 3_iphone.png */; };
+		994071BF177D62970033FD4B /* 2_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B5177D62970033FD4B /* 2_iphone.png */; };
+		994071C0177D62970033FD4B /* 1_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B6177D62970033FD4B /* 1_iphone.png */; };
+		994071C1177D62970033FD4B /* 0_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B7177D62970033FD4B /* 0_iphone.png */; };
 		995424481766CB7500D7A4D1 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 995424361766CB7500D7A4D1 /* AFHTTPClient.m */; };
 		995424491766CB7500D7A4D1 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 995424381766CB7500D7A4D1 /* AFHTTPRequestOperation.m */; };
 		9954244A1766CB7500D7A4D1 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9954243A1766CB7500D7A4D1 /* AFImageRequestOperation.m */; };
@@ -40,16 +50,6 @@
 		99872559175886D6004FDBC5 /* Done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 99872557175886D6004FDBC5 /* Done@2x.png */; };
 		99ADA7C61759989C0044BAE4 /* Demo2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99ADA7C51759989C0044BAE4 /* Demo2ViewController.m */; };
 		99ADA7C917599E830044BAE4 /* Demo3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99ADA7C817599E830044BAE4 /* Demo3ViewController.m */; };
-		99D343B51759266900D2D687 /* 0.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343AB1759266900D2D687 /* 0.png */; };
-		99D343B61759266900D2D687 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343AC1759266900D2D687 /* 1.png */; };
-		99D343B71759266900D2D687 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343AD1759266900D2D687 /* 2.png */; };
-		99D343B81759266900D2D687 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343AE1759266900D2D687 /* 3.png */; };
-		99D343B91759266900D2D687 /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343AF1759266900D2D687 /* 4.png */; };
-		99D343BA1759266900D2D687 /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343B01759266900D2D687 /* 5.png */; };
-		99D343BB1759266900D2D687 /* 6.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343B11759266900D2D687 /* 6.png */; };
-		99D343BC1759266900D2D687 /* 7.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343B21759266900D2D687 /* 7.png */; };
-		99D343BD1759266900D2D687 /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343B31759266900D2D687 /* 8.png */; };
-		99D343BE1759266900D2D687 /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = 99D343B41759266900D2D687 /* 9.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +63,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		994071AE177D62970033FD4B /* 9_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_iphone.png; sourceTree = "<group>"; };
+		994071AF177D62970033FD4B /* 8_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_iphone.png; sourceTree = "<group>"; };
+		994071B0177D62970033FD4B /* 7_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_iphone.png; sourceTree = "<group>"; };
+		994071B1177D62970033FD4B /* 6_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6_iphone.png; sourceTree = "<group>"; };
+		994071B2177D62970033FD4B /* 5_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_iphone.png; sourceTree = "<group>"; };
+		994071B3177D62970033FD4B /* 4_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_iphone.png; sourceTree = "<group>"; };
+		994071B4177D62970033FD4B /* 3_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_iphone.png; sourceTree = "<group>"; };
+		994071B5177D62970033FD4B /* 2_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_iphone.png; sourceTree = "<group>"; };
+		994071B6177D62970033FD4B /* 1_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_iphone.png; sourceTree = "<group>"; };
+		994071B7177D62970033FD4B /* 0_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0_iphone.png; sourceTree = "<group>"; };
 		995424351766CB7500D7A4D1 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		995424361766CB7500D7A4D1 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		995424371766CB7500D7A4D1 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -115,16 +125,6 @@
 		99ADA7C51759989C0044BAE4 /* Demo2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Demo2ViewController.m; sourceTree = "<group>"; };
 		99ADA7C717599E830044BAE4 /* Demo3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Demo3ViewController.h; sourceTree = "<group>"; };
 		99ADA7C817599E830044BAE4 /* Demo3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Demo3ViewController.m; sourceTree = "<group>"; };
-		99D343AB1759266900D2D687 /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
-		99D343AC1759266900D2D687 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
-		99D343AD1759266900D2D687 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
-		99D343AE1759266900D2D687 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
-		99D343AF1759266900D2D687 /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
-		99D343B01759266900D2D687 /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
-		99D343B11759266900D2D687 /* 6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6.png; sourceTree = "<group>"; };
-		99D343B21759266900D2D687 /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
-		99D343B31759266900D2D687 /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
-		99D343B41759266900D2D687 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,16 +288,16 @@
 		99D343AA1759266900D2D687 /* Places */ = {
 			isa = PBXGroup;
 			children = (
-				99D343AB1759266900D2D687 /* 0.png */,
-				99D343AC1759266900D2D687 /* 1.png */,
-				99D343AD1759266900D2D687 /* 2.png */,
-				99D343AE1759266900D2D687 /* 3.png */,
-				99D343AF1759266900D2D687 /* 4.png */,
-				99D343B01759266900D2D687 /* 5.png */,
-				99D343B11759266900D2D687 /* 6.png */,
-				99D343B21759266900D2D687 /* 7.png */,
-				99D343B31759266900D2D687 /* 8.png */,
-				99D343B41759266900D2D687 /* 9.png */,
+				994071AE177D62970033FD4B /* 9_iphone.png */,
+				994071AF177D62970033FD4B /* 8_iphone.png */,
+				994071B0177D62970033FD4B /* 7_iphone.png */,
+				994071B1177D62970033FD4B /* 6_iphone.png */,
+				994071B2177D62970033FD4B /* 5_iphone.png */,
+				994071B3177D62970033FD4B /* 4_iphone.png */,
+				994071B4177D62970033FD4B /* 3_iphone.png */,
+				994071B5177D62970033FD4B /* 2_iphone.png */,
+				994071B6177D62970033FD4B /* 1_iphone.png */,
+				994071B7177D62970033FD4B /* 0_iphone.png */,
 			);
 			path = Places;
 			sourceTree = "<group>";
@@ -381,16 +381,16 @@
 				99872554175854C9004FDBC5 /* placehold.png in Resources */,
 				99872558175886D6004FDBC5 /* Done.png in Resources */,
 				99872559175886D6004FDBC5 /* Done@2x.png in Resources */,
-				99D343B51759266900D2D687 /* 0.png in Resources */,
-				99D343B61759266900D2D687 /* 1.png in Resources */,
-				99D343B71759266900D2D687 /* 2.png in Resources */,
-				99D343B81759266900D2D687 /* 3.png in Resources */,
-				99D343B91759266900D2D687 /* 4.png in Resources */,
-				99D343BA1759266900D2D687 /* 5.png in Resources */,
-				99D343BB1759266900D2D687 /* 6.png in Resources */,
-				99D343BC1759266900D2D687 /* 7.png in Resources */,
-				99D343BD1759266900D2D687 /* 8.png in Resources */,
-				99D343BE1759266900D2D687 /* 9.png in Resources */,
+				994071B8177D62970033FD4B /* 9_iphone.png in Resources */,
+				994071B9177D62970033FD4B /* 8_iphone.png in Resources */,
+				994071BA177D62970033FD4B /* 7_iphone.png in Resources */,
+				994071BB177D62970033FD4B /* 6_iphone.png in Resources */,
+				994071BC177D62970033FD4B /* 5_iphone.png in Resources */,
+				994071BD177D62970033FD4B /* 4_iphone.png in Resources */,
+				994071BE177D62970033FD4B /* 3_iphone.png in Resources */,
+				994071BF177D62970033FD4B /* 2_iphone.png in Resources */,
+				994071C0177D62970033FD4B /* 1_iphone.png in Resources */,
+				994071C1177D62970033FD4B /* 0_iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

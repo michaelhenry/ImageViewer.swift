@@ -23,7 +23,7 @@
 
 #import "DemoViewController.h"
 #import "MHFacebookImageViewer.h"
-@interface DemoViewController ()
+@interface DemoViewController ()<MHFacebookImageViewerDatasource>
 
 @end
 
@@ -78,16 +78,27 @@
     [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",indexPath.row]]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    NSInteger randomWidth = arc4random() % 480;
-    NSInteger randomHeight = arc4random() % 480;
-    [imageView setupImageViewerWithImageURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://placehold.it/%ix%i",MAX(320,randomWidth),MAX(320,randomHeight)]] onOpen:^{
-        NSLog(@"OPEN!");
+    [imageView setupImageViewerWithDatasource:self initialIndex:indexPath.row onOpen:^{
+              NSLog(@"OPEN!");
     } onClose:^{
-        NSLog(@"CLOSE!");
+          NSLog(@"CLOSE!");
     }];
-
+    
     imageView.clipsToBounds = YES;
     return cell;
+}
+
+- (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer *)imageViewer {
+    return 10;
+}
+
+-  (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer *)imageViewer {
+    return [NSURL URLWithString:[NSString stringWithFormat:@"http://iamkel.net/projects/mhfacebookimageviewer/%i.png",index]];
+}
+
+- (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer *)imageViewer{
+    NSLog(@"INDEX IS %i",index);
+    return [UIImage imageNamed:[NSString stringWithFormat:@"%i_iphone",index]];
 }
 
 @end
