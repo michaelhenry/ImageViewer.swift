@@ -229,7 +229,7 @@ static const CGFloat kMinImageScale = 1.0f;
         __imageView.clipsToBounds = YES;
         CGFloat screenHeight = _rootViewController.view.frame.size.height;
         CGFloat imageYPosition = __imageView.frame.origin.y;
-        BOOL isGoingUp = imageYPosition < screenHeight/2;
+        BOOL isGoingUp = ! imageYPosition > screenHeight/2;
         [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
             if(_imageIndex==_initialIndex){
                 __imageView.frame = _originalFrameRelativeToScreen;
