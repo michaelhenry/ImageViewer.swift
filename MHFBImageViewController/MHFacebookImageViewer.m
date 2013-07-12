@@ -232,7 +232,16 @@ static const CGFloat kMinImageScale = 1.0f;
         BOOL isGoingUp = ! imageYPosition > screenHeight/2;
         [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
             if(_imageIndex==_initialIndex){
+               
+                if( [[UIApplication sharedApplication].keyWindow.rootViewController class] == [UINavigationController class]) {
                 __imageView.frame = _originalFrameRelativeToScreen;
+                }else {
+                     // If rootViewController is not UINavigationController
+                     // Bug in Y origin
+                    CGRect _fixedOriginalFrameRelativeToScreen = _originalFrameRelativeToScreen;
+                    _fixedOriginalFrameRelativeToScreen.origin.y -= 20;
+                    __imageView.frame = _fixedOriginalFrameRelativeToScreen;
+                }
             }else {
                 __imageView.frame = CGRectMake(__imageView.frame.origin.x, isGoingUp?-screenHeight:screenHeight, __imageView.frame.size.width, __imageView.frame.size.height);
             }
