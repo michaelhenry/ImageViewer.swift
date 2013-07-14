@@ -119,7 +119,7 @@ static const CGFloat kMinImageScale = 1.0f;
                 // Root View Controller - move backward
                 _rootViewController.view.transform = CGAffineTransformScale(transf, 0.95f, 0.95f);
                 // Root View Controller - move forward
-                _viewController.view.transform = CGAffineTransformScale(transf, 1.05f, 1.05f);
+//                _viewController.view.transform = CGAffineTransformScale(transf, 1.05f, 1.05f);
                 _blackMask.alpha = 1;
             }   completion:^(BOOL finished) {
                 if (finished) {
@@ -227,27 +227,17 @@ static const CGFloat kMinImageScale = 1.0f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hideDoneButton];
         __imageView.clipsToBounds = YES;
-        CGFloat screenHeight = _rootViewController.view.frame.size.height;
+        CGFloat screenHeight =  [[UIScreen mainScreen] applicationFrame].size.height;
         CGFloat imageYPosition = __imageView.frame.origin.y;
         BOOL isGoingUp = ! imageYPosition > screenHeight/2;
         [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
             if(_imageIndex==_initialIndex){
-               
-                if( [[UIApplication sharedApplication].keyWindow.rootViewController class] == [UINavigationController class]) {
                 __imageView.frame = _originalFrameRelativeToScreen;
-                }else {
-                     // If rootViewController is not UINavigationController
-                     // Bug in Y origin
-                    CGRect _fixedOriginalFrameRelativeToScreen = _originalFrameRelativeToScreen;
-                    _fixedOriginalFrameRelativeToScreen.origin.y -= 20;
-                    __imageView.frame = _fixedOriginalFrameRelativeToScreen;
-                }
             }else {
                 __imageView.frame = CGRectMake(__imageView.frame.origin.x, isGoingUp?-screenHeight:screenHeight, __imageView.frame.size.width, __imageView.frame.size.height);
             }
             CGAffineTransform transf = CGAffineTransformIdentity;
             _rootViewController.view.transform = CGAffineTransformScale(transf, 1.0f, 1.0f);
-            _viewController.view.transform = CGAffineTransformScale(transf, 1.0f, 1.0f);
             _blackMask.alpha = 0.0f;
         } completion:^(BOOL finished) {
             if (finished) {
@@ -455,7 +445,7 @@ static const CGFloat kMinImageScale = 1.0f;
     static NSString * cellID = @"mhfacebookImageViewerCell";
     MHFacebookImageViewerCell * imageViewerCell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if(!imageViewerCell) {
-        CGRect windowFrame = _rootViewController.view.frame;
+        CGRect windowFrame = [[UIScreen mainScreen] applicationFrame];
         imageViewerCell = [[MHFacebookImageViewerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         imageViewerCell.transform = CGAffineTransformMakeRotation(M_PI_2);
         imageViewerCell.frame = CGRectMake(0,0,windowFrame.size.width, windowFrame.size.height);
@@ -497,7 +487,7 @@ static const CGFloat kMinImageScale = 1.0f;
 {
     [super loadView];
     [UIApplication sharedApplication].statusBarHidden = YES;
-    CGRect windowBounds = _rootViewController.view.bounds;
+    CGRect windowBounds = [[UIScreen mainScreen] applicationFrame];
     
     
     // Compute Original Frame Relative To Screen
@@ -505,8 +495,9 @@ static const CGFloat kMinImageScale = 1.0f;
     newFrame.origin = CGPointMake(newFrame.origin.x, newFrame.origin.y);
     newFrame.size = _senderView.frame.size;
     _originalFrameRelativeToScreen = newFrame;
-    
+  
     self.view = [[UIView alloc] initWithFrame:windowBounds];
+    NSLog(@"WINDOW :%@",NSStringFromCGRect([[UIScreen mainScreen] applicationFrame]));
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // Add a Tableview
@@ -521,7 +512,7 @@ static const CGFloat kMinImageScale = 1.0f;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     [_tableView setShowsVerticalScrollIndicator:NO];
-    [_tableView setContentOffset:CGPointMake(0, _initialIndex * _rootViewController.view.frame.size.width)];
+    [_tableView setContentOffset:CGPointMake(0, _initialIndex * [[UIScreen mainScreen] applicationFrame].size.width)];
     
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
     _blackMask.backgroundColor = [UIColor blackColor];
@@ -545,8 +536,8 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void)presentFromViewController:(UIViewController *)controller
 {
     _rootViewController = controller;
+    [[[[UIApplication sharedApplication]windows]objectAtIndex:0]addSubview:self.view];
     [controller addChildViewController:self];
-    [controller.view addSubview:self.view];
     [self didMoveToParentViewController:controller];
 }
 
