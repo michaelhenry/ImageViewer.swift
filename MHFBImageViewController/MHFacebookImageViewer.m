@@ -228,8 +228,8 @@ static const CGFloat kMinImageScale = 1.0f;
         [self hideDoneButton];
         __imageView.clipsToBounds = YES;
         CGFloat screenHeight =  [[UIScreen mainScreen] applicationFrame].size.height;
-        CGFloat imageYPosition = __imageView.frame.origin.y;
-        BOOL isGoingUp = ! imageYPosition > screenHeight/2;
+        CGFloat imageYCenterPosition = __imageView.frame.origin.y + __imageView.frame.size.height/2 ;
+        BOOL isGoingUp =  imageYCenterPosition < screenHeight/2;
         [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
             if(_imageIndex==_initialIndex){
                 __imageView.frame = _originalFrameRelativeToScreen;
