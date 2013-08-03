@@ -398,6 +398,7 @@ static const CGFloat kMinImageScale = 1.0f;
 }
 
 - (void)close:(UIButton *)sender {
+    self.userInteractionEnabled = NO;
     [sender removeFromSuperview];
     [self dismissViewController];
 }
