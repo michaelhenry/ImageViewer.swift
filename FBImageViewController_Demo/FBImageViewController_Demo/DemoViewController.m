@@ -75,7 +75,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     UIImageView * imageView = (UIImageView*)[cell viewWithTag:1];
    
-    [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",indexPath.row]]];
+    [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i_iphone",indexPath.row]]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     
     [imageView setupImageViewerWithDatasource:self initialIndex:indexPath.row onOpen:^{
