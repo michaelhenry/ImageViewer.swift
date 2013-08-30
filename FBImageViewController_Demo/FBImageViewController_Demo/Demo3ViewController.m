@@ -63,8 +63,8 @@
     UIImageView * imageViewRight = (UIImageView*) [cell viewWithTag:2];
 
     NSInteger imageIndex = indexPath.row + 1;
-    [self displayImage:imageViewLeft withImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",(imageIndex * 2)-1]]];
-     [self displayImage:imageViewRight withImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i",(imageIndex * 2)-2]]];
+    [self displayImage:imageViewLeft withImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i_iphone",(imageIndex * 2)-1]]];
+     [self displayImage:imageViewRight withImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i_iphone",(imageIndex * 2)-2]]];
     return cell;
 }
 
