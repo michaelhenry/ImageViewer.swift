@@ -27,11 +27,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self displayImage:self.imageView1 withImage:[UIImage imageNamed:@"1"]];
-    [self displayImage:self.imageView2 withImage:[UIImage imageNamed:@"2"]];
-    [self displayImage:self.imageView3 withImage:[UIImage imageNamed:@"3"]];
-    [self displayImage:self.imageView4 withImage:[UIImage imageNamed:@"4"]];
-    [self displayImage:self.imageView5 withImage:[UIImage imageNamed:@"5"]];
+    [self displayImage:self.imageView1 withImage:[UIImage imageNamed:@"1_iphone"]];
+    [self displayImage:self.imageView2 withImage:[UIImage imageNamed:@"2_iphone"]];
+    [self displayImage:self.imageView3 withImage:[UIImage imageNamed:@"3_iphone"]];
+    [self displayImage:self.imageView4 withImage:[UIImage imageNamed:@"4_iphone"]];
+    [self displayImage:self.imageView5 withImage:[UIImage imageNamed:@"5_iphone"]];
 	// Do any additional setup after loading the view.
 }
 
