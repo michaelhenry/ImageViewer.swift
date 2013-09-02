@@ -119,7 +119,7 @@ static const CGFloat kMinImageScale = 1.0f;
                 // Root View Controller - move backward
                 _rootViewController.view.transform = CGAffineTransformScale(transf, 0.95f, 0.95f);
                 // Root View Controller - move forward
-//                _viewController.view.transform = CGAffineTransformScale(transf, 1.05f, 1.05f);
+                //                _viewController.view.transform = CGAffineTransformScale(transf, 1.05f, 1.05f);
                 _blackMask.alpha = 1;
             }   completion:^(BOOL finished) {
                 if (finished) {
@@ -496,7 +496,7 @@ static const CGFloat kMinImageScale = 1.0f;
     newFrame.origin = CGPointMake(newFrame.origin.x, newFrame.origin.y);
     newFrame.size = _senderView.frame.size;
     _originalFrameRelativeToScreen = newFrame;
-  
+    
     self.view = [[UIView alloc] initWithFrame:windowBounds];
     NSLog(@"WINDOW :%@",NSStringFromCGRect([[UIScreen mainScreen] applicationFrame]));
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -554,8 +554,8 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Custom Gesture Recognizer that will Handle imageURL
 @interface MHFacebookImageViewerTapGestureRecognizer : UITapGestureRecognizer
 @property(nonatomic,strong) NSURL * imageURL;
-@property(nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
-@property(nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
+@property(nonatomic,strong) MHFacebookImageViewerOpeningBlock openingBlock;
+@property(nonatomic,strong) MHFacebookImageViewerClosingBlock closingBlock;
 @property(nonatomic,weak) id<MHFacebookImageViewerDatasource> imageDatasource;
 @property(nonatomic,assign) NSInteger initialIndex;
 
@@ -614,6 +614,7 @@ static const CGFloat kMinImageScale = 1.0f;
     tapGesture = nil;
 }
 
+
 #pragma mark - Handle Tap
 - (void) didTap:(MHFacebookImageViewerTapGestureRecognizer*)gestureRecognizer {
     
@@ -626,6 +627,24 @@ static const CGFloat kMinImageScale = 1.0f;
     imageBrowser.initialIndex = gestureRecognizer.initialIndex;
     if(self.image)
         [imageBrowser presentFromRootViewController];
+}
+
+
+#pragma mark Removal
+- (void)removeImageViewer
+{
+    for (UIGestureRecognizer * gesture in self.gestureRecognizers)
+    {
+        if ([gesture isKindOfClass:[MHFacebookImageViewerTapGestureRecognizer class]])
+        {
+            [self removeGestureRecognizer:gesture];
+            
+            MHFacebookImageViewerTapGestureRecognizer *  tapGesture = (MHFacebookImageViewerTapGestureRecognizer *)gesture;
+            tapGesture.imageURL = nil;
+            tapGesture.openingBlock = nil;
+            tapGesture.closingBlock = nil;
+        }
+    }
 }
 
 @end
