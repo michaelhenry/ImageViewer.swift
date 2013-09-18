@@ -78,6 +78,12 @@ or if you want to load other image (for example a hi-res version of that image)
 	    return cell;
 	}
 
+### If you want to include multiple images, Here is the DataSource Protocol or look for the sample project included in this repo.
+	
+	- (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer;
+	- (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
+	- (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
+
 ### That's it. :)
 
 
