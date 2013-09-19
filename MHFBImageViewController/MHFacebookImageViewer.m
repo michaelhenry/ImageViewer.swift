@@ -81,6 +81,7 @@ static const CGFloat kMinImageScale = 1.0f;
     CGRect frame = [UIScreen mainScreen].applicationFrame;
     __scrollView = [[UIScrollView alloc]initWithFrame:frame];
     __scrollView.delegate = self;
+    __scrollView.backgroundColor = [UIColor clearColor];
     [self addSubview:__scrollView];
     [_doneButton addTarget:self
                     action:@selector(close:)
@@ -164,11 +165,13 @@ static const CGFloat kMinImageScale = 1.0f;
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    UITableView * tableView = (UITableView*)self.superview;
-    if ([otherGestureRecognizer isEqual:(tableView.panGestureRecognizer)])
-    {
-        return NO;
-    }
+    // Uncomment once iOS7 beta5 bugs for panGestures are worked out
+//    UITableView * tableView = (UITableView*)self.superview;
+//    if ( [tableView respondsToSelector:@selector(panGestureRecognizer)] &&
+//         [otherGestureRecognizer isEqual:(tableView.panGestureRecognizer)] )
+//    {
+//        return NO;
+//    }
     return YES;
 }
 
@@ -461,6 +464,7 @@ static const CGFloat kMinImageScale = 1.0f;
         imageViewerCell.doneButton = _doneButton;
         imageViewerCell.initialIndex = _initialIndex;
         [imageViewerCell loadAllRequiredViews];
+        imageViewerCell.backgroundColor = [UIColor clearColor];
     }
     if(!self.imageDatasource) {
         // Just to retain the old version
@@ -488,17 +492,16 @@ static const CGFloat kMinImageScale = 1.0f;
 {
     [super loadView];
     [UIApplication sharedApplication].statusBarHidden = YES;
-    CGRect windowBounds = [[UIScreen mainScreen] applicationFrame];
-    
+    CGRect windowBounds = [[UIScreen mainScreen] bounds]; // applicationFrame
     
     // Compute Original Frame Relative To Screen
-    CGRect newFrame = [_senderView convertRect:[[UIScreen mainScreen] applicationFrame] toView:nil];
+    CGRect newFrame = [_senderView convertRect:windowBounds toView:nil];
     newFrame.origin = CGPointMake(newFrame.origin.x, newFrame.origin.y);
     newFrame.size = _senderView.frame.size;
     _originalFrameRelativeToScreen = newFrame;
     
     self.view = [[UIView alloc] initWithFrame:windowBounds];
-    NSLog(@"WINDOW :%@",NSStringFromCGRect([[UIScreen mainScreen] applicationFrame]));
+    NSLog(@"WINDOW :%@",NSStringFromCGRect(windowBounds));
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // Add a Tableview
@@ -513,7 +516,7 @@ static const CGFloat kMinImageScale = 1.0f;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     [_tableView setShowsVerticalScrollIndicator:NO];
-    [_tableView setContentOffset:CGPointMake(0, _initialIndex * [[UIScreen mainScreen] applicationFrame].size.width)];
+    [_tableView setContentOffset:CGPointMake(0, _initialIndex * windowBounds.size.width)];
     
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
     _blackMask.backgroundColor = [UIColor blackColor];
@@ -523,6 +526,7 @@ static const CGFloat kMinImageScale = 1.0f;
      self.view insertSubview:_blackMask atIndex:0];
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
     [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
     _doneButton.frame = CGRectMake(windowBounds.size.width - (51.0f + 9.0f),15.0f, 51.0f, 26.0f);
 }
