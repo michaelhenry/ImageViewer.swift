@@ -523,6 +523,7 @@ static const CGFloat kMinImageScale = 1.0f;
      self.view insertSubview:_blackMask atIndex:0];
     
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];
     [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
     _doneButton.frame = CGRectMake(windowBounds.size.width - (51.0f + 9.0f),15.0f, 51.0f, 26.0f);
 }
