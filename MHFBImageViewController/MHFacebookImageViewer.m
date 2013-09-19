@@ -78,7 +78,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
 - (void) loadAllRequiredViews{
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGRect frame = [UIScreen mainScreen].applicationFrame;
+    CGRect frame = [UIScreen mainScreen].bounds;
     __scrollView = [[UIScrollView alloc]initWithFrame:frame];
     __scrollView.delegate = self;
     __scrollView.backgroundColor = [UIColor clearColor];
@@ -230,7 +230,7 @@ static const CGFloat kMinImageScale = 1.0f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hideDoneButton];
         __imageView.clipsToBounds = YES;
-        CGFloat screenHeight =  [[UIScreen mainScreen] applicationFrame].size.height;
+        CGFloat screenHeight =  [[UIScreen mainScreen] bounds].size.height;
         CGFloat imageYCenterPosition = __imageView.frame.origin.y + __imageView.frame.size.height/2 ;
         BOOL isGoingUp =  imageYCenterPosition < screenHeight/2;
         [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
@@ -449,7 +449,7 @@ static const CGFloat kMinImageScale = 1.0f;
     static NSString * cellID = @"mhfacebookImageViewerCell";
     MHFacebookImageViewerCell * imageViewerCell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if(!imageViewerCell) {
-        CGRect windowFrame = [[UIScreen mainScreen] applicationFrame];
+        CGRect windowFrame = [[UIScreen mainScreen] bounds];
         imageViewerCell = [[MHFacebookImageViewerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         imageViewerCell.transform = CGAffineTransformMakeRotation(M_PI_2);
         imageViewerCell.frame = CGRectMake(0,0,windowFrame.size.width, windowFrame.size.height);
@@ -492,7 +492,7 @@ static const CGFloat kMinImageScale = 1.0f;
 {
     [super loadView];
     [UIApplication sharedApplication].statusBarHidden = YES;
-    CGRect windowBounds = [[UIScreen mainScreen] bounds]; // applicationFrame
+    CGRect windowBounds = [[UIScreen mainScreen] bounds];
     
     // Compute Original Frame Relative To Screen
     CGRect newFrame = [_senderView convertRect:windowBounds toView:nil];
