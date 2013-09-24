@@ -57,12 +57,15 @@ static const CGFloat kMinImageScale = 1.0f;
 
 @property(nonatomic,weak) UIView * superView;
 
+@property(nonatomic) UIStatusBarStyle statusBarStyle;
+
 - (void) loadAllRequiredViews;
 - (void) setImageURL:(NSURL *)imageURL defaultImage:(UIImage*)defaultImage imageIndex:(NSInteger)imageIndex;
 
 @end
 
 @implementation MHFacebookImageViewerCell
+
 @synthesize originalFrameRelativeToScreen = _originalFrameRelativeToScreen;
 @synthesize rootViewController = _rootViewController;
 @synthesize viewController = _viewController;
@@ -166,12 +169,12 @@ static const CGFloat kMinImageScale = 1.0f;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     // Uncomment once iOS7 beta5 bugs for panGestures are worked out
-//    UITableView * tableView = (UITableView*)self.superview;
-//    if ( [tableView respondsToSelector:@selector(panGestureRecognizer)] &&
-//         [otherGestureRecognizer isEqual:(tableView.panGestureRecognizer)] )
-//    {
-//        return NO;
-//    }
+    //    UITableView * tableView = (UITableView*)self.superview;
+    //    if ( [tableView respondsToSelector:@selector(panGestureRecognizer)] &&
+    //         [otherGestureRecognizer isEqual:(tableView.panGestureRecognizer)] )
+    //    {
+    //        return NO;
+    //    }
     return YES;
 }
 
@@ -248,6 +251,7 @@ static const CGFloat kMinImageScale = 1.0f;
                 [_viewController removeFromParentViewController];
                 _senderView.alpha = 1.0f;
                 [UIApplication sharedApplication].statusBarHidden = NO;
+                [UIApplication sharedApplication].statusBarStyle = _statusBarStyle;
                 _isAnimating = NO;
                 if(_closingBlock)
                     _closingBlock();
@@ -422,6 +426,8 @@ static const CGFloat kMinImageScale = 1.0f;
     
     BOOL _isAnimating;
     BOOL _isDoneAnimating;
+    
+    UIStatusBarStyle _statusBarStyle;
 }
 
 @end
@@ -463,6 +469,7 @@ static const CGFloat kMinImageScale = 1.0f;
         imageViewerCell.senderView = _senderView;
         imageViewerCell.doneButton = _doneButton;
         imageViewerCell.initialIndex = _initialIndex;
+        imageViewerCell.statusBarStyle = _statusBarStyle;
         [imageViewerCell loadAllRequiredViews];
         imageViewerCell.backgroundColor = [UIColor clearColor];
     }
@@ -491,6 +498,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void)loadView
 {
     [super loadView];
+    _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
     [UIApplication sharedApplication].statusBarHidden = YES;
     CGRect windowBounds = [[UIScreen mainScreen] bounds];
     
