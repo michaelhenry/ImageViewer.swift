@@ -274,7 +274,7 @@ static const CGFloat kMinImageScale = 1.0f;
 }
 
 - (CGSize)imageResizeBaseOnWidth:(CGFloat) newWidth oldWidth:(CGFloat) oldWidth oldHeight:(CGFloat)oldHeight {
-    CGFloat scaleFactor = newWidth / oldWidth;
+    CGFloat scaleFactor =   (oldWidth == 0 ? 1 : newWidth / oldWidth);
     CGFloat newHeight = oldHeight * scaleFactor;
     return CGSizeMake(newWidth, newHeight);
     
