@@ -52,8 +52,8 @@ static const CGFloat kMinImageScale = 1.0f;
 @property(nonatomic,weak) UIImage * defaultImage;
 @property(nonatomic,assign) NSInteger initialIndex;
 
-@property (nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
-@property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
+@property (nonatomic,strong) MHFacebookImageViewerOpeningBlock openingBlock;
+@property (nonatomic,strong) MHFacebookImageViewerClosingBlock closingBlock;
 
 @property(nonatomic,weak) UIView * superView;
 
