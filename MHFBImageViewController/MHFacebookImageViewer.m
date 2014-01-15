@@ -428,6 +428,7 @@ static const CGFloat kMinImageScale = 1.0f;
     BOOL _isDoneAnimating;
     
     UIStatusBarStyle _statusBarStyle;
+    UIPageControl* _pageControl;
 }
 
 @end
@@ -447,8 +448,14 @@ static const CGFloat kMinImageScale = 1.0f;
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Just to retain the old version
-    if(!self.imageDatasource) return 1;
-    return [self.imageDatasource numberImagesForImageViewer:self];
+    if(!self.imageDatasource){
+        _pageControl.numberOfPages = 1;
+        return 1;
+    }
+    else{
+        _pageControl.numberOfPages = [self.imageDatasource numberImagesForImageViewer:self];
+        return [self.imageDatasource numberImagesForImageViewer:self];
+    }
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath  {
@@ -477,6 +484,7 @@ static const CGFloat kMinImageScale = 1.0f;
         // Just to retain the old version
         [imageViewerCell setImageURL:_imageURL defaultImage:_senderView.image imageIndex:0];
     } else {
+        _pageControl.currentPage = indexPath.row;
         [imageViewerCell setImageURL:[self.imageDatasource imageURLAtIndex:indexPath.row imageViewer:self] defaultImage:[self.imageDatasource imageDefaultAtIndex:indexPath.row imageViewer:self]imageIndex:indexPath.row];
     }
     return imageViewerCell;
@@ -537,6 +545,12 @@ static const CGFloat kMinImageScale = 1.0f;
     [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
     [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
     _doneButton.frame = CGRectMake(windowBounds.size.width - (51.0f + 9.0f),15.0f, 51.0f, 26.0f);
+    
+     _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(windowBounds.size.width/2 - 30.0f,
+                                                                   windowBounds.size.height - 50.f, 60.0f, 20.0f)];
+    [_pageControl setCenter:CGPointMake(windowBounds.size.width / 2, windowBounds.size.height - 40.0f)];
+    [_pageControl setHidesForSinglePage:YES];
+    [self.view addSubview:_pageControl];
 }
 
 #pragma mark - Show
