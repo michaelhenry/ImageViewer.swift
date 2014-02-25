@@ -40,6 +40,7 @@ static const CGFloat kMinImageScale = 1.0f;
     BOOL _isAnimating;
     BOOL _isDoneAnimating;
     BOOL _isLoaded;
+    BOOL _isPanning;
 }
 
 @property(nonatomic,assign) CGRect originalFrameRelativeToScreen;
@@ -168,19 +169,13 @@ static const CGFloat kMinImageScale = 1.0f;
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    // Uncomment once iOS7 beta5 bugs for panGestures are worked out
-    //    UITableView * tableView = (UITableView*)self.superview;
-    //    if ( [tableView respondsToSelector:@selector(panGestureRecognizer)] &&
-    //         [otherGestureRecognizer isEqual:(tableView.panGestureRecognizer)] )
-    //    {
-    //        return NO;
-    //    }
-    return YES;
+    return _isPanning == NO;
 }
 
 #pragma mark - Handle Panning Activity
 - (void) gestureRecognizerDidPan:(UIPanGestureRecognizer*)panGesture {
     if(__scrollView.zoomScale != 1.0f || _isAnimating)return;
+    _isPanning = YES;
     if(_imageIndex==_initialIndex){
         if(_senderView.alpha!=0.0f)
             _senderView.alpha = 0.0f;
@@ -202,7 +197,7 @@ static const CGFloat kMinImageScale = 1.0f;
     _blackMask.alpha = MAX(1 - yDiff/(windowSize.height/2),kMinBlackMaskAlpha);
     
     if ((panGesture.state == UIGestureRecognizerStateEnded || panGesture.state == UIGestureRecognizerStateCancelled) && __scrollView.zoomScale == 1.0f) {
-        
+        _isPanning = NO;
         if(_blackMask.alpha < 0.7) {
             [self dismissViewController];
         }else {
