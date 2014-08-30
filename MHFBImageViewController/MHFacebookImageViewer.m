@@ -32,11 +32,8 @@ static const CGFloat kMinImageScale = 1.0f;
 @interface MHFacebookImageViewerCell : UITableViewCell<UIGestureRecognizerDelegate,UIScrollViewDelegate>{
     UIImageView * __imageView;
     UIScrollView * __scrollView;
-    
     NSMutableArray *_gestures;
-    
     CGPoint _panOrigin;
-    
     BOOL _isAnimating;
     BOOL _isDoneAnimating;
     BOOL _isLoaded;
@@ -51,6 +48,7 @@ static const CGFloat kMinImageScale = 1.0f;
 @property(nonatomic,assign) NSInteger imageIndex;
 @property(nonatomic,weak) UIImage * defaultImage;
 @property(nonatomic,assign) NSInteger initialIndex;
+@property(nonatomic,strong) UIPanGestureRecognizer* panGesture;
 
 @property (nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
 @property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
@@ -78,6 +76,7 @@ static const CGFloat kMinImageScale = 1.0f;
 @synthesize superView = _superView;
 @synthesize defaultImage = _defaultImage;
 @synthesize initialIndex = _initialIndex;
+@synthesize panGesture = _panGesture;
 
 - (void) loadAllRequiredViews{
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -94,7 +93,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void) setImageURL:(NSURL *)imageURL defaultImage:(UIImage*)defaultImage imageIndex:(NSInteger)imageIndex {
     _imageIndex = imageIndex;
     _defaultImage = defaultImage;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         _senderView.alpha = 0.0f;
         if(!__imageView){
@@ -105,16 +104,16 @@ static const CGFloat kMinImageScale = 1.0f;
         __block UIImageView * _imageViewInTheBlock = __imageView;
         __block MHFacebookImageViewerCell * _justMeInsideTheBlock = self;
         __block UIScrollView * _scrollViewInsideBlock = __scrollView;
-        
+
         [__imageView setImageWithURLRequest:[NSURLRequest requestWithURL:imageURL] placeholderImage:defaultImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             [_scrollViewInsideBlock setZoomScale:1.0f animated:YES];
             [_imageViewInTheBlock setImage:image];
             _imageViewInTheBlock.frame = [_justMeInsideTheBlock centerFrameFromImage:_imageViewInTheBlock.image];
-            
+
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             NSLog(@"Image From URL Not loaded");
         }];
-        
+
         if(_imageIndex==_initialIndex && !_isLoaded){
             __imageView.frame = _originalFrameRelativeToScreen;
             [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
@@ -133,25 +132,26 @@ static const CGFloat kMinImageScale = 1.0f;
                         _openingBlock();
                 }
             }];
-            
+
         }
         __imageView.userInteractionEnabled = YES;
         [self addPanGestureToView:__imageView];
         [self addMultipleGesture];
-        
+
     });
 }
 
 #pragma mark - Add Pan Gesture
 - (void) addPanGestureToView:(UIView*)view
 {
-    UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                                 action:@selector(gestureRecognizerDidPan:)];
-    panGesture.cancelsTouchesInView = YES;
-    panGesture.delegate = self;
-    [view addGestureRecognizer:panGesture];
-    [_gestures addObject:panGesture];
-    panGesture = nil;
+    _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecognizerDidPan:)];
+    _panGesture.cancelsTouchesInView = NO;
+    _panGesture.delegate = self;
+     __weak UITableView * weakSuperView = (UITableView*) view.superview.superview.superview.superview.superview;
+    [weakSuperView.panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
+    [view addGestureRecognizer:_panGesture];
+    [_gestures addObject:_panGesture];
+
 }
 
 # pragma mark - Avoid Unwanted Horizontal Gesture
@@ -166,16 +166,13 @@ static const CGFloat kMinImageScale = 1.0f;
     gestureRecognizer.enabled = YES;
     return !_isAnimating;
 }
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    // Uncomment once iOS7 beta5 bugs for panGestures are worked out
-    //    UITableView * tableView = (UITableView*)self.superview;
-    //    if ( [tableView respondsToSelector:@selector(panGestureRecognizer)] &&
-    //         [otherGestureRecognizer isEqual:(tableView.panGestureRecognizer)] )
-    //    {
-    //        return NO;
-    //    }
-    return YES;
+    if(gestureRecognizer == _panGesture) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Handle Panning Activity
@@ -195,15 +192,16 @@ static const CGFloat kMinImageScale = 1.0f;
     CGPoint currentPoint = [panGesture translationInView:__scrollView];
     CGFloat y = currentPoint.y + _panOrigin.y;
     CGRect frame = __imageView.frame;
-    frame.origin = CGPointMake(0, y);
+    frame.origin.y = y;
+
     __imageView.frame = frame;
-    
+
     CGFloat yDiff = abs((y + __imageView.frame.size.height/2) - windowSize.height/2);
-    _blackMask.alpha = MAX(1 - yDiff/(windowSize.height/2),kMinBlackMaskAlpha);
-    
+    _blackMask.alpha = MAX(1 - yDiff/(windowSize.height/0.5),kMinBlackMaskAlpha);
+
     if ((panGesture.state == UIGestureRecognizerStateEnded || panGesture.state == UIGestureRecognizerStateCancelled) && __scrollView.zoomScale == 1.0f) {
-        
-        if(_blackMask.alpha < 0.7) {
+
+        if(_blackMask.alpha < 0.8) {
             [self dismissViewController];
         }else {
             [self rollbackViewController];
@@ -263,7 +261,7 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Compute the new size of image relative to width(window)
 - (CGRect) centerFrameFromImage:(UIImage*) image {
     if(!image) return CGRectZero;
-    
+
     CGRect windowBounds = _rootViewController.view.bounds;
     CGSize newImageSize = [self imageResizeBaseOnWidth:windowBounds
                            .size.width oldWidth:image
@@ -277,21 +275,20 @@ static const CGFloat kMinImageScale = 1.0f;
     CGFloat scaleFactor = newWidth / oldWidth;
     CGFloat newHeight = oldHeight * scaleFactor;
     return CGSizeMake(newWidth, newHeight);
-    
-}
 
+}
 
 # pragma mark - UIScrollView Delegate
 - (void)centerScrollViewContents {
     CGSize boundsSize = _rootViewController.view.bounds.size;
     CGRect contentsFrame = __imageView.frame;
-    
+
     if (contentsFrame.size.width < boundsSize.width) {
         contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
     } else {
         contentsFrame.origin.x = 0.0f;
     }
-    
+
     if (contentsFrame.size.height < boundsSize.height) {
         contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
     } else {
@@ -310,7 +307,7 @@ static const CGFloat kMinImageScale = 1.0f;
     [self centerScrollViewContents];
 }
 
-- (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
+- (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
     _isAnimating = NO;
 }
 
@@ -319,19 +316,19 @@ static const CGFloat kMinImageScale = 1.0f;
     twoFingerTapGesture.numberOfTapsRequired = 1;
     twoFingerTapGesture.numberOfTouchesRequired = 2;
     [__scrollView addGestureRecognizer:twoFingerTapGesture];
-    
+
     UITapGestureRecognizer *singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSingleTap:)];
     singleTapRecognizer.numberOfTapsRequired = 1;
     singleTapRecognizer.numberOfTouchesRequired = 1;
     [__scrollView addGestureRecognizer:singleTapRecognizer];
-    
+
     UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didDobleTap:)];
     doubleTapRecognizer.numberOfTapsRequired = 2;
     doubleTapRecognizer.numberOfTouchesRequired = 1;
     [__scrollView addGestureRecognizer:doubleTapRecognizer];
-    
+
     [singleTapRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
-    
+
     __scrollView.minimumZoomScale = kMinImageScale;
     __scrollView.maximumZoomScale = kMaxImageScale;
     __scrollView.zoomScale = 1;
@@ -378,7 +375,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void) zoomInZoomOut:(CGPoint)point {
     // Check if current Zoom Scale is greater than half of max scale then reduce zoom and vice versa
     CGFloat newZoomScale = __scrollView.zoomScale > (__scrollView.maximumZoomScale/2)?__scrollView.minimumZoomScale:__scrollView.maximumZoomScale;
-    
+
     CGSize scrollViewSize = __scrollView.bounds.size;
     CGFloat w = scrollViewSize.width / newZoomScale;
     CGFloat h = scrollViewSize.height / newZoomScale;
@@ -410,23 +407,27 @@ static const CGFloat kMinImageScale = 1.0f;
     [self dismissViewController];
 }
 
+- (void) dealloc {
+
+}
+
 @end
 
 @interface MHFacebookImageViewer()<UIGestureRecognizerDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>{
     NSMutableArray *_gestures;
-    
+
     UITableView * _tableView;
     UIView *_blackMask;
     UIImageView * _imageView;
     UIButton * _doneButton;
     UIView * _superView;
-    
+
     CGPoint _panOrigin;
     CGRect _originalFrameRelativeToScreen;
-    
+
     BOOL _isAnimating;
     BOOL _isDoneAnimating;
-    
+
     UIStatusBarStyle _statusBarStyle;
 }
 
@@ -497,21 +498,20 @@ static const CGFloat kMinImageScale = 1.0f;
 
 - (void)loadView
 {
-    [super loadView];
     _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
     [UIApplication sharedApplication].statusBarHidden = YES;
     CGRect windowBounds = [[UIScreen mainScreen] bounds];
-    
+
     // Compute Original Frame Relative To Screen
     CGRect newFrame = [_senderView convertRect:windowBounds toView:nil];
     newFrame.origin = CGPointMake(newFrame.origin.x, newFrame.origin.y);
     newFrame.size = _senderView.frame.size;
     _originalFrameRelativeToScreen = newFrame;
-    
+
     self.view = [[UIView alloc] initWithFrame:windowBounds];
-    NSLog(@"WINDOW :%@",NSStringFromCGRect(windowBounds));
+    //    NSLog(@"WINDOW :%@",NSStringFromCGRect(windowBounds));
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
+
     // Add a Tableview
     _tableView = [[UITableView alloc]initWithFrame:windowBounds style:UITableViewStylePlain];
     [self.view addSubview:_tableView];
@@ -523,16 +523,17 @@ static const CGFloat kMinImageScale = 1.0f;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.delaysContentTouches = YES;
     [_tableView setShowsVerticalScrollIndicator:NO];
     [_tableView setContentOffset:CGPointMake(0, _initialIndex * windowBounds.size.width)];
-    
+
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
     _blackMask.backgroundColor = [UIColor blackColor];
     _blackMask.alpha = 0.0f;
     _blackMask.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [
      self.view insertSubview:_blackMask atIndex:0];
-    
+
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
     [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
@@ -559,6 +560,7 @@ static const CGFloat kMinImageScale = 1.0f;
     _imageURL = nil;
     _senderView = nil;
     _imageDatasource = nil;
+
 }
 @end
 
@@ -629,7 +631,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
 #pragma mark - Handle Tap
 - (void) didTap:(MHFacebookImageViewerTapGestureRecognizer*)gestureRecognizer {
-    
+
     MHFacebookImageViewer * imageBrowser = [[MHFacebookImageViewer alloc]init];
     imageBrowser.senderView = self;
     imageBrowser.imageURL = gestureRecognizer.imageURL;
@@ -641,6 +643,9 @@ static const CGFloat kMinImageScale = 1.0f;
         [imageBrowser presentFromRootViewController];
 }
 
+- (void) dealloc {
+   
+}
 
 #pragma mark Removal
 - (void)removeImageViewer
@@ -650,7 +655,7 @@ static const CGFloat kMinImageScale = 1.0f;
         if ([gesture isKindOfClass:[MHFacebookImageViewerTapGestureRecognizer class]])
         {
             [self removeGestureRecognizer:gesture];
-            
+
             MHFacebookImageViewerTapGestureRecognizer *  tapGesture = (MHFacebookImageViewerTapGestureRecognizer *)gesture;
             tapGesture.imageURL = nil;
             tapGesture.openingBlock = nil;
