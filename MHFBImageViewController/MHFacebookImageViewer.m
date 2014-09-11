@@ -201,7 +201,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
     if ((panGesture.state == UIGestureRecognizerStateEnded || panGesture.state == UIGestureRecognizerStateCancelled) && __scrollView.zoomScale == 1.0f) {
 
-        if(_blackMask.alpha < 0.8) {
+        if(_blackMask.alpha < 0.85f) {
             [self dismissViewController];
         }else {
             [self rollbackViewController];
@@ -213,7 +213,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void)rollbackViewController
 {
     _isAnimating = YES;
-    [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
+    [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
         __imageView.frame = [self centerFrameFromImage:__imageView.image];
         _blackMask.alpha = 1;
     }   completion:^(BOOL finished) {
@@ -234,7 +234,7 @@ static const CGFloat kMinImageScale = 1.0f;
         CGFloat screenHeight =  [[UIScreen mainScreen] bounds].size.height;
         CGFloat imageYCenterPosition = __imageView.frame.origin.y + __imageView.frame.size.height/2 ;
         BOOL isGoingUp =  imageYCenterPosition < screenHeight/2;
-        [UIView animateWithDuration:0.2f delay:0.0f options:0 animations:^{
+        [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
             if(_imageIndex==_initialIndex){
                 __imageView.frame = _originalFrameRelativeToScreen;
             }else {
@@ -352,7 +352,7 @@ static const CGFloat kMinImageScale = 1.0f;
                 _isDoneAnimating = YES;
                 [self.viewController.view addSubview:_doneButton];
                 _doneButton.alpha = 0.0f;
-                [UIView animateWithDuration:0.2f animations:^{
+                [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionAllowUserInteraction animations:^{
                     _doneButton.alpha = 1.0f;
                 } completion:^(BOOL finished) {
                     [self.viewController.view bringSubviewToFront:_doneButton];
@@ -391,7 +391,7 @@ static const CGFloat kMinImageScale = 1.0f;
         if(_doneButton.superview) {
             _isDoneAnimating = YES;
             _doneButton.alpha = 1.0f;
-            [UIView animateWithDuration:0.2f animations:^{
+            [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionAllowUserInteraction animations:^{
                 _doneButton.alpha = 0.0f;
             } completion:^(BOOL finished) {
                 _isDoneAnimating = NO;
