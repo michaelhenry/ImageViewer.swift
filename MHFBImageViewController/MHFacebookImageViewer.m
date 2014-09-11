@@ -94,7 +94,7 @@ static const CGFloat kMinImageScale = 1.0f;
     _imageIndex = imageIndex;
     _defaultImage = defaultImage;
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+
         _senderView.alpha = 0.0f;
         if(!__imageView){
             __imageView = [[UIImageView alloc]init];
@@ -138,7 +138,6 @@ static const CGFloat kMinImageScale = 1.0f;
         [self addPanGestureToView:__imageView];
         [self addMultipleGesture];
 
-    });
 }
 
 #pragma mark - Add Pan Gesture
