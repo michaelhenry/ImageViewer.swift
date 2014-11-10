@@ -25,6 +25,7 @@
 
 #import "MHFacebookImageViewer.h"
 #import "UIImageView+AFNetworking.h"
+
 static const CGFloat kMinBlackMaskAlpha = 0.3f;
 static const CGFloat kMaxImageScale = 2.5f;
 static const CGFloat kMinImageScale = 1.0f;
@@ -260,21 +261,29 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Compute the new size of image relative to width(window)
 - (CGRect) centerFrameFromImage:(UIImage*) image {
     if(!image) return CGRectZero;
-
     CGRect windowBounds = _rootViewController.view.bounds;
-    CGSize newImageSize = [self imageResizeBaseOnWidth:windowBounds
-                           .size.width oldWidth:image
-                           .size.width oldHeight:image.size.height];
-    // Just fit it on the size of the screen
-    newImageSize.height = MIN(windowBounds.size.height,newImageSize.height);
-    return CGRectMake(0.0f, windowBounds.size.height/2 - newImageSize.height/2, newImageSize.width, newImageSize.height);
+    return [self imageResizeBaseOnView:windowBounds.size oldImageSize:image.size];
 }
 
 - (CGSize)imageResizeBaseOnWidth:(CGFloat) newWidth oldWidth:(CGFloat) oldWidth oldHeight:(CGFloat)oldHeight {
     CGFloat scaleFactor = newWidth / oldWidth;
     CGFloat newHeight = oldHeight * scaleFactor;
     return CGSizeMake(newWidth, newHeight);
+}
 
+- (CGRect)imageResizeBaseOnView:(CGSize)viewSize oldImageSize:(CGSize)oldImageSize {
+    CGSize newImageSize;
+    CGFloat t1 = viewSize.width/ oldImageSize.width;
+    CGFloat t2 = viewSize.height / oldImageSize.height;
+    if (t1 > t2) {
+        newImageSize.height = viewSize.height;
+        newImageSize.width = t2 * oldImageSize.width;
+        return CGRectMake(viewSize.width/2 - newImageSize.width/2, 0.0f, newImageSize.width, newImageSize.height);
+    } else {
+        newImageSize.width = viewSize.width;
+        newImageSize.height = t1 * oldImageSize.height;
+        return CGRectMake(0.0f, viewSize.height/2 - newImageSize.height/2, newImageSize.width, newImageSize.height);
+    }
 }
 
 # pragma mark - UIScrollView Delegate
