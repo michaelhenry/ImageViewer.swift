@@ -583,6 +583,8 @@ static const CGFloat kMinImageScale = 1.0f;
 
 @interface UIImageView()<UITabBarControllerDelegate>
 
+@property(nonatomic,strong) MHFacebookImageViewer *imageBrowser;
+
 @end
 #pragma mark - UIImageView Category
 @implementation UIImageView (MHFacebookImageViewer)
@@ -631,15 +633,15 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark - Handle Tap
 - (void) didTap:(MHFacebookImageViewerTapGestureRecognizer*)gestureRecognizer {
 
-    MHFacebookImageViewer * imageBrowser = [[MHFacebookImageViewer alloc]init];
-    imageBrowser.senderView = self;
-    imageBrowser.imageURL = gestureRecognizer.imageURL;
-    imageBrowser.openingBlock = gestureRecognizer.openingBlock;
-    imageBrowser.closingBlock = gestureRecognizer.closingBlock;
-    imageBrowser.imageDatasource = gestureRecognizer.imageDatasource;
-    imageBrowser.initialIndex = gestureRecognizer.initialIndex;
+    self.imageBrowser = [[MHFacebookImageViewer alloc]init];
+    self.imageBrowser.senderView = self;
+    self.imageBrowser.imageURL = gestureRecognizer.imageURL;
+    self.imageBrowser.openingBlock = gestureRecognizer.openingBlock;
+    self.imageBrowser.closingBlock = gestureRecognizer.closingBlock;
+    self.imageBrowser.imageDatasource = gestureRecognizer.imageDatasource;
+    self.imageBrowser.initialIndex = gestureRecognizer.initialIndex;
     if(self.image)
-        [imageBrowser presentFromRootViewController];
+        [self.imageBrowser presentFromRootViewController];
 }
 
 - (void) dealloc {
@@ -649,6 +651,10 @@ static const CGFloat kMinImageScale = 1.0f;
 #pragma mark Removal
 - (void)removeImageViewer
 {
+    
+    [self.imageBrowser.view removeFromSuperview];
+    [self.imageBrowser removeFromParentViewController];
+    
     for (UIGestureRecognizer * gesture in self.gestureRecognizers)
     {
         if ([gesture isKindOfClass:[MHFacebookImageViewerTapGestureRecognizer class]])
