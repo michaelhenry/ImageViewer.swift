@@ -51,14 +51,26 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 - (void)presentFromViewController:(UIViewController *)controller;
 @end
 
+@interface MHFacebookImageViewerTapGestureRecognizer : UITapGestureRecognizer
+@property(nonatomic,strong) NSURL * imageURL;
+@property(nonatomic,strong) MHFacebookImageViewerOpeningBlock openingBlock;
+@property(nonatomic,strong) MHFacebookImageViewerClosingBlock closingBlock;
+@property(nonatomic,weak) id<MHFacebookImageViewerDatasource> imageDatasource;
+@property(nonatomic,assign) NSInteger initialIndex;
+
+@end
+
 #pragma mark - UIImageView Category
 
-@interface UIImageView(MHFacebookImageViewer)
-- (void) setupImageViewer;
-- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-- (void) setupImageViewerWithImageURL:(NSURL*)url;
-- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-- (void)removeImageViewer;
-@end
+//@interface UIImageView(MHFacebookImageViewer)
+//
+////-(void)setImageBrowser:(MHFacebookImageViewer *)imageBrowser;
+////-(MHFacebookImageViewer *)imageBrowser;
+//- (void) setupImageViewer;
+//- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+//- (void) setupImageViewerWithImageURL:(NSURL*)url;
+//- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+//- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+//- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+//- (void)removeImageViewer;
+//@end

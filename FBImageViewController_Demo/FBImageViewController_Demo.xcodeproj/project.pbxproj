@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B37A08F1AB4EDEB00C0795C /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */; };
 		994071B8177D62970033FD4B /* 9_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AE177D62970033FD4B /* 9_iphone.png */; };
 		994071B9177D62970033FD4B /* 8_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AF177D62970033FD4B /* 8_iphone.png */; };
 		994071BA177D62970033FD4B /* 7_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B0177D62970033FD4B /* 7_iphone.png */; };
@@ -63,6 +64,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B37A08D1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
+		7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		994071AE177D62970033FD4B /* 9_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_iphone.png; sourceTree = "<group>"; };
 		994071AF177D62970033FD4B /* 8_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_iphone.png; sourceTree = "<group>"; };
 		994071B0177D62970033FD4B /* 7_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_iphone.png; sourceTree = "<group>"; };
@@ -271,6 +274,8 @@
 				99872555175886D6004FDBC5 /* Resources */,
 				9987252C1757B035004FDBC5 /* MHFacebookImageViewer.h */,
 				9987252D1757B035004FDBC5 /* MHFacebookImageViewer.m */,
+				7B37A08D1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.h */,
+				7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */,
 			);
 			name = MHFBImageViewController;
 			path = ../../MHFBImageViewController;
@@ -339,7 +344,7 @@
 			name = FBImageViewController_DemoTests;
 			productName = FBImageViewController_DemoTests;
 			productReference = 998725131757B000004FDBC5 /* FBImageViewController_DemoTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -426,6 +431,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				998724FD1757AFFE004FDBC5 /* main.m in Sources */,
+				7B37A08F1AB4EDEB00C0795C /* UIImageView+MHFacebookImageViewer.m in Sources */,
 				998725011757AFFE004FDBC5 /* AppDelegate.m in Sources */,
 				9987252E1757B035004FDBC5 /* MHFacebookImageViewer.m in Sources */,
 				998725311757B0AE004FDBC5 /* DemoViewController.m in Sources */,

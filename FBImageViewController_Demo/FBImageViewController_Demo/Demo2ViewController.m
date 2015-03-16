@@ -8,6 +8,7 @@
 
 #import "Demo2ViewController.h"
 #import "MHFacebookImageViewer.h"
+#import "UIImageView+MHFacebookImageViewer.h"
 
 @interface Demo2ViewController ()
 - (void) displayImage:(UIImageView*)imageView withImage:(UIImage*)image;
