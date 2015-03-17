@@ -23,6 +23,7 @@
 
 #import "DemoViewController.h"
 #import "MHFacebookImageViewer.h"
+#import "UIImageView+MHFacebookImageViewer.h"
 @interface DemoViewController ()<MHFacebookImageViewerDatasource>
 
 @end
