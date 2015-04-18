@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7B37A08F1AB4EDEB00C0795C /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */; };
+		904491A11AE2005000887858 /* Demo4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 904491A01AE2005000887858 /* Demo4ViewController.m */; };
 		994071B8177D62970033FD4B /* 9_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AE177D62970033FD4B /* 9_iphone.png */; };
 		994071B9177D62970033FD4B /* 8_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AF177D62970033FD4B /* 8_iphone.png */; };
 		994071BA177D62970033FD4B /* 7_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B0177D62970033FD4B /* 7_iphone.png */; };
@@ -66,6 +67,8 @@
 /* Begin PBXFileReference section */
 		7B37A08D1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
 		7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
+		9044919F1AE2005000887858 /* Demo4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Demo4ViewController.h; sourceTree = "<group>"; };
+		904491A01AE2005000887858 /* Demo4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Demo4ViewController.m; sourceTree = "<group>"; };
 		994071AE177D62970033FD4B /* 9_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_iphone.png; sourceTree = "<group>"; };
 		994071AF177D62970033FD4B /* 8_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_iphone.png; sourceTree = "<group>"; };
 		994071B0177D62970033FD4B /* 7_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_iphone.png; sourceTree = "<group>"; };
@@ -226,6 +229,8 @@
 				99ADA7C51759989C0044BAE4 /* Demo2ViewController.m */,
 				99ADA7C717599E830044BAE4 /* Demo3ViewController.h */,
 				99ADA7C817599E830044BAE4 /* Demo3ViewController.m */,
+				9044919F1AE2005000887858 /* Demo4ViewController.h */,
+				904491A01AE2005000887858 /* Demo4ViewController.m */,
 				998725081757AFFF004FDBC5 /* MainStoryboard.storyboard */,
 				9987252B1757B035004FDBC5 /* MHFBImageViewController */,
 				998724F71757AFFE004FDBC5 /* Supporting Files */,
@@ -431,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				998724FD1757AFFE004FDBC5 /* main.m in Sources */,
+				904491A11AE2005000887858 /* Demo4ViewController.m in Sources */,
 				7B37A08F1AB4EDEB00C0795C /* UIImageView+MHFacebookImageViewer.m in Sources */,
 				998725011757AFFE004FDBC5 /* AppDelegate.m in Sources */,
 				9987252E1757B035004FDBC5 /* MHFacebookImageViewer.m in Sources */,
