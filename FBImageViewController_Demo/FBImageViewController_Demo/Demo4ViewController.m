@@ -70,6 +70,8 @@
 }
 
 - (void) displayImage:(UIImageView*)imageView withImage:(UIImage*)image  {
+    imageView.orientationSupported = YES;
+    
     [imageView setImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [imageView setupImageViewer];

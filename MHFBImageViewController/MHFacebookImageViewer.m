@@ -26,9 +26,14 @@
 #import "MHFacebookImageViewer.h"
 #import "UIImageView+AFNetworking.h"
 #import <objc/runtime.h>
+#import <CoreMotion/CoreMotion.h>
+
 static const CGFloat kMinBlackMaskAlpha = 0.3f;
 static const CGFloat kMaxImageScale = 2.5f;
 static const CGFloat kMinImageScale = 1.0f;
+
+#define kMotionUpdateInterval (1.0f / 10.0f)
+static CGRect kMainScreenBounds;
 
 @interface MHFacebookImageViewerCell : UITableViewCell<UIGestureRecognizerDelegate,UIScrollViewDelegate>{
     UIImageView * __imageView;
@@ -81,10 +86,10 @@ static const CGFloat kMinImageScale = 1.0f;
 
 - (void) loadAllRequiredViews{
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGRect frame = [UIScreen mainScreen].bounds;
+    CGRect frame = kMainScreenBounds;
     __scrollView = [[UIScrollView alloc]initWithFrame:frame];
     __scrollView.delegate = self;
-    __scrollView.backgroundColor = [UIColor clearColor];
+    __scrollView.backgroundColor = [UIColor redColor];
     [self addSubview:__scrollView];
     [_doneButton addTarget:self
                     action:@selector(close:)
@@ -214,7 +219,7 @@ static const CGFloat kMinImageScale = 1.0f;
 {
     _isAnimating = YES;
     [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
-        __imageView.frame = [self centerFrameFromImage:__imageView.image];
+//        __imageView.frame = [self centerFrameFromImage:__imageView.image];
         _blackMask.alpha = 1;
     }   completion:^(BOOL finished) {
         if (finished) {
@@ -231,7 +236,7 @@ static const CGFloat kMinImageScale = 1.0f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hideDoneButton];
         __imageView.clipsToBounds = YES;
-        CGFloat screenHeight =  [[UIScreen mainScreen] bounds].size.height;
+        CGFloat screenHeight =  kMainScreenBounds.size.height;
         CGFloat imageYCenterPosition = __imageView.frame.origin.y + __imageView.frame.size.height/2 ;
         BOOL isGoingUp =  imageYCenterPosition < screenHeight/2;
         [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
@@ -262,7 +267,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (CGRect) centerFrameFromImage:(UIImage*) image {
     if(!image) return CGRectZero;
 
-    CGRect windowBounds = _rootViewController.view.bounds;
+    CGRect windowBounds = kMainScreenBounds;
     CGSize newImageSize = [self imageResizeBaseOnWidth:windowBounds
                            .size.width oldWidth:image
                            .size.width oldHeight:image.size.height];
@@ -280,7 +285,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
 # pragma mark - UIScrollView Delegate
 - (void)centerScrollViewContents {
-    CGSize boundsSize = _rootViewController.view.bounds.size;
+    CGSize boundsSize = kMainScreenBounds.size;
     CGRect contentsFrame = __imageView.frame;
 
     if (contentsFrame.size.width < boundsSize.width) {
@@ -332,7 +337,7 @@ static const CGFloat kMinImageScale = 1.0f;
     __scrollView.minimumZoomScale = kMinImageScale;
     __scrollView.maximumZoomScale = kMaxImageScale;
     __scrollView.zoomScale = 1;
-    [self centerScrollViewContents];
+//    [self centerScrollViewContents];
 }
 
 #pragma mark - For Zooming
@@ -411,6 +416,15 @@ static const CGFloat kMinImageScale = 1.0f;
 
 }
 
+-(void) redrawCell{
+    self.frame = CGRectMake(100, 100, 1000, 1000);
+    self.contentView.frame = CGRectMake(0, 0, 1000, 1000);
+    self.viewController.view.frame = CGRectMake(0, 0, 1000, 1000);
+    __scrollView.frame = CGRectMake(0, 0, 1000, 1000);
+    __imageView.frame = CGRectMake(0, 0, 1000, 1000);
+    [self.viewController.view setNeedsLayout];
+}
+
 @end
 
 @interface MHFacebookImageViewer()<UIGestureRecognizerDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>{
@@ -430,7 +444,14 @@ static const CGFloat kMinImageScale = 1.0f;
 
     UIStatusBarStyle _statusBarStyle;
 }
+@property (nonatomic, retain) UITableView* tableView;
 
+@end
+
+@interface MHFacebookImageViewer()
+@property (nonatomic, strong) CMMotionManager *motionManager;
+@property (nonatomic, assign) UIDeviceOrientation currentDeviceOrientation;
+@property (nonatomic, assign) UIDeviceOrientation prevDeviceOrientation;
 @end
 
 @implementation MHFacebookImageViewer
@@ -440,6 +461,9 @@ static const CGFloat kMinImageScale = 1.0f;
 @synthesize closingBlock = _closingBlock;
 @synthesize senderView = _senderView;
 @synthesize initialIndex = _initialIndex;
+@synthesize orientationSupported = _orientationSupported;
+@synthesize tableView = _tableView;
+
 
 #pragma mark - TableView datasource
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -456,7 +480,7 @@ static const CGFloat kMinImageScale = 1.0f;
     static NSString * cellID = @"mhfacebookImageViewerCell";
     MHFacebookImageViewerCell * imageViewerCell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if(!imageViewerCell) {
-        CGRect windowFrame = [[UIScreen mainScreen] bounds];
+        CGRect windowFrame = kMainScreenBounds;
         imageViewerCell = [[MHFacebookImageViewerCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         imageViewerCell.transform = CGAffineTransformMakeRotation(M_PI_2);
         imageViewerCell.frame = CGRectMake(0,0,windowFrame.size.width, windowFrame.size.height);
@@ -484,7 +508,7 @@ static const CGFloat kMinImageScale = 1.0f;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return _rootViewController.view.bounds.size.width;
+    return kMainScreenBounds.size.height;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -492,15 +516,18 @@ static const CGFloat kMinImageScale = 1.0f;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _orientationSupported = NO;
     }
     return self;
 }
 
 - (void)loadView
 {
+    kMainScreenBounds = [[UIScreen mainScreen] bounds];
+    
     _statusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
     [UIApplication sharedApplication].statusBarHidden = YES;
-    CGRect windowBounds = [[UIScreen mainScreen] bounds];
+    CGRect windowBounds = kMainScreenBounds;
 
     // Compute Original Frame Relative To Screen
     CGRect newFrame = [_senderView convertRect:windowBounds toView:nil];
@@ -510,7 +537,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
     self.view = [[UIView alloc] initWithFrame:windowBounds];
     //    NSLog(@"WINDOW :%@",NSStringFromCGRect(windowBounds));
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     // Add a Tableview
     _tableView = [[UITableView alloc]initWithFrame:windowBounds style:UITableViewStylePlain];
@@ -522,13 +549,13 @@ static const CGFloat kMinImageScale = 1.0f;
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundColor = [UIColor greenColor];
     _tableView.delaysContentTouches = YES;
     [_tableView setShowsVerticalScrollIndicator:NO];
     [_tableView setContentOffset:CGPointMake(0, _initialIndex * windowBounds.size.width)];
 
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
-    _blackMask.backgroundColor = [UIColor blackColor];
+    _blackMask.backgroundColor = [UIColor grayColor];
     _blackMask.alpha = 0.0f;
     _blackMask.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [
@@ -538,6 +565,12 @@ static const CGFloat kMinImageScale = 1.0f;
     [_doneButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
     [_doneButton setImage:[UIImage imageNamed:@"Done"] forState:UIControlStateNormal];
     _doneButton.frame = CGRectMake(windowBounds.size.width - (51.0f + 9.0f),15.0f, 51.0f, 26.0f);
+    
+    if(_orientationSupported){
+        self.prevDeviceOrientation = UIDeviceOrientationPortrait;
+        self.currentDeviceOrientation = UIDeviceOrientationPortrait;
+        [self startMotionManager];
+    }
 }
 
 #pragma mark - Show
@@ -562,8 +595,174 @@ static const CGFloat kMinImageScale = 1.0f;
     _imageURL = nil;
     _senderView = nil;
     _imageDatasource = nil;
-
+    
+    if(_orientationSupported){
+        [self stopMotionManager];
+    }
 }
+
+#pragma mark - CMMotionManager
+- (void)startMotionManager
+{
+    [self stopMotionManager];
+    
+    self.motionManager = [[CMMotionManager alloc] init];
+    self.motionManager.deviceMotionUpdateInterval = kMotionUpdateInterval;
+    if ([self.motionManager isAccelerometerAvailable]) {
+        @autoreleasepool
+        {
+            __weak id weakSelf = self;
+            [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue]
+                                                     withHandler:^(CMAccelerometerData* accelerometerData, NSError* error) {
+                                                         [weakSelf outputAccelerationData:accelerometerData.acceleration];
+                                                     }];
+        }
+    }
+}
+
+- (void)stopMotionManager
+{
+    if (self.motionManager) {
+        [self.motionManager stopAccelerometerUpdates];
+        self.motionManager = nil;
+    }
+}
+
+- (CMAcceleration)smoothOutAcceleration:(CMAcceleration)acceleration
+{
+    static CGFloat x0 = 0;
+    static CGFloat y0 = 0;
+    static CGFloat z0 = 0;
+    
+    const NSTimeInterval dt = (1.0 / 20);
+    const double RC = 0.3;
+    const double alpha = dt / (RC + dt);
+    
+    CMAcceleration smoothedAcceleration;
+    smoothedAcceleration.x = (alpha * acceleration.x) + (1.0 - alpha) * x0;
+    smoothedAcceleration.y = (alpha * acceleration.y) + (1.0 - alpha) * y0;
+    smoothedAcceleration.z = (alpha * acceleration.z) + (1.0 - alpha) * z0;
+    
+    x0 = smoothedAcceleration.x;
+    y0 = smoothedAcceleration.y;
+    z0 = smoothedAcceleration.z;
+    
+    return smoothedAcceleration;
+}
+
+- (void)outputAccelerationData:(CMAcceleration)acceleration
+{
+    UIDeviceOrientation newDeviceOrientation = UIDeviceOrientationUnknown;
+    CMAcceleration smoothAcceleration = [self smoothOutAcceleration:acceleration];
+    
+    if (smoothAcceleration.x >= 0.75) {
+        newDeviceOrientation = UIDeviceOrientationLandscapeRight;
+    } else if (smoothAcceleration.x <= -0.75) {
+        newDeviceOrientation = UIDeviceOrientationLandscapeLeft;
+    } else if (smoothAcceleration.y <= -0.75) {
+        newDeviceOrientation = UIDeviceOrientationPortrait;
+    } else if (smoothAcceleration.y >= 0.75) {
+        newDeviceOrientation = UIDeviceOrientationPortraitUpsideDown;
+    } else {
+        return;
+    }
+    
+    if (self.currentDeviceOrientation != newDeviceOrientation) {
+        self.currentDeviceOrientation = newDeviceOrientation;
+        [self orientationChanged:self.currentDeviceOrientation];
+        self.prevDeviceOrientation = self.currentDeviceOrientation;
+    }
+}
+
+-(void) printFrame:(CGRect) r{
+    NSLog(@"Frame : %.2lf %.2lf %.2lf %.2lf", r.origin.x, r.origin.y, r.size.width, r.size.height);
+}
+
+-(void) orientationChanged:(UIDeviceOrientation) aOrientation{
+    CGRect viewFrame = [[UIScreen mainScreen] bounds];
+    MHFacebookImageViewerCell* cell= [_tableView.visibleCells objectAtIndex:0];
+    
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.25f];
+//    self.view.backgroundColor = [UIColor whiteColor];
+
+    if(aOrientation == UIDeviceOrientationPortrait){
+        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+        _tableView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        _tableView.frame = viewFrame;
+//        cell.cellScrollView.frame = viewFrame;
+//        [cell.cellScrollView setContentSize:viewFrame.size];
+    }else if(aOrientation == UIDeviceOrientationPortraitUpsideDown){
+        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+        _tableView.transform = CGAffineTransformMakeRotation(M_PI_2);
+        _tableView.frame = viewFrame;
+//        cell.cellScrollView.frame = viewFrame;
+//        [cell.cellScrollView setContentSize:viewFrame.size];
+    }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
+        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
+        _tableView.transform = CGAffineTransformMakeRotation(0);
+        _tableView.frame = viewFrame;
+
+//        cell.cellScrollView.frame = CGRectMake(0, 0, 1000, kMainScreenBounds.size.height);
+//        cell.imageView
+//        [cell.cellScrollView setContentSize:CGSizeMake(1000, 1000)];
+        
+    }else if(aOrientation == UIDeviceOrientationLandscapeRight){
+        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
+        _tableView.transform = CGAffineTransformMakeRotation(-M_PI);
+        _tableView.frame = viewFrame;
+    }
+    
+    
+    [cell redrawCell];
+    
+    [self printFrame:_tableView.frame];
+
+
+//    [UIView commitAnimations];
+
+
+    
+//    MHFacebookImageViewerCell* cell= [_tableView.visibleCells objectAtIndex:0];
+//    
+//    CGRect viewFrame = [UIScreen mainScreen].bounds;
+//    CGSize doneButtonSize = CGSizeMake(35, 35);
+//    CGPoint padding = CGPointMake(5, 5);
+//    
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.25f];
+//    _doneButton.alpha = 0;
+//    if(aOrientation == UIDeviceOrientationPortrait){
+//        _doneButton.frame = CGRectMake(padding.x, padding.y, doneButtonSize.width, doneButtonSize.height);
+//        cell.cellScrollView.frame = viewFrame;
+//        cell.transform = CGAffineTransformMakeRotation(M_PI_2);
+//        [cell.cellScrollView setContentSize:viewFrame.size];
+//    }else if(aOrientation == UIDeviceOrientationPortraitUpsideDown){
+//        _doneButton.frame = CGRectMake(viewFrame.size.width - padding.x - doneButtonSize.width, viewFrame.size.height - padding.y - doneButtonSize.height, doneButtonSize.width, doneButtonSize.height);
+//        cell.cellScrollView.frame = viewFrame;
+//        cell.transform = CGAffineTransformMakeRotation(-M_PI_2);
+//        [cell.cellScrollView setContentSize:viewFrame.size];
+//    }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
+//        
+//        _doneButton.frame = CGRectMake(viewFrame.size.width - padding.x - doneButtonSize.width, padding.y, doneButtonSize.width, doneButtonSize.height);
+//        cell.cellScrollView.frame = CGRectMake((viewFrame.size.width - viewFrame.size.height)/2, -(viewFrame.size.width-viewFrame.size.height)/2, viewFrame.size.height, viewFrame.size.width);
+//        //        cell.cellScrollView.frame = CGRectMake(-50, 100, 100, 100);
+//        cell.transform = CGAffineTransformMakeRotation(M_PI);
+//        [cell.cellScrollView setContentSize:CGSizeMake(viewFrame.size.height, viewFrame.size.width)];
+//    }else if(aOrientation == UIDeviceOrientationLandscapeRight){
+//        _doneButton.frame = CGRectMake(padding.x, viewFrame.size.height - padding.y - doneButtonSize.height, doneButtonSize.width, doneButtonSize.height);
+//        cell.cellScrollView.frame = CGRectMake((viewFrame.size.width - viewFrame.size.height)/2, -(viewFrame.size.width - viewFrame.size.height)/2, viewFrame.size.height, viewFrame.size.width);
+//        cell.transform = CGAffineTransformMakeRotation(M_PI*2);
+//        [cell.cellScrollView setContentSize:CGSizeMake(viewFrame.size.height, viewFrame.size.width)];
+//    }
+//    _doneButton.alpha = 1.0;
+//    [UIView commitAnimations];
+//    
+//    [cell setOrientation:aOrientation];
+//    [cell centerScrollViewContents];
+}
+
+
 @end
 
 

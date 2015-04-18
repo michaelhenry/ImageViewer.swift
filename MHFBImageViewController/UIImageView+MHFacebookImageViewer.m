@@ -14,10 +14,20 @@
 
 @end
 
-static char kImageBrowserKey;
+static char kImageBrowserKey = '1';
+static char kOrientationSupportKey = '2';
 
 #pragma mark - UIImageView Category
 @implementation UIImageView (MHFacebookImageViewer)
+
+-(id) init{
+    self = [super init];
+    if(self){
+        self.orientationSupported = NO;
+    }
+    
+    return self;
+}
 
 #pragma mark - Initializer for UIImageView
 - (void) setupImageViewer {
@@ -70,6 +80,7 @@ static char kImageBrowserKey;
     [[self imageBrowser] setClosingBlock:gestureRecognizer.closingBlock];
     [[self imageBrowser] setImageDatasource:gestureRecognizer.imageDatasource];
     [[self imageBrowser] setInitialIndex:gestureRecognizer.initialIndex];
+    [[self imageBrowser] setOrientationSupported:[self orientationSupported]];
     
     if(self.image)
         [self.imageBrowser presentFromRootViewController];
@@ -108,6 +119,14 @@ static char kImageBrowserKey;
 
 -(MHFacebookImageViewer *)imageBrowser {
     return objc_getAssociatedObject(self, &kImageBrowserKey);
+}
+
+-(void) setOrientationSupported:(BOOL)orientationSupported{
+    objc_setAssociatedObject(self, &kOrientationSupportKey, [NSNumber numberWithBool:orientationSupported], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(BOOL) orientationSupported{
+    return [objc_getAssociatedObject(self, &kOrientationSupportKey) boolValue];
 }
 
 @end

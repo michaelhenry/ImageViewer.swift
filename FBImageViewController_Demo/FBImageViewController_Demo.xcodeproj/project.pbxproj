@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7B37A08F1AB4EDEB00C0795C /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */; };
 		904491A11AE2005000887858 /* Demo4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 904491A01AE2005000887858 /* Demo4ViewController.m */; };
+		904491A31AE2217800887858 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904491A21AE2217800887858 /* CoreMotion.framework */; };
 		994071B8177D62970033FD4B /* 9_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AE177D62970033FD4B /* 9_iphone.png */; };
 		994071B9177D62970033FD4B /* 8_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071AF177D62970033FD4B /* 8_iphone.png */; };
 		994071BA177D62970033FD4B /* 7_iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 994071B0177D62970033FD4B /* 7_iphone.png */; };
@@ -69,6 +70,7 @@
 		7B37A08E1AB4EDEA00C0795C /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		9044919F1AE2005000887858 /* Demo4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Demo4ViewController.h; sourceTree = "<group>"; };
 		904491A01AE2005000887858 /* Demo4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Demo4ViewController.m; sourceTree = "<group>"; };
+		904491A21AE2217800887858 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		994071AE177D62970033FD4B /* 9_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_iphone.png; sourceTree = "<group>"; };
 		994071AF177D62970033FD4B /* 8_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_iphone.png; sourceTree = "<group>"; };
 		994071B0177D62970033FD4B /* 7_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_iphone.png; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				904491A31AE2217800887858 /* CoreMotion.framework in Frameworks */,
 				995424541766CC2600D7A4D1 /* MobileCoreServices.framework in Frameworks */,
 				995424521766CC1F00D7A4D1 /* SystemConfiguration.framework in Frameworks */,
 				998724F11757AFFD004FDBC5 /* UIKit.framework in Frameworks */,
@@ -207,6 +210,7 @@
 		998724EF1757AFFD004FDBC5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				904491A21AE2217800887858 /* CoreMotion.framework */,
 				995424531766CC2600D7A4D1 /* MobileCoreServices.framework */,
 				995424511766CC1F00D7A4D1 /* SystemConfiguration.framework */,
 				998724F01757AFFD004FDBC5 /* UIKit.framework */,
