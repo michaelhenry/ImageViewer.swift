@@ -99,7 +99,9 @@ static const CGFloat kMinImageScale = 1.0f;
     CGRect frame = [UIScreen mainScreen].bounds;
     __scrollView = [[UIScrollView alloc]initWithFrame:frame];
     __scrollView.delegate = self;
-    __scrollView.backgroundColor = [UIColor redColor];
+//    __scrollView.backgroundColor = [UIColor redColor];
+    __scrollView.backgroundColor = [UIColor clearColor];
+
     [self addSubview:__scrollView];
     [_doneButton addTarget:self
                     action:@selector(close:)
@@ -462,7 +464,7 @@ static const CGFloat kMinImageScale = 1.0f;
     // Green : __tableView  // red : __scrollView
     CGRect viewFrame = [[UIScreen mainScreen] bounds];
     
-    self.backgroundColor = [UIColor yellowColor];
+//    self.backgroundColor = [UIColor yellowColor];
 
     if(aOrientation == UIDeviceOrientationPortrait){
         self.frame = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
@@ -604,13 +606,15 @@ static const CGFloat kMinImageScale = 1.0f;
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = [UIColor greenColor];
+//    _tableView.backgroundColor = [UIColor greenColor];
+    _tableView.backgroundColor = [UIColor clearColor];
+
     _tableView.delaysContentTouches = YES;
     [_tableView setShowsVerticalScrollIndicator:NO];
     [_tableView setContentOffset:CGPointMake(0, _initialIndex * windowBounds.size.width)];
 
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
-    _blackMask.backgroundColor = [UIColor grayColor];
+    _blackMask.backgroundColor = [UIColor blackColor];
     _blackMask.alpha = 0.0f;
     _blackMask.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [
@@ -735,6 +739,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
 -(void) orientationChanged:(UIDeviceOrientation) aOrientation{
     CGRect viewFrame = [[UIScreen mainScreen] bounds];
+    
     MHFacebookImageViewerCell* cell= [_tableView.visibleCells objectAtIndex:0];
     
     [UIView beginAnimations:nil context:nil];
@@ -759,7 +764,7 @@ static const CGFloat kMinImageScale = 1.0f;
         _tableView.frame = viewFrame;
         [cell resetFrameForRotating:aOrientation];
     }
-
+    
     [UIView commitAnimations];
 
 
