@@ -97,6 +97,7 @@ static CGRect kMainScreenBounds;
 }
 
 - (void) setImageURL:(NSURL *)imageURL defaultImage:(UIImage*)defaultImage imageIndex:(NSInteger)imageIndex {
+    
     _imageIndex = imageIndex;
     _defaultImage = defaultImage;
 
@@ -219,7 +220,7 @@ static CGRect kMainScreenBounds;
 {
     _isAnimating = YES;
     [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
-//        __imageView.frame = [self centerFrameFromImage:__imageView.image];
+        __imageView.frame = [self centerFrameFromImage:__imageView.image];
         _blackMask.alpha = 1;
     }   completion:^(BOOL finished) {
         if (finished) {
@@ -337,7 +338,7 @@ static CGRect kMainScreenBounds;
     __scrollView.minimumZoomScale = kMinImageScale;
     __scrollView.maximumZoomScale = kMaxImageScale;
     __scrollView.zoomScale = 1;
-//    [self centerScrollViewContents];
+    [self centerScrollViewContents];
 }
 
 #pragma mark - For Zooming
@@ -416,13 +417,10 @@ static CGRect kMainScreenBounds;
 
 }
 
--(void) redrawCell{
-    self.frame = CGRectMake(100, 100, 1000, 1000);
-    self.contentView.frame = CGRectMake(0, 0, 1000, 1000);
-    self.viewController.view.frame = CGRectMake(0, 0, 1000, 1000);
-    __scrollView.frame = CGRectMake(0, 0, 1000, 1000);
-    __imageView.frame = CGRectMake(0, 0, 1000, 1000);
-    [self.viewController.view setNeedsLayout];
+- (void) resetCellFrameForRotating:(CGRect)r{
+    __scrollView.frame = r;
+    __imageView.frame = [self centerFrameFromImage:__imageView.image];
+    [self centerScrollViewContents];
 }
 
 @end
@@ -537,7 +535,7 @@ static CGRect kMainScreenBounds;
 
     self.view = [[UIView alloc] initWithFrame:windowBounds];
     //    NSLog(@"WINDOW :%@",NSStringFromCGRect(windowBounds));
-//    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     // Add a Tableview
     _tableView = [[UITableView alloc]initWithFrame:windowBounds style:UITableViewStylePlain];
@@ -674,52 +672,42 @@ static CGRect kMainScreenBounds;
     }
 }
 
--(void) printFrame:(CGRect) r{
-    NSLog(@"Frame : %.2lf %.2lf %.2lf %.2lf", r.origin.x, r.origin.y, r.size.width, r.size.height);
+-(void) printFrame:(CGRect) r prefix:(NSString*) prefix{
+    NSLog(@"%@ Frame : %.2lf %.2lf %.2lf %.2lf", prefix, r.origin.x, r.origin.y, r.size.width, r.size.height);
 }
 
 -(void) orientationChanged:(UIDeviceOrientation) aOrientation{
     CGRect viewFrame = [[UIScreen mainScreen] bounds];
     MHFacebookImageViewerCell* cell= [_tableView.visibleCells objectAtIndex:0];
     
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.25f];
-//    self.view.backgroundColor = [UIColor whiteColor];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.25f];
+    
+    [self printFrame:_tableView.frame prefix:@"old"];
 
     if(aOrientation == UIDeviceOrientationPortrait){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         _tableView.frame = viewFrame;
-//        cell.cellScrollView.frame = viewFrame;
-//        [cell.cellScrollView setContentSize:viewFrame.size];
+        [cell resetCellFrameForRotating:CGRectMake(0, viewFrame.size.width - viewFrame.size.height, viewFrame.size.width, viewFrame.size.height)];
     }else if(aOrientation == UIDeviceOrientationPortraitUpsideDown){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
         _tableView.transform = CGAffineTransformMakeRotation(M_PI_2);
         _tableView.frame = viewFrame;
-//        cell.cellScrollView.frame = viewFrame;
-//        [cell.cellScrollView setContentSize:viewFrame.size];
+        [cell resetCellFrameForRotating:CGRectMake(0, viewFrame.size.width - viewFrame.size.height, viewFrame.size.width, viewFrame.size.height)];
     }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(0);
         _tableView.frame = viewFrame;
-
-//        cell.cellScrollView.frame = CGRectMake(0, 0, 1000, kMainScreenBounds.size.height);
-//        cell.imageView
-//        [cell.cellScrollView setContentSize:CGSizeMake(1000, 1000)];
-        
+        [cell resetCellFrameForRotating:kMainScreenBounds];
     }else if(aOrientation == UIDeviceOrientationLandscapeRight){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI);
         _tableView.frame = viewFrame;
+        [cell resetCellFrameForRotating:kMainScreenBounds];
     }
-    
-    
-    [cell redrawCell];
-    
-    [self printFrame:_tableView.frame];
 
-
-//    [UIView commitAnimations];
+    [UIView commitAnimations];
 
 
     
