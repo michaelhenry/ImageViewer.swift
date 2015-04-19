@@ -220,7 +220,7 @@ static CGRect kMainScreenBounds;
 {
     _isAnimating = YES;
     [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
-        __imageView.frame = [self centerFrameFromImage:__imageView.image];
+//        __imageView.frame = [self centerFrameFromImage:__imageView.image];
         _blackMask.alpha = 1;
     }   completion:^(BOOL finished) {
         if (finished) {
@@ -310,7 +310,7 @@ static CGRect kMainScreenBounds;
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     _isAnimating = YES;
     [self hideDoneButton];
-    [self centerScrollViewContents];
+//    [self centerScrollViewContents];
 }
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
@@ -338,7 +338,7 @@ static CGRect kMainScreenBounds;
     __scrollView.minimumZoomScale = kMinImageScale;
     __scrollView.maximumZoomScale = kMaxImageScale;
     __scrollView.zoomScale = 1;
-    [self centerScrollViewContents];
+//    [self centerScrollViewContents];
 }
 
 #pragma mark - For Zooming
@@ -417,8 +417,26 @@ static CGRect kMainScreenBounds;
 
 }
 
-- (void) resetCellFrameForRotating:(CGRect)r{
-    __scrollView.frame = r;
+- (void) resetCellFrameForRotating:(UIDeviceOrientation) aOrientation{
+    // Green : __tableView  // red : __scrollView
+    CGRect viewFrame = [[UIScreen mainScreen] bounds];
+    
+    self.backgroundColor = [UIColor yellowColor];
+
+    if(aOrientation == UIDeviceOrientationPortrait){
+        self.frame = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
+        __scrollView.frame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+    }else if(aOrientation == UIDeviceOrientationPortraitUpsideDown){
+        self.frame = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
+        __scrollView.frame = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
+    }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
+        self.frame = viewFrame;
+        __scrollView.frame = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
+    }else if(aOrientation == UIDeviceOrientationLandscapeRight){
+        self.frame = viewFrame;
+        __scrollView.frame = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
+    }
+
     __imageView.frame = [self centerFrameFromImage:__imageView.image];
     [self centerScrollViewContents];
 }
@@ -689,22 +707,22 @@ static CGRect kMainScreenBounds;
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:CGRectMake(0, viewFrame.size.width - viewFrame.size.height, viewFrame.size.width, viewFrame.size.height)];
+        [cell resetCellFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationPortraitUpsideDown){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
         _tableView.transform = CGAffineTransformMakeRotation(M_PI_2);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:CGRectMake(0, viewFrame.size.width - viewFrame.size.height, viewFrame.size.width, viewFrame.size.height)];
+        [cell resetCellFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(0);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:kMainScreenBounds];
+        [cell resetCellFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationLandscapeRight){
         kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:kMainScreenBounds];
+        [cell resetCellFrameForRotating:aOrientation];
     }
 
     [UIView commitAnimations];
