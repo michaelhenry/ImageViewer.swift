@@ -54,6 +54,7 @@ static const CGFloat kMinImageScale = 1.0f;
 @property(nonatomic,weak) UIImage * defaultImage;
 @property(nonatomic,assign) NSInteger initialIndex;
 @property(nonatomic,strong) UIPanGestureRecognizer* panGesture;
+@property(nonatomic) UIDeviceOrientation orientation;
 
 @property (nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
 @property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
@@ -82,6 +83,16 @@ static const CGFloat kMinImageScale = 1.0f;
 @synthesize defaultImage = _defaultImage;
 @synthesize initialIndex = _initialIndex;
 @synthesize panGesture = _panGesture;
+
+-(id) init{
+    self= [super init];
+
+    if(self){
+        _orientation = UIDeviceOrientationUnknown;
+    }
+    
+    return self;
+}
 
 - (void) loadAllRequiredViews{
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -219,7 +230,7 @@ static const CGFloat kMinImageScale = 1.0f;
 {
     _isAnimating = YES;
     [UIView animateWithDuration:0.4f delay:0.0f options:0 animations:^{
-//        __imageView.frame = [self centerFrameFromImage:__imageView.image];
+        __imageView.frame = [self centerFrameFromImage:__imageView.image];
         _blackMask.alpha = 1;
     }   completion:^(BOOL finished) {
         if (finished) {
@@ -267,25 +278,52 @@ static const CGFloat kMinImageScale = 1.0f;
 - (CGRect) centerFrameFromImage:(UIImage*) image {
     if(!image) return CGRectZero;
 
-    CGRect windowBounds = [UIScreen mainScreen].bounds;;
-    CGSize newImageSize = [self imageResizeBaseOnWidth:windowBounds
-                           .size.width oldWidth:image
-                           .size.width oldHeight:image.size.height];
-    // Just fit it on the size of the screen
-    newImageSize.height = MIN(windowBounds.size.height,newImageSize.height);
-    return CGRectMake(0.0f, windowBounds.size.height/2 - newImageSize.height/2, newImageSize.width, newImageSize.height);
+    CGRect windowBounds;
+    
+    if([self isOrientationPortrait]){
+        windowBounds = [UIScreen mainScreen].bounds;
+        CGSize newImageSize = [self imageResizeWithWindowBounds:windowBounds originalSize:image.size];
+        newImageSize.height = MIN(windowBounds.size.height,newImageSize.height);
+        return CGRectMake(0.0f, windowBounds.size.height/2 - newImageSize.height/2, newImageSize.width, newImageSize.height);
+    }else{
+        windowBounds = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+        CGSize newImageSize = [self imageResizeWithWindowBounds:windowBounds originalSize:image.size];
+        newImageSize.width = MIN(windowBounds.size.width,newImageSize.width);
+        return CGRectMake(windowBounds.size.width/2 - newImageSize.width/2, 0.0f, newImageSize.width, newImageSize.height);
+    }
 }
 
 - (CGSize)imageResizeBaseOnWidth:(CGFloat) newWidth oldWidth:(CGFloat) oldWidth oldHeight:(CGFloat)oldHeight {
     CGFloat scaleFactor = newWidth / oldWidth;
     CGFloat newHeight = oldHeight * scaleFactor;
     return CGSizeMake(newWidth, newHeight);
+}
 
+- (CGSize)imageResizeBaseOnHeight:(CGFloat) newHeight oldWidth:(CGFloat) oldWidth oldHeight:(CGFloat)oldHeight {
+    CGFloat scaleFactor = newHeight / oldHeight;
+    CGFloat newWidth = oldWidth * scaleFactor;
+    return CGSizeMake(newWidth, newHeight);
+}
+
+
+- (CGSize)imageResizeWithWindowBounds:(CGRect)r originalSize:(CGSize)oldSize{
+    if([self isOrientationPortrait]){
+        return [self imageResizeBaseOnWidth:r.size.width oldWidth:oldSize.width oldHeight:oldSize.height];
+    }else{
+        return [self imageResizeBaseOnHeight:r.size.height oldWidth:oldSize.width oldHeight:oldSize.height];
+    }
 }
 
 # pragma mark - UIScrollView Delegate
 - (void)centerScrollViewContents {
-    CGSize boundsSize = _rootViewController.view.bounds.size;
+    CGSize boundsSize;
+    
+    if([self isOrientationPortrait]){
+        boundsSize = _rootViewController.view.bounds.size;
+    }else{
+        boundsSize = CGSizeMake(_rootViewController.view.bounds.size.height, _rootViewController.view.bounds.size.width);
+    }
+
     CGRect contentsFrame = __imageView.frame;
 
     if (contentsFrame.size.width < boundsSize.width) {
@@ -309,7 +347,7 @@ static const CGFloat kMinImageScale = 1.0f;
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     _isAnimating = YES;
     [self hideDoneButton];
-//    [self centerScrollViewContents];
+    [self centerScrollViewContents];
 }
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
@@ -337,7 +375,7 @@ static const CGFloat kMinImageScale = 1.0f;
     __scrollView.minimumZoomScale = kMinImageScale;
     __scrollView.maximumZoomScale = kMaxImageScale;
     __scrollView.zoomScale = 1;
-//    [self centerScrollViewContents];
+    [self centerScrollViewContents];
 }
 
 #pragma mark - For Zooming
@@ -416,7 +454,11 @@ static const CGFloat kMinImageScale = 1.0f;
 
 }
 
-- (void) resetCellFrameForRotating:(UIDeviceOrientation) aOrientation{
+- (BOOL) isOrientationPortrait{
+    return (_orientation == UIDeviceOrientationPortrait || _orientation == UIDeviceOrientationPortraitUpsideDown || _orientation == UIDeviceOrientationUnknown)? YES : NO;
+}
+
+- (void) resetFrameForRotating:(UIDeviceOrientation) aOrientation{
     // Green : __tableView  // red : __scrollView
     CGRect viewFrame = [[UIScreen mainScreen] bounds];
     
@@ -435,9 +477,9 @@ static const CGFloat kMinImageScale = 1.0f;
         self.frame = viewFrame;
         __scrollView.frame = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
     }
-
-//    __imageView.frame = [self centerFrameFromImage:__imageView.image];
-//    [self centerScrollViewContents];
+    
+    _orientation = aOrientation;
+    __imageView.frame = [self centerFrameFromImage:__imageView.image];
 }
 
 @end
@@ -687,9 +729,9 @@ static const CGFloat kMinImageScale = 1.0f;
     }
 }
 
--(void) printFrame:(CGRect) r prefix:(NSString*) prefix{
-    NSLog(@"%@ Frame : %.2lf %.2lf %.2lf %.2lf", prefix, r.origin.x, r.origin.y, r.size.width, r.size.height);
-}
+//-(void) printFrame:(CGRect) r prefix:(NSString*) prefix{
+//    NSLog(@"%@ Frame : %.2lf %.2lf %.2lf %.2lf", prefix, r.origin.x, r.origin.y, r.size.width, r.size.height);
+//}
 
 -(void) orientationChanged:(UIDeviceOrientation) aOrientation{
     CGRect viewFrame = [[UIScreen mainScreen] bounds];
@@ -698,28 +740,24 @@ static const CGFloat kMinImageScale = 1.0f;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25f];
     
-    [self printFrame:_tableView.frame prefix:@"old"];
+//    [self printFrame:_tableView.frame prefix:@"old"];
 
     if(aOrientation == UIDeviceOrientationPortrait){
-//        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:aOrientation];
+        [cell resetFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationPortraitUpsideDown){
-//        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.width, viewFrame.size.height);
         _tableView.transform = CGAffineTransformMakeRotation(M_PI_2);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:aOrientation];
+        [cell resetFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
-//        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(0);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:aOrientation];
+        [cell resetFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationLandscapeRight){
-//        kMainScreenBounds = CGRectMake(0, 0, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI);
         _tableView.frame = viewFrame;
-        [cell resetCellFrameForRotating:aOrientation];
+        [cell resetFrameForRotating:aOrientation];
     }
 
     [UIView commitAnimations];
