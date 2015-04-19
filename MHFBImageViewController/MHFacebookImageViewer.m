@@ -354,6 +354,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
     _isAnimating = NO;
+    _blackMask.alpha = 1.0;
 }
 
 - (void)addMultipleGesture {
@@ -458,6 +459,10 @@ static const CGFloat kMinImageScale = 1.0f;
 
 - (BOOL) isOrientationPortrait{
     return (_orientation == UIDeviceOrientationPortrait || _orientation == UIDeviceOrientationPortraitUpsideDown || _orientation == UIDeviceOrientationUnknown)? YES : NO;
+}
+
+-(void) resetZoomScale{
+    __scrollView.zoomScale = 1.0f;
 }
 
 - (void) resetFrameForRotating:(UIDeviceOrientation) aOrientation{
@@ -741,6 +746,7 @@ static const CGFloat kMinImageScale = 1.0f;
     CGRect viewFrame = [[UIScreen mainScreen] bounds];
     
     MHFacebookImageViewerCell* cell= [_tableView.visibleCells objectAtIndex:0];
+    [cell resetZoomScale];
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25f];
@@ -756,12 +762,12 @@ static const CGFloat kMinImageScale = 1.0f;
         _tableView.frame = viewFrame;
         [cell resetFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationLandscapeLeft){
+        _tableView.frame = CGRectMake((viewFrame.size.width - viewFrame.size.height)/2, -(viewFrame.size.width-viewFrame.size.height)/2, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(0);
-        _tableView.frame = viewFrame;
         [cell resetFrameForRotating:aOrientation];
     }else if(aOrientation == UIDeviceOrientationLandscapeRight){
+        _tableView.frame = CGRectMake((viewFrame.size.width - viewFrame.size.height)/2, -(viewFrame.size.width-viewFrame.size.height)/2, viewFrame.size.height, viewFrame.size.width);
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI);
-        _tableView.frame = viewFrame;
         [cell resetFrameForRotating:aOrientation];
     }
     
