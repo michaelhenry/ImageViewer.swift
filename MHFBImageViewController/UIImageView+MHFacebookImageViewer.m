@@ -21,40 +21,64 @@ static char kImageBrowserKey;
 
 #pragma mark - Initializer for UIImageView
 - (void) setupImageViewer {
-    [self setupImageViewerWithCompletionOnOpen:nil onClose:nil];
+    [self setupImageViewerWithTapToDismiss:NO];
 }
 
 - (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
-    [self setupImageViewerWithImageURL:nil onOpen:open onClose:close];
+    [self setupImageViewerWithCompletionOnOpen:open onClose:close ifTapToDismiss:NO];
 }
 
 - (void) setupImageViewerWithImageURL:(NSURL*)url {
-    [self setupImageViewerWithImageURL:url onOpen:nil onClose:nil];
+    [self setupImageViewerWithImageURL:url ifTapToDismiss:NO];
 }
 
+- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
+    [self setupImageViewerWithImageURL:url onOpen:open onClose:close ifTapToDismiss:NO];
+}
 
-- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close{
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
+    [self setupImageViewerWithDatasource:imageDatasource onOpen:open onClose:close ifTapToDismiss:NO];
+}
+
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
+    [self setupImageViewerWithDatasource:imageDatasource initialIndex:initialIndex onOpen:open onClose:close ifTapToDismiss:NO];
+}
+
+- (void) setupImageViewerWithTapToDismiss:(BOOL)tapToDismiss {
+    [self setupImageViewerWithCompletionOnOpen:nil onClose:nil ifTapToDismiss:tapToDismiss];
+}
+
+- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss {
+    [self setupImageViewerWithImageURL:nil onOpen:open onClose:close ifTapToDismiss:tapToDismiss];
+}
+
+- (void) setupImageViewerWithImageURL:(NSURL*)url ifTapToDismiss:(BOOL)tapToDismiss {
+    [self setupImageViewerWithImageURL:url onOpen:nil onClose:nil ifTapToDismiss:tapToDismiss];
+}
+
+- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss {
     self.userInteractionEnabled = YES;
     MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
     tapGesture.imageURL = url;
     tapGesture.openingBlock = open;
     tapGesture.closingBlock = close;
+    tapGesture.ifTapToDismiss = tapToDismiss;
     [self addGestureRecognizer:tapGesture];
     tapGesture = nil;
 }
 
-
-- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close {
-    [self setupImageViewerWithDatasource:imageDatasource initialIndex:0 onOpen:open onClose:close];
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss {
+    [self setupImageViewerWithDatasource:imageDatasource initialIndex:0 onOpen:open onClose:close ifTapToDismiss:tapToDismiss];
 }
 
-- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close{
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss {
     self.userInteractionEnabled = YES;
     MHFacebookImageViewerTapGestureRecognizer *  tapGesture = [[MHFacebookImageViewerTapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
     tapGesture.imageDatasource = imageDatasource;
     tapGesture.openingBlock = open;
     tapGesture.closingBlock = close;
     tapGesture.initialIndex = initialIndex;
+    tapGesture.ifTapToDismiss = tapToDismiss;
     [self addGestureRecognizer:tapGesture];
     tapGesture = nil;
 }
@@ -70,7 +94,7 @@ static char kImageBrowserKey;
     [[self imageBrowser] setClosingBlock:gestureRecognizer.closingBlock];
     [[self imageBrowser] setImageDatasource:gestureRecognizer.imageDatasource];
     [[self imageBrowser] setInitialIndex:gestureRecognizer.initialIndex];
-    
+    [[self imageBrowser] setIfTapToDismiss:gestureRecognizer.ifTapToDismiss];
     if(self.image)
         [self.imageBrowser presentFromRootViewController];
 }

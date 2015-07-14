@@ -45,7 +45,7 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 @property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
 @property (nonatomic,weak) id<MHFacebookImageViewerDatasource> imageDatasource;
 @property (nonatomic,assign) NSInteger initialIndex;
-
+@property (nonatomic,assign) BOOL ifTapToDismiss;
 
 - (void)presentFromRootViewController;
 - (void)presentFromViewController:(UIViewController *)controller;
@@ -57,10 +57,12 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 @property(nonatomic,strong) MHFacebookImageViewerClosingBlock closingBlock;
 @property(nonatomic,weak) id<MHFacebookImageViewerDatasource> imageDatasource;
 @property(nonatomic,assign) NSInteger initialIndex;
-
+@property(nonatomic,assign) BOOL ifTapToDismiss;
 @end
 
-#pragma mark - UIImageView Category
+
+// The UIImageView Category has moved to the file "UIImageView+MHFacebookImageViews.h".
+//#pragma mark - UIImageView Category
 
 //@interface UIImageView(MHFacebookImageViewer)
 //

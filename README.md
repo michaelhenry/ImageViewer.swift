@@ -32,14 +32,14 @@ http://youtu.be/NTs2COXxrrA
 ## How to use it
 Just
 
-	#import "MHFacebookImageViewer.h"  
+	#import "UIImageView+MHFacebookImageViewer.h"  
 
 
 and then in your UIImageView after you set the Image just call the 
 
 ### Single Image Support
 
-	- (void)  setupImageViewer;
+	- (void) setupImageViewer;
 	
 	- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 
@@ -56,6 +56,15 @@ or if you want to load other image (for example a hi-res version of that image)
 
 	- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
 
+### All methods support tap to dismiss.
+```
+- (void) setupImageViewerWithTapToDismiss:(BOOL)tapToDismiss;
+- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss;
+- (void) setupImageViewerWithImageURL:(NSURL*)url ifTapToDismiss:(BOOL)tapToDismiss;
+- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss;
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss;
+- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close ifTapToDismiss:(BOOL)tapToDismiss;
+```
 
 ## Example (UITableViewController):
 

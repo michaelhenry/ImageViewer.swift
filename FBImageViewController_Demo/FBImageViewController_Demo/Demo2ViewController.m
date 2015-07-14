@@ -55,7 +55,7 @@
 - (void) displayImage:(UIImageView*)imageView withImage:(UIImage*)image  {
     [imageView setImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [imageView setupImageViewer];
+    [imageView setupImageViewerWithTapToDismiss:YES];
     imageView.clipsToBounds = YES;
 }
 @end
