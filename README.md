@@ -62,6 +62,10 @@ or if you want to load other image (for example a hi-res version of that image)
 ### In your UITableViewController import the MHFacebookImageViewer.h
 
 	#import "MHFacebookImageViewer.h"
+    
+    or if using cocoapods
+    
+    #import <MHFacebookImageViewer/UIImageView+MHFacebookImageViewer.h>
 	
 ### In your [UITableView cellForRowAtIndexPath]
 
