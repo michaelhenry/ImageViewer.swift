@@ -75,10 +75,6 @@ static char kImageBrowserKey;
         [self.imageBrowser presentFromRootViewController];
 }
 
-- (void) dealloc {
-    
-}
-
 #pragma mark Removal
 -(void)removeImageViewer {
     
