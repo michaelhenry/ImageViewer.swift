@@ -1,95 +1,46 @@
 MHFacebookImageViewer
 =======================
 
-A new Image Viewer inspired by Facebook
+An Image Viewer inspired by Facebook
 
-
-## Screenshots
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/demo1_zpse8778327.gif)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/Demo2_zps23b37e99.gif)
-
-![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/Demo3_zps54985d8d.gif)
-
+![Screenshot](images/demo-v3.gif)
 
 # Demo Video
 
 http://youtu.be/NTs2COXxrrA
 
 
+# Supports
 
-# Requirements
-
-
-* Current version can run from iOS 5 to iOS 7 (But must be build < XCode 4.6.x)
-* Please uncheck the Use AutoLayout in the property inspector of The UIStoryboard for IOS 5 Support ![Preview](http://i1102.photobucket.com/albums/g447/michaelhenry119/IOS%20Controls/MHFacebookImageViewer/ScreenShot2013-06-24at33149PM_zpsec274276.png)
-* [AFNetworking](https://github.com/AFNetworking/AFNetworking) - for image lazy loading
-
-
-# Usage
+- From iOS 10
+- Swift versions
+	- Swift 4.0
+	- Swift 4.2
+	- Swift 5.0
 
 ## How to use it
-Just
 
-	#import "MHFacebookImageViewer.h"  
+The simplest way to implement is with using `UIImageView().setupImageViewer(with: self)`
 
+```swift
+imageView.setupImageViewer(with: self)
+```
 
-and then in your UIImageView after you set the Image just call the 
+```swift
+import MHFacebookImageViewer
 
-### Single Image Support
-
-	- (void)  setupImageViewer;
-	
-	- (void) setupImageViewerWithCompletionOnOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-
-
-or if you want to load other image (for example a hi-res version of that image) 
-
-	- (void) setupImageViewerWithImageURL:(NSURL*)url; 
-
-	- (void) setupImageViewerWithImageURL:(NSURL *)url onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-
-### Multiple Images Support
-
-	- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
-
-	- (void) setupImageViewerWithDatasource:(id<MHFacebookImageViewerDatasource>)imageDatasource initialIndex:(NSInteger)initialIndex onOpen:(MHFacebookImageViewerOpeningBlock)open onClose:(MHFacebookImageViewerClosingBlock)close;
+let imageView = UIImageView()
+imageView.image = UIImage(named: 'cat1')
+...
+imageView.setupImageViewer(with: self)
+```
 
 
-## Example (UITableViewController):
+### And That's it. :)
 
-### In your UITableViewController import the MHFacebookImageViewer.h
+Please let me know if you have any questions.
 
-	#import "MHFacebookImageViewer.h"
-	
-### In your [UITableView cellForRowAtIndexPath]
-
-	- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-	{
-	    static NSString *CellIdentifier = @"image_cell";
-	    UITableViewCell *cell = UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	    UIImageView * imageView = (UIImageView*)[cell viewWithTag:1];
-	   
-	    [imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%i.png",indexPath.row]]];
-	    imageView.contentMode = UIViewContentModeScaleAspectFill;
-	    [imageView setupImageViewer];
-	    imageView.clipsToBounds = YES;
-	    return cell;
-	}
-
-### If you want to include multiple images, Here is the DataSource Protocol or look for the sample project included in this repo.
-	
-	- (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer;
-	- (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
-	- (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer;
-
-### That's it. :)
-
-
-Please let me know if you have any questions. 
-
-Cheers,  
+Cheers,
 [Michael Henry Pantaleon](http://www.iamkel.net)
 
 Twitter: [@michaelhenry119](https://twitter.com/michaelhenry119)
