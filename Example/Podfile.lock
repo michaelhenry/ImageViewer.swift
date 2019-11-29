@@ -1,0 +1,25 @@
+PODS:
+  - MHFacebookImageViewer (3.0):
+    - SDWebImage
+  - SDWebImage (5.3.1):
+    - SDWebImage/Core (= 5.3.1)
+  - SDWebImage/Core (5.3.1)
+
+DEPENDENCIES:
+  - MHFacebookImageViewer (from `./../`)
+
+SPEC REPOS:
+  trunk:
+    - SDWebImage
+
+EXTERNAL SOURCES:
+  MHFacebookImageViewer:
+    :path: "./../"
+
+SPEC CHECKSUMS:
+  MHFacebookImageViewer: 33dbbc081e9bbb63fc2b6064e6bcbe781e181305
+  SDWebImage: 7137d57385fb632129838c1e6ab9528a22c666cc
+
+PODFILE CHECKSUM: a76bc2556a55186d19824e4dda95c79979321b67
+
+COCOAPODS: 1.8.4
