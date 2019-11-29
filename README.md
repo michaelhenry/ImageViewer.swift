@@ -3,6 +3,11 @@ MHFacebookImageViewer
 
 An Image Viewer inspired by Facebook
 
+[![Version](https://img.shields.io/cocoapods/v/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
+[![Deployment status](https://github.com/michaelhenry/MHFacebookImageViewer/workflows/deploy_to_cocoapods/badge.svg)](https://github.com/michaelhenry/MHFacebookImageViewer/actions)
+[![License](https://img.shields.io/cocoapods/l/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
+[![Platform](https://img.shields.io/cocoapods/p/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
+
 ![Screenshot](images/demo-v3.gif)
 
 # Demo Video
