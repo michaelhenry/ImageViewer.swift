@@ -8,7 +8,8 @@ An Image Viewer inspired by Facebook
 [![License](https://img.shields.io/cocoapods/l/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
 [![Platform](https://img.shields.io/cocoapods/p/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
 
-![Screenshot](images/demo-v3.gif)
+![Screenshot-dark-mode](images/dark-mode.gif)![Screenshot-light-mode](images/light-mode.gif)
+![Screenshot-auto-rotate](images/auto-rotate.gif)
 
 # Demo Video
 
