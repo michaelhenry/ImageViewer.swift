@@ -1,0 +1,36 @@
+import UIKit
+
+struct Data {
+    static let images:[UIImage] = [
+        UIImage(named: "cat1")!,
+        UIImage(named: "cat2")!,
+        UIImage(named: "cat3")!,
+        UIImage(named: "cat4")!,
+        UIImage(named: "cat5")!,
+        UIImage(named: "cat1")!,
+        UIImage(named: "cat2")!,
+        UIImage(named: "cat3")!,
+        UIImage(named: "cat4")!,
+        UIImage(named: "cat5")!,
+        UIImage(named: "cat1")!,
+        UIImage(named: "cat2")!,
+        UIImage(named: "cat3")!,
+        UIImage(named: "cat4")!,
+        UIImage(named: "cat5")!,
+        UIImage(named: "cat1")!,
+        UIImage(named: "cat2")!,
+        UIImage(named: "cat3")!,
+        UIImage(named: "cat4")!,
+        UIImage(named: "cat5")!,
+        UIImage(named: "cat1")!,
+        UIImage(named: "cat2")!,
+        UIImage(named: "cat3")!,
+        UIImage(named: "cat4")!,
+        UIImage(named: "cat5")!,
+        UIImage(named: "cat1")!,
+        UIImage(named: "cat2")!,
+        UIImage(named: "cat3")!,
+        UIImage(named: "cat4")!,
+        UIImage(named: "cat5")!,
+    ]
+}
