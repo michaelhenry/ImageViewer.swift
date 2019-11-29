@@ -18,6 +18,14 @@ http://youtu.be/NTs2COXxrrA
 	- Swift 4.2
 	- Swift 5.0
 
+## Installation
+
+Using [cocoapods](https://cocoapods.org)
+
+```ruby
+pod 'MHFacebookImageViewer'
+```
+
 ## How to use it
 
 The simplest way to implement is with using `UIImageView().setupImageViewer(with: self)`
