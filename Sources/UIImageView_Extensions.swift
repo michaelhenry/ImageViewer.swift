@@ -4,20 +4,23 @@ extension UIImageView {
     
     // Data holder tap recognizer
     private class TapWithDataRecognizer:UITapGestureRecognizer {
-        unowned var viewController:UIViewController!
         var imageDatasource:ImageDataSource?
         var initialIndex:Int = 0
         var options:[ImageViewerOption] = []
     }
     
-    public func setupImageViewer(
-        with vc:UIViewController, options:[ImageViewerOption] = []) {
-         setup(with: vc, datasource: nil, options: options)
+    private var vc:UIViewController? {
+        return UIApplication.shared.keyWindow?.rootViewController
     }
     
     public func setupImageViewer(
-        with vc:UIViewController,
-        url:URL, initialIndex:Int = 0,
+        options:[ImageViewerOption] = []) {
+        setup(datasource: nil, options: options)
+    }
+    
+    public func setupImageViewer(
+        url:URL,
+        initialIndex:Int = 0,
         placeholder: UIImage? = nil,
         options:[ImageViewerOption] = []) {
         
@@ -26,15 +29,14 @@ extension UIImageView {
                 ImageItem.url($0, placeholder: placeholder ?? image)
         })
         setup(
-            with: vc,
             datasource: datasource,
             initialIndex: initialIndex,
             options: options)
     }
     
     public func setupImageViewer(
-        with vc:UIViewController,
-        images:[UIImage], initialIndex:Int = 0,
+        images:[UIImage],
+        initialIndex:Int = 0,
         options:[ImageViewerOption] = []) {
         
         let datasource = SimpleImageDatasource(
@@ -42,15 +44,14 @@ extension UIImageView {
                 ImageItem.image($0)
         })
         setup(
-            with: vc,
             datasource: datasource,
             initialIndex: initialIndex,
             options: options)
     }
     
     public func setupImageViewer(
-        with vc:UIViewController,
-        urls:[URL], initialIndex:Int = 0,
+        urls:[URL],
+        initialIndex:Int = 0,
         options:[ImageViewerOption] = [],
         placeholder: UIImage? = nil) {
         
@@ -59,18 +60,23 @@ extension UIImageView {
                 ImageItem.url($0, placeholder: placeholder)
         })
         setup(
-            with: vc,
             datasource: datasource,
             initialIndex: initialIndex,
             options: options)
     }
     
-    public func setupImageViewer(with vc:UIViewController, datasource:ImageDataSource, initialIndex:Int = 0, options:[ImageViewerOption] = []) {
-        setup(with: vc, datasource: datasource, initialIndex: initialIndex, options: options)
+    public func setupImageViewer(
+        datasource:ImageDataSource,
+        initialIndex:Int = 0,
+        options:[ImageViewerOption] = []) {
+        
+        setup(
+            datasource: datasource,
+            initialIndex: initialIndex,
+            options: options)
     }
     
     private func setup(
-        with vc:UIViewController,
         datasource:ImageDataSource?,
         initialIndex:Int = 0,
         options:[ImageViewerOption] = []) {
@@ -90,7 +96,6 @@ extension UIImageView {
         _tapRecognizer.numberOfTapsRequired = 1
         
         // Pass the Data
-        _tapRecognizer.viewController = vc
         _tapRecognizer.imageDatasource = datasource
         _tapRecognizer.initialIndex = initialIndex
         _tapRecognizer.options = options
@@ -111,6 +116,6 @@ extension UIImageView {
         imageCarousel.options = sender.options
         imageCarousel.modalPresentationStyle = .overFullScreen
         imageCarousel.modalPresentationCapturesStatusBarAppearance = true
-        sender.viewController.present(imageCarousel, animated: false, completion: nil)
+        vc?.present(imageCarousel, animated: false, completion: nil)
     }
 }

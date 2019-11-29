@@ -82,7 +82,6 @@ extension GalleryViewController:UICollectionViewDataSource {
         
         // Setup Image Viewer
         cell.imageView.setupImageViewer(
-            with: self,
             images: images,
             initialIndex: indexPath.item)
         return cell

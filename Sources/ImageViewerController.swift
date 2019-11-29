@@ -271,7 +271,6 @@ class ImageViewerController : UIViewController, UIGestureRecognizerDelegate {
     }
 }
 
-
 extension ImageViewerController:UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
