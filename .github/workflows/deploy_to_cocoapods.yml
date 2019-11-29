@@ -1,0 +1,21 @@
+name: deploy_to_cocoapods
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Cocoapods
+      run: |
+        gem install cocoapods
+        pod install --project-directory=Example
+    - uses: michaelhenry/deploy-to-cocoapods-github-action@1.0.9
+      env:
+        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
