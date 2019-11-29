@@ -34,10 +34,10 @@ pod 'MHFacebookImageViewer'
 
 ## How to use it
 
-The simplest way to implement is with using `UIImageView().setupImageViewer(with: self)`
+The simplest way to implement is by using `imageView.setupImageViewer()`
 
 ```swift
-imageView.setupImageViewer(with: self)
+imageView.setupImageViewer()
 ```
 
 ```swift
@@ -46,7 +46,7 @@ import MHFacebookImageViewer
 let imageView = UIImageView()
 imageView.image = UIImage(named: 'cat1')
 ...
-imageView.setupImageViewer(with: self)
+imageView.setupImageViewer()
 ```
 
 
