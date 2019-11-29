@@ -81,25 +81,28 @@ extension UIImageView {
         initialIndex:Int = 0,
         options:[ImageViewerOption] = []) {
         
+        var _tapRecognizer:TapWithDataRecognizer?
         gestureRecognizers?.forEach {
-            if let _ = $0 as? UITapGestureRecognizer {
-                return
+            if let _tr = $0 as? TapWithDataRecognizer {
+                // if found, just use existing
+                _tapRecognizer = _tr
             }
         }
         
         isUserInteractionEnabled = true
         contentMode = .scaleAspectFill
         
-        let _tapRecognizer = TapWithDataRecognizer(
-            target: self, action: #selector(showImageViewer(_:)))
-        _tapRecognizer.numberOfTouchesRequired = 1
-        _tapRecognizer.numberOfTapsRequired = 1
-        
+        if _tapRecognizer == nil {
+            _tapRecognizer = TapWithDataRecognizer(
+                target: self, action: #selector(showImageViewer(_:)))
+            _tapRecognizer!.numberOfTouchesRequired = 1
+            _tapRecognizer!.numberOfTapsRequired = 1
+        }
         // Pass the Data
-        _tapRecognizer.imageDatasource = datasource
-        _tapRecognizer.initialIndex = initialIndex
-        _tapRecognizer.options = options
-        addGestureRecognizer(_tapRecognizer)
+        _tapRecognizer!.imageDatasource = datasource
+        _tapRecognizer!.initialIndex = initialIndex
+        _tapRecognizer!.options = options
+        addGestureRecognizer(_tapRecognizer!)
     }
     
     @objc
