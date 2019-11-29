@@ -67,7 +67,9 @@ http://www.iamkel.net
 
 
 
-# Licensing
+# License
+
+MIT
 
 Copyright (c) 2013 Michael Henry Pantaleon (http://www.iamkel.net). All rights reserved.
 
