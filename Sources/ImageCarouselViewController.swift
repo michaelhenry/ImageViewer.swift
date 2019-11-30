@@ -92,6 +92,13 @@ class ImageCarouselViewController:UIPageViewController {
         setViewControllers([initialVC], direction: .forward, animated: true, completion: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 0.235) {
+            self.navBar.alpha = 1.0
+        }
+    }
+    
     @objc
     func dismiss(_ sender:UIBarButtonItem?) {
         sourceView.alpha = 1.0

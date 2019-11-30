@@ -226,6 +226,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
                     dummyImageView.frame = exitFrame
                     dummyImageView.clipsToBounds = true
                     self.backgroundView?.alpha = 0.0
+                    self.navBar?.alpha = 0.0
                 }) { _ in
                     self.dismiss(animated: false) {
                         dummyImageView.removeFromSuperview()
