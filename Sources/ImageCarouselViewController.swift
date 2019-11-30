@@ -46,7 +46,7 @@ class ImageCarouselViewController:UIPageViewController {
         
         navItem.leftBarButtonItem = closeBarButton
         navItem.leftBarButtonItem?.tintColor = theme.tintColor
-        
+        navBar.alpha = 0.0
         navBar.items = [navItem]
         navBar.insert(to: view)
     }
@@ -81,7 +81,6 @@ class ImageCarouselViewController:UIPageViewController {
 
         let initialVC = ImageViewerController(sourceView: sourceView)
         initialVC.index = initialIndex
-        initialVC.backgroundView = backgroundView
         if let imageDatasource = imageDatasource {
             initialVC.imageItem = imageDatasource.imageItem(at: initialIndex)
         } else {
@@ -126,7 +125,6 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
             index: newIndex,
             imageItem:  imageDatasource.imageItem(at: newIndex),
             sourceView: sourceView,
-            backgroundView: backgroundView,
             delegate: self)
     }
     
@@ -144,7 +142,6 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
             index: newIndex,
             imageItem:  imageDatasource.imageItem(at: newIndex),
             sourceView: sourceView,
-            backgroundView: backgroundView,
             delegate: self)
     }
 }

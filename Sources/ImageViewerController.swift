@@ -5,14 +5,25 @@ protocol ImageViewerControllerDelegate:class {
     func imageViewerDidClose(_ imageViewer: ImageViewerController)
 }
 
-class ImageViewerController : UIViewController, UIGestureRecognizerDelegate {
+class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     
     var index:Int = 0
     weak var delegate:ImageViewerControllerDelegate?
     var imageItem:ImageItem!
     var animateOnDidAppear:Bool = false
     var sourceView:UIImageView?
-    var backgroundView:UIView?
+    
+    var backgroundView:UIView? {
+        guard let _parent = parent as? ImageCarouselViewController
+            else { return nil}
+        return _parent.backgroundView
+    }
+    
+    var navBar:UINavigationBar? {
+        guard let _parent = parent as? ImageCarouselViewController
+            else { return nil}
+        return _parent.navBar
+    }
     
     private var top:NSLayoutConstraint!
     private var leading:NSLayoutConstraint!
@@ -144,12 +155,20 @@ class ImageViewerController : UIViewController, UIGestureRecognizerDelegate {
         pinchRecognizer.numberOfTouchesRequired = 2
         scrollView.addGestureRecognizer(pinchRecognizer)
         
+        let singleTapGesture = UITapGestureRecognizer(
+            target: self, action: #selector(didSingleTap(_:)))
+        singleTapGesture.numberOfTapsRequired = 1
+        singleTapGesture.numberOfTouchesRequired = 1
+        scrollView.addGestureRecognizer(singleTapGesture)
+        
         let doubleTapRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(didDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         doubleTapRecognizer.numberOfTouchesRequired = 1
         scrollView.addGestureRecognizer(doubleTapRecognizer)
         scrollView.maximumZoomScale = 4.0
+        
+        singleTapGesture.require(toFail: doubleTapRecognizer)
     }
     
     func updateMinZoomScaleForSize(_ size: CGSize) {
@@ -234,6 +253,15 @@ class ImageViewerController : UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc
+    func didSingleTap(_ recognizer: UITapGestureRecognizer) {
+        
+        let currentNavAlpha = self.navBar?.alpha ?? 0.0
+        UIView.animate(withDuration: 0.235) {
+            self.navBar?.alpha = currentNavAlpha > 0.5 ? 0.0 : 1.0
+        }
+    }
+    
+    @objc
     func didDoubleTap(_ recognizer:UITapGestureRecognizer) {
         let pointInView = recognizer.location(in: imageView)
         zoomInOrOut(at: pointInView)
@@ -289,14 +317,12 @@ extension ImageViewerController {
         index: Int,
         imageItem:ImageItem,
         sourceView:UIImageView?,
-        backgroundView:UIView?,
         delegate:ImageViewerControllerDelegate) -> ImageViewerController {
         
         let newVC = ImageViewerController()
         newVC.index = index
         newVC.imageItem = imageItem
         newVC.sourceView = sourceView
-        newVC.backgroundView = backgroundView
         newVC.delegate = delegate
         return newVC
     }
