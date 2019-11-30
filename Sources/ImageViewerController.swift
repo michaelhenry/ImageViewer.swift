@@ -220,6 +220,7 @@ class ImageViewerController : UIViewController, UIGestureRecognizerDelegate {
                     options: .allowUserInteraction,
                     animations: {
                         container.center = self.view.center
+                        self.backgroundView?.alpha = 1.0
                 })
             }
         }
