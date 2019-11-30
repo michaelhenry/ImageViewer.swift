@@ -15,7 +15,6 @@ class GalleryViewController:UIViewController {
             ThumbCell.self,
             forCellWithReuseIdentifier: ThumbCell.reuseIdentifier)
         cv.dataSource = self
-        cv.backgroundColor = .white
         return cv
     }()
     
