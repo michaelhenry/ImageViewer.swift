@@ -57,7 +57,7 @@ extension UIImageView {
         
         let datasource = SimpleImageDatasource(
             imageItems: urls.compactMap {
-                ImageItem.url($0, placeholder: placeholder)
+                ImageItem.url($0, placeholder: placeholder ?? image)
         })
         setup(
             datasource: datasource,
