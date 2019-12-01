@@ -29,7 +29,7 @@ http://youtu.be/NTs2COXxrrA
 Using [cocoapods](https://cocoapods.org)
 
 ```ruby
-pod 'MHFacebookImageViewer'
+pod 'MHFacebookImageViewer', '~> 3.0'
 ```
 
 ## How to use it
@@ -50,6 +50,8 @@ imageView.image = UIImage(named: 'cat1')
 ...
 imageView.setupImageViewer()
 ```
+
+or you could also check the [Demo](Example) Project.
 
 
 ### And That's it. :)
