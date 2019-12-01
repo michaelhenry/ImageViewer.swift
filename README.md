@@ -34,7 +34,7 @@ pod 'MHFacebookImageViewer', '~> 3.0'
 
 ## How to use it
 
-The simplest way to implement is by using:
+The simplest way to implement is by using the `UIImageView` 's extension `.setupImageViewer()`:
 
 ```swift
 imageView.setupImageViewer()
