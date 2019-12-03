@@ -16,8 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let galleryVC = GalleryViewController()
-        window?.rootViewController = UINavigationController(rootViewController: galleryVC)
+        let exampleListVC = ExampleListViewController()
+        window?.rootViewController = UINavigationController(rootViewController: exampleListVC)
         window?.makeKeyAndVisible()
         return true
     }
