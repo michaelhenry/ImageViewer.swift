@@ -67,7 +67,6 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         scrollView.backgroundColor = .clear
         
         imageView = UIImageView(frame: .zero)
-        imageView.backgroundColor = .gray
         scrollView.addSubview(imageView)
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,7 +137,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        updateMinZoomScaleForSize(view.bounds.size)
+        updateMinMaxZoomScaleForSize(view.bounds.size)
     }
     
     func addGestureRecognizers() {
@@ -166,18 +165,18 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         doubleTapRecognizer.numberOfTapsRequired = 2
         doubleTapRecognizer.numberOfTouchesRequired = 1
         scrollView.addGestureRecognizer(doubleTapRecognizer)
-        scrollView.maximumZoomScale = 4.0
-        
+       
         singleTapGesture.require(toFail: doubleTapRecognizer)
     }
     
-    func updateMinZoomScaleForSize(_ size: CGSize) {
+    func updateMinMaxZoomScaleForSize(_ size: CGSize) {
         let widthScale = size.width / imageView.bounds.width
         let heightScale = size.height / imageView.bounds.height
         let minScale = min(widthScale, heightScale)
         
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
+        scrollView.maximumZoomScale = max(1, minScale) * 2
     }
     
     @objc
