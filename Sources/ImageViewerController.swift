@@ -236,8 +236,6 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
             } else {
                 UIView.animate(
                     withDuration: 0.237,
-                    delay: 0.0,
-                    options: .allowUserInteraction,
                     animations: {
                         container.center = self.view.center
                         self.backgroundView?.alpha = 1.0
