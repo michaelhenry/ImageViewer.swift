@@ -2,5 +2,5 @@ platform :ios, '10.0'
 use_frameworks!
 
 target 'Demo' do
-  pod 'MHFacebookImageViewer', :path => './../'
+  pod 'ImageViewer.swift', :path => './../'
 end

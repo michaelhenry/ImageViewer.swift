@@ -1,20 +1,15 @@
-MHFacebookImageViewer
+ImageViewer.swift
 =======================
 
-An Image Viewer inspired by Facebook
+An easy to use Image Viewer that is inspired by Facebook
 
-[![Version](https://img.shields.io/cocoapods/v/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
-[![Deployment status](https://github.com/michaelhenry/MHFacebookImageViewer/workflows/deploy_to_cocoapods/badge.svg)](https://github.com/michaelhenry/MHFacebookImageViewer/actions)
-[![License](https://img.shields.io/cocoapods/l/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
-[![Platform](https://img.shields.io/cocoapods/p/MHFacebookImageViewer.svg?style=flat)](https://cocoapods.org/pods/MHFacebookImageViewer)
+[![Version](https://img.shields.io/cocoapods/v/ImageViewer.swift.svg?style=flat)](https://cocoapods.org/pods/ImageViewer.swift)
+[![Deployment status](https://github.com/michaelhenry/ImageViewer.swift/workflows/deploy_to_cocoapods/badge.svg)](https://github.com/michaelhenry/ImageViewer.swift/actions)
+[![License](https://img.shields.io/cocoapods/l/ImageViewer.swift.svg?style=flat)](https://cocoapods.org/pods/ImageViewer.swift)
+[![Platform](https://img.shields.io/cocoapods/p/ImageViewer.swift.svg?style=flat)](https://cocoapods.org/pods/ImageViewer.swift)
 
 ![Screenshot-dark-mode](images/dark-mode.gif)![Screenshot-light-mode](images/light-mode.gif)
 ![Screenshot-auto-rotate](images/auto-rotate.gif)
-
-# Demo Video
-
-http://youtu.be/NTs2COXxrrA
-
 
 # Supports
 
@@ -29,12 +24,13 @@ http://youtu.be/NTs2COXxrrA
 Using [cocoapods](https://cocoapods.org)
 
 ```ruby
-pod 'MHFacebookImageViewer', '~> 3.0'
+pod 'ImageViewer.swift', '~> 3.0'
 ```
 
 ## How to use it
 
-The simplest way to implement is by using the [UIImageView.setupImageViewer()](https://github.com/michaelhenry/MHFacebookImageViewer/blob/a17f8c47e6ad1fcc3c47a0a3b03ab0bfbdc9fc2d/Example/Demo/BasicViewController.swift#L11)
+The simplest way to to use this is by using the [UIImageView.setupImageViewer()](https://github.com/michaelhenry/MHFacebookImageViewer/blob/master/Example/Demo/BasicViewController.swift#L11)
+
 
 ```swift
 imageView.setupImageViewer()
@@ -43,7 +39,7 @@ imageView.setupImageViewer()
 Example:
 
 ```swift
-import MHFacebookImageViewer
+import ImageViewer_swift
 
 let imageView = UIImageView()
 imageView.image = UIImage(named: 'cat1')
@@ -51,10 +47,38 @@ imageView.image = UIImage(named: 'cat1')
 imageView.setupImageViewer()
 ```
 
-or you could also check the [Demo](Example) Project.
+Or you might load it from a URL
+
+```swift
+imageView.setupImageViewer(url: URL(string: "https://example.com/image.jpg")!)
+```
+
+Or you might load it with an array of images `[UIImage]`
+
+```swift
+let images = [
+	UIImage(named: "cat1"),
+	UIImage(named: "cat1"),
+	UIImage(named: "cat1")
+]
+imageView.setupImageViewer(images: images)
+```
+
+Or you might load it with an array of URL `[URL]`
+
+```swift
+let urls = [
+	URL(string: "https://example.com/your-image-1.jpg")!,
+	URL(string: "https://example.com/your-image-2.jpg")!,
+	URL(string: "https://example.com/your-image-3.jpg")!
+]
+imageView.setupImageViewer(urls: urls)
+```
+
+You could also check the [Demo](Example) Project for more information.
 
 
-### And That's it. :)
+### Easy peasy :)
 
 Please let me know if you have any questions.
 
