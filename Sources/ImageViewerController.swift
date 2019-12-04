@@ -25,6 +25,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         return _parent.navBar
     }
     
+    // MARK: Layout Constraints
     private var top:NSLayoutConstraint!
     private var leading:NSLayoutConstraint!
     private var trailing:NSLayoutConstraint!
@@ -34,7 +35,8 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     private var scrollView:UIScrollView!
    
     private var lastLocation:CGPoint = .zero
-
+    private var isAnimating:Bool = false
+    
     init(sourceView:UIImageView? = nil) {
         super.init(nibName: nil, bundle: nil)
         self.sourceView = sourceView
@@ -104,39 +106,12 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard animateOnDidAppear == true,
-            let sourceFrame = sourceView?.frameRelativeToWindow()
-            else {
-                // No animation
-                return
+        guard animateOnDidAppear == true else {
+            // skip animation
+            return
         }
-                
         animateOnDidAppear = false
-    
-        let dummyImageView:UIImageView = UIImageView(frame: sourceFrame)
-        dummyImageView.clipsToBounds = true
-        dummyImageView.contentMode = .scaleAspectFill
-        dummyImageView.alpha = 1.0
-        dummyImageView.image = imageView.image
-        view.addSubview(dummyImageView)
-        view.sendSubviewToBack(dummyImageView)
-        
-        sourceView?.alpha = 1.0
-        imageView.alpha = 0.0
-        backgroundView?.alpha = 0.0
-    
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
-            guard let _self = self else { return }
-            UIView.animate(withDuration: 0.237, animations: {
-                dummyImageView.contentMode = .scaleAspectFit
-                dummyImageView.frame = _self.view.frame
-                _self.backgroundView?.alpha = 1.0
-                _self.sourceView?.alpha = 0.0
-            }) { _ in
-                _self.imageView.alpha = 1.0
-                dummyImageView.removeFromSuperview()
-            }
-        }
+        executeOpeningAnimation()
     }
     
     override func viewWillLayoutSubviews() {
@@ -144,6 +119,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         updateMinMaxZoomScaleForSize(view.bounds.size)
     }
     
+    // MARK: Add Gesture Recognizers
     func addGestureRecognizers() {
         
         let panGesture = UIPanGestureRecognizer(
@@ -173,20 +149,13 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         singleTapGesture.require(toFail: doubleTapRecognizer)
     }
     
-    func updateMinMaxZoomScaleForSize(_ size: CGSize) {
-        let widthScale = size.width / imageView.bounds.width
-        let heightScale = size.height / imageView.bounds.height
-        let minScale = min(widthScale, heightScale)
-        
-        scrollView.minimumZoomScale = minScale
-        scrollView.zoomScale = minScale
-        scrollView.maximumZoomScale = max(1, minScale) * 2
-    }
-    
     @objc
     func didPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard
+            isAnimating == false,
+            scrollView.zoomScale == scrollView.minimumZoomScale
+            else { return }
         
-        if scrollView.minimumZoomScale != scrollView.zoomScale { return }
         let container:UIView! = imageView
         if gestureRecognizer.state == .began {
             lastLocation = container.center
@@ -204,45 +173,9 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         backgroundView?.alpha = 1.0 - abs(diffY/view.center.y)
         if gestureRecognizer.state == .ended {
             if abs(diffY) > 60 {
-                let dummyImageView:UIImageView = UIImageView(frame: container.frame)
-                dummyImageView.image = imageView.image
-                dummyImageView.clipsToBounds = false
-                dummyImageView.contentMode = .scaleAspectFill
-                view.addSubview(dummyImageView)
-                imageView.isHidden = true
-                
-                let exitFrame:CGRect = { () -> CGRect in
-                    guard let _sourceFrame = self.sourceView?.frameRelativeToWindow()
-                        else {
-                            var imageViewFrame = self.imageView.frame
-                            if diffY > 0 {
-                                imageViewFrame.origin.y = -imageViewFrame.size.height
-                            } else {
-                                imageViewFrame.origin.y = view.frame.size.height
-                            }
-                           return imageViewFrame
-                    }
-                    return _sourceFrame
-                }()
-                
-                UIView.animate(withDuration: 0.237, animations: {
-                    dummyImageView.frame = exitFrame
-                    dummyImageView.clipsToBounds = true
-                    self.backgroundView?.alpha = 0.0
-                    self.navBar?.alpha = 0.0
-                }) { _ in
-                    self.dismiss(animated: false) {
-                        dummyImageView.removeFromSuperview()
-                        self.delegate?.imageViewerDidClose(self)
-                    }
-                }
+                executeViewDismissalAnimation(diffY)
             } else {
-                UIView.animate(
-                    withDuration: 0.237,
-                    animations: {
-                        container.center = self.view.center
-                        self.backgroundView?.alpha = 1.0
-                })
+                executeCancelAnimation()
             }
         }
     }
@@ -268,17 +201,30 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         let pointInView = recognizer.location(in: imageView)
         zoomInOrOut(at: pointInView)
     }
-    
-    func updateConstraintsForSize(_ size: CGSize) {
-        let yOffset = max(0, (size.height - imageView.frame.height) / 2)
-        top.constant = yOffset
-        bottom.constant = yOffset
-        
-        let xOffset = max(0, (size.width - imageView.frame.width) / 2)
-        leading.constant = xOffset
-        trailing.constant = xOffset
-        view.layoutIfNeeded()
+
+    func gestureRecognizerShouldBegin(
+        _ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
+            let velocity = panGesture.velocity(in: scrollView)
+            return abs(velocity.y) > abs(velocity.x)
+        }
+        return false
     }
+}
+
+// MARK: Adjusting the dimensions
+extension ImageViewerController {
+    
+    func updateMinMaxZoomScaleForSize(_ size: CGSize) {
+        let widthScale = size.width / imageView.bounds.width
+        let heightScale = size.height / imageView.bounds.height
+        let minScale = min(widthScale, heightScale)
+        
+        scrollView.minimumZoomScale = minScale
+        scrollView.zoomScale = minScale
+        scrollView.maximumZoomScale = max(1, minScale) * 2
+    }
+    
     
     func zoomInOrOut(at point:CGPoint) {
         let newZoomScale = scrollView.zoomScale == scrollView.minimumZoomScale
@@ -291,14 +237,102 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         let rect = CGRect(x: x, y: y, width: w, height: h)
         scrollView.zoom(to: rect, animated: true)
     }
+    
+    func updateConstraintsForSize(_ size: CGSize) {
+        let yOffset = max(0, (size.height - imageView.frame.height) / 2)
+        top.constant = yOffset
+        bottom.constant = yOffset
+        
+        let xOffset = max(0, (size.width - imageView.frame.width) / 2)
+        leading.constant = xOffset
+        trailing.constant = xOffset
+        view.layoutIfNeeded()
+    }
 
-    func gestureRecognizerShouldBegin(
-        _ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
-            let velocity = panGesture.velocity(in: scrollView)
-            return abs(velocity.y) > abs(velocity.x)
+}
+
+// MARK: Animation Related stuff
+extension ImageViewerController {
+    
+    private func executeOpeningAnimation() {
+        
+        guard let _sourceView = sourceView else { return }
+        
+        let dummyImageView:UIImageView = UIImageView(
+            frame: _sourceView.frameRelativeToWindow())
+        dummyImageView.clipsToBounds = true
+        dummyImageView.contentMode = .scaleAspectFill
+        dummyImageView.alpha = 1.0
+        dummyImageView.image = imageView.image
+        view.addSubview(dummyImageView)
+        view.sendSubviewToBack(dummyImageView)
+        
+        _sourceView.alpha = 1.0
+        imageView.alpha = 0.0
+        backgroundView?.alpha = 0.0
+        isAnimating = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
+            guard let _self = self else { return }
+            UIView.animate(withDuration: 0.237, animations: {
+                dummyImageView.contentMode = .scaleAspectFit
+                dummyImageView.frame = _self.view.frame
+                _self.backgroundView?.alpha = 1.0
+                _sourceView.alpha = 0.0
+            }) { _ in
+                _self.imageView.alpha = 1.0
+                dummyImageView.removeFromSuperview()
+                _self.isAnimating = false
+            }
         }
-        return false
+    }
+    
+    private func executeCancelAnimation() {
+        self.isAnimating = true
+        UIView.animate(
+            withDuration: 0.237,
+            animations: {
+                self.imageView.center = self.view.center
+                self.backgroundView?.alpha = 1.0
+        }) {[weak self] _ in
+            self?.isAnimating = false
+        }
+    }
+    
+    private func executeViewDismissalAnimation(_ diffY:CGFloat) {
+        isAnimating = true
+        
+        let dummyImageView:UIImageView = UIImageView(frame: imageView.frame)
+        dummyImageView.image = imageView.image
+        dummyImageView.clipsToBounds = false
+        dummyImageView.contentMode = .scaleAspectFill
+        view.addSubview(dummyImageView)
+        imageView.isHidden = true
+        
+        let exitFrame:CGRect = { () -> CGRect in
+            guard let _sourceFrame = self.sourceView?.frameRelativeToWindow()
+                else {
+                    var imageViewFrame = self.imageView.frame
+                    if diffY > 0 {
+                        imageViewFrame.origin.y = -imageViewFrame.size.height
+                    } else {
+                        imageViewFrame.origin.y = view.frame.size.height
+                    }
+                    return imageViewFrame
+            }
+            return _sourceFrame
+        }()
+        
+        UIView.animate(withDuration: 0.237, animations: {
+            dummyImageView.frame = exitFrame
+            dummyImageView.clipsToBounds = true
+            self.backgroundView?.alpha = 0.0
+            self.navBar?.alpha = 0.0
+        }) { _ in
+            self.dismiss(animated: false) {
+                dummyImageView.removeFromSuperview()
+                self.delegate?.imageViewerDidClose(self)
+            }
+        }
     }
 }
 
@@ -313,6 +347,8 @@ extension ImageViewerController:UIScrollViewDelegate {
     }
 }
 
+
+// MARK: Shortcuts
 extension ImageViewerController {
     
     static func create(
