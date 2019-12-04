@@ -1,17 +1,11 @@
-//
-//  ExampleListViewController.swift
-//  Demo
-//
-//  Created by Michael Henry Pantaleon on 2019/12/03.
-//  Copyright © 2019 Michael Henry Pantaleon. All rights reserved.
-//
-
 import UIKit
 
 enum ExampleType:CaseIterable, CustomStringConvertible {
     
     case basic
     case withURL
+    case withUIImages
+    case withURLs
     
     var description: String {
         switch self {
@@ -19,6 +13,10 @@ enum ExampleType:CaseIterable, CustomStringConvertible {
                 return "Basic"
             case .withURL:
                 return "With URL"
+            case .withUIImages:
+                return "With [UIImage]"
+            case .withURLs:
+                return "With [URL]"
         }
     }
     
@@ -28,6 +26,10 @@ enum ExampleType:CaseIterable, CustomStringConvertible {
                 return BasicViewController()
             case .withURL:
                 return WithURLViewController()
+            case .withUIImages:
+                return WithImagesViewController()
+            case .withURLs:
+                return WithURLsViewController()
         }
     }
 }
@@ -60,7 +62,10 @@ class ExampleListViewController:UITableViewController {
     }
     
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath) {
+        
         navigationController?.pushViewController(
             items[indexPath.row].viewController, animated: true)
     }

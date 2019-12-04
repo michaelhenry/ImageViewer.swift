@@ -1,11 +1,3 @@
-//
-//  BasicViewController.swift
-//  Demo
-//
-//  Created by Michael Henry Pantaleon on 2019/12/03.
-//  Copyright © 2019 Michael Henry Pantaleon. All rights reserved.
-//
-
 import UIKit
 import MHFacebookImageViewer
 
@@ -13,7 +5,9 @@ class BasicViewController:UIViewController {
     
     lazy var imageView:UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "cat1")?.resize(targetSize: .thumbnail)
+        iv.image = Data.images[0].resize(targetSize: .thumbnail)
+        
+        // Setup Image Viewer
         iv.setupImageViewer()
         return iv
     }()

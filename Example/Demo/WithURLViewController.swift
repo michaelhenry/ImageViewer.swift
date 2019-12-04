@@ -1,11 +1,3 @@
-//
-//  WithURLViewController.swift
-//  Demo
-//
-//  Created by Michael Henry Pantaleon on 2019/12/03.
-//  Copyright © 2019 Michael Henry Pantaleon. All rights reserved.
-//
-
 import UIKit
 import MHFacebookImageViewer
 import SDWebImage
@@ -16,10 +8,10 @@ class WithURLViewController:UIViewController {
         let iv = UIImageView()
         
         // Set an image with low resolution.
-        iv.image = UIImage(named: "cat1")?.resize(targetSize: .thumbnail)
+        iv.image = Data.images[0].resize(targetSize: .thumbnail)
         
-        // Setup with URL
-        iv.setupImageViewer(url: URL(string: "https://raw.githubusercontent.com/michaelhenry/MHFacebookImageViewer/master/Example/Demo/Assets.xcassets/cat1.imageset/cat1.jpg")!)
+        // Setup Image Viewer With URL
+        iv.setupImageViewer(url: Data.imageUrls[0])
         return iv
     }()
     
@@ -37,7 +29,8 @@ class WithURLViewController:UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-   
+        
+        // for debugging purposes, just clear the download images
         SDImageCache.shared.clear(with: .all, completion: nil)
     }
 }

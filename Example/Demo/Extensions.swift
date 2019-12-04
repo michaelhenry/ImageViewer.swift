@@ -1,11 +1,3 @@
-//
-//  UIImageView_Extensions.swift
-//  Demo
-//
-//  Created by Michael Henry Pantaleon on 2019/12/03.
-//  Copyright © 2019 Michael Henry Pantaleon. All rights reserved.
-//
-
 import UIKit
 
 extension UIImage {

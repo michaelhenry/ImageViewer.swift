@@ -1,9 +1,13 @@
 import UIKit
 import MHFacebookImageViewer
+import SDWebImage
 
-class WithImagesViewController:UIViewController {
-
-    var images:[UIImage] = Data.images
+class WithURLsViewController:UIViewController {
+    
+    // load a lower resolution images
+    var images:[UIImage] = Data.images.compactMap {
+        $0.resize(targetSize: .thumbnail)
+    }
     
     lazy var layout = GalleryFlowLayout()
     
@@ -41,6 +45,7 @@ class WithImagesViewController:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Gallery"
+        SDImageCache.shared.clear(with: .all, completion: nil)
     }
     
     override func viewWillLayoutSubviews() {
@@ -63,7 +68,7 @@ class WithImagesViewController:UIViewController {
     }
 }
 
-extension WithImagesViewController:UICollectionViewDataSource {
+extension WithURLsViewController:UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -84,9 +89,9 @@ extension WithImagesViewController:UICollectionViewDataSource {
                                  for: indexPath) as! ThumbCell
         cell.imageView.image = images[indexPath.item]
         
-        // Setup Image Viewer with [UIImage]
+        // Setup Image Viewer with [URL]
         cell.imageView.setupImageViewer(
-            images: images,
+            urls: Data.imageUrls,
             initialIndex: indexPath.item)
         
         return cell

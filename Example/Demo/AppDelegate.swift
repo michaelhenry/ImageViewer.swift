@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  Demo
-//
-//  Created by Michael Henry Pantaleon on 2019/11/29.
-//  Copyright © 2019 Michael Henry Pantaleon. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
