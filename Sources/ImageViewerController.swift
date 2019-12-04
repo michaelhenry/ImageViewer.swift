@@ -88,8 +88,12 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
             imageView.image = img
             imageView.layoutIfNeeded()
         case .url(let url, let placeholder):
-            imageView.sd_setImage(with: url, placeholderImage: placeholder, options: [], progress: nil) {[weak self] (img, err, type, url) in
-                self?.imageView.layoutIfNeeded()
+            imageView.sd_setImage(
+                with: url,
+                placeholderImage: placeholder ?? sourceView?.image,
+                options: [],
+                progress: nil) {[weak self] (img, err, type, url) in
+                    self?.imageView.layoutIfNeeded()
             }
         default:
             break
