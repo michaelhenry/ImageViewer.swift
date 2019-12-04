@@ -63,17 +63,24 @@ public class ImageCarouselViewController:UIPageViewController {
         
         options.forEach {
             switch $0 {
-            case .theme(let theme):
-                self.theme = theme
-            case .closeIcon(let icon):
-                navItem.leftBarButtonItem?.image = icon
-            case .rightNavItemTitle(let title, let delegate):
-                navItem.rightBarButtonItem = UIBarButtonItem(
-                    title: title,
-                    style: .plain,
-                    target: self,
-                    action: #selector(diTapRightNavBarItem(_:)))
-                rightNavItemDelegate = delegate
+                case .theme(let theme):
+                    self.theme = theme
+                case .closeIcon(let icon):
+                    navItem.leftBarButtonItem?.image = icon
+                case .rightNavItemTitle(let title, let delegate):
+                    navItem.rightBarButtonItem = UIBarButtonItem(
+                        title: title,
+                        style: .plain,
+                        target: self,
+                        action: #selector(diTapRightNavBarItem(_:)))
+                    rightNavItemDelegate = delegate
+                case .rightNavItemIcon(let icon, let delegate):
+                    navItem.rightBarButtonItem = UIBarButtonItem(
+                        image: icon,
+                        style: .plain,
+                        target: self,
+                        action: #selector(diTapRightNavBarItem(_:)))
+                    rightNavItemDelegate = delegate
             }
         }
     }
@@ -109,12 +116,12 @@ public class ImageCarouselViewController:UIPageViewController {
     }
     
     @objc
-    public func dismissMe() {
+    public func dismissMe(completion: (() -> Void)? = nil) {
         sourceView.alpha = 1.0
         UIView.animate(withDuration: 0.235, animations: {
             self.view.alpha = 0.0
         }) { _ in
-            self.dismiss(animated: false, completion: nil)
+            self.dismiss(animated: false, completion: completion)
         }
     }
     
