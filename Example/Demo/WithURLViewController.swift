@@ -1,5 +1,5 @@
 import UIKit
-import MHFacebookImageViewer
+import ImageViewer_swift
 import SDWebImage
 
 class WithURLViewController:UIViewController {
