@@ -91,6 +91,7 @@ extension UIImageView {
         
         isUserInteractionEnabled = true
         contentMode = .scaleAspectFill
+        clipsToBounds = true
         
         if _tapRecognizer == nil {
             _tapRecognizer = TapWithDataRecognizer(

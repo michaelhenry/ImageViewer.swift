@@ -1,36 +1,17 @@
 import UIKit
 
 struct Data {
-    static let images:[UIImage] = [
-        UIImage(named: "cat1")!,
-        UIImage(named: "cat2")!,
-        UIImage(named: "cat3")!,
-        UIImage(named: "cat4")!,
-        UIImage(named: "cat5")!,
-        UIImage(named: "cat1")!,
-        UIImage(named: "cat2")!,
-        UIImage(named: "cat3")!,
-        UIImage(named: "cat4")!,
-        UIImage(named: "cat5")!,
-        UIImage(named: "cat1")!,
-        UIImage(named: "cat2")!,
-        UIImage(named: "cat3")!,
-        UIImage(named: "cat4")!,
-        UIImage(named: "cat5")!,
-        UIImage(named: "cat1")!,
-        UIImage(named: "cat2")!,
-        UIImage(named: "cat3")!,
-        UIImage(named: "cat4")!,
-        UIImage(named: "cat5")!,
-        UIImage(named: "cat1")!,
-        UIImage(named: "cat2")!,
-        UIImage(named: "cat3")!,
-        UIImage(named: "cat4")!,
-        UIImage(named: "cat5")!,
-        UIImage(named: "cat1")!,
-        UIImage(named: "cat2")!,
-        UIImage(named: "cat3")!,
-        UIImage(named: "cat4")!,
-        UIImage(named: "cat5")!,
+    
+    static let imageNames:[String] = [
+        "cat1",
+        "cat2",
+        "cat3",
+        "cat4",
+        "cat5"
     ]
+    
+    static let images:[UIImage] = Self.imageNames.compactMap { UIImage(named: $0)! }
+    
+    static let imageUrls:[URL] = Self.imageNames.compactMap {
+        URL(string: "https://raw.githubusercontent.com/michaelhenry/MHFacebookImageViewer/master/Example/Demo/Assets.xcassets/\($0).imageset/\($0).jpg")! }
 }
