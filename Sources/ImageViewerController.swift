@@ -165,7 +165,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
             let translation: CGPoint = gestureRecognizer
                 .translation(in: view)
             container.center = CGPoint(
-                x: container.center.x,
+                x: lastLocation.x + translation.x,
                 y: lastLocation.y + translation.y)
         }
 
