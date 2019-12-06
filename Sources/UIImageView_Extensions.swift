@@ -109,10 +109,14 @@ extension UIImageView {
     @objc
     private func showImageViewer(_ sender:TapWithDataRecognizer) {
         guard let sourceView = sender.view as? UIImageView else { return }
+        
+        let options = [UIPageViewController.OptionsKey.interPageSpacing: 20]
+        
         let imageCarousel = ImageCarouselViewController(
             transitionStyle: .scroll,
             navigationOrientation: .horizontal,
-            options: nil)
+            options: options)
+        
         imageCarousel.sourceView = sourceView
         imageCarousel.imageDatasource = sender.imageDatasource
         imageCarousel.initialIndex = sender.initialIndex
