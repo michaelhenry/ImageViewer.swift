@@ -5,7 +5,7 @@ public protocol ImageDataSource:class {
     func imageItem(at index:Int) -> ImageItem
 }
 
-class ImageCarouselViewController:UIPageViewController {
+public class ImageCarouselViewController:UIPageViewController {
     
     weak var imageDatasource:ImageDataSource?
     var initialIndex = 0
@@ -18,6 +18,8 @@ class ImageCarouselViewController:UIPageViewController {
     }
     
     var options:[ImageViewerOption] = []
+    
+    weak var rightNavItemDelegate:RightNavItemDelegate?
     
     private(set) lazy var navBar:UINavigationBar = {
         let _navBar = UINavigationBar(frame: .zero)
@@ -61,15 +63,29 @@ class ImageCarouselViewController:UIPageViewController {
         
         options.forEach {
             switch $0 {
-            case .theme(let theme):
-                self.theme = theme
-            case .closeIcon(let icon):
-                navItem.leftBarButtonItem?.image = icon
+                case .theme(let theme):
+                    self.theme = theme
+                case .closeIcon(let icon):
+                    navItem.leftBarButtonItem?.image = icon
+                case .rightNavItemTitle(let title, let delegate):
+                    navItem.rightBarButtonItem = UIBarButtonItem(
+                        title: title,
+                        style: .plain,
+                        target: self,
+                        action: #selector(diTapRightNavBarItem(_:)))
+                    rightNavItemDelegate = delegate
+                case .rightNavItemIcon(let icon, let delegate):
+                    navItem.rightBarButtonItem = UIBarButtonItem(
+                        image: icon,
+                        style: .plain,
+                        target: self,
+                        action: #selector(diTapRightNavBarItem(_:)))
+                    rightNavItemDelegate = delegate
             }
         }
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         addBackgroundView()
@@ -92,7 +108,7 @@ class ImageCarouselViewController:UIPageViewController {
         setViewControllers([initialVC], direction: .forward, animated: true, completion: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         UIView.animate(withDuration: 0.235) {
             self.navBar.alpha = 1.0
@@ -100,16 +116,28 @@ class ImageCarouselViewController:UIPageViewController {
     }
     
     @objc
-    func dismiss(_ sender:UIBarButtonItem?) {
+    private func dismiss(_ sender:UIBarButtonItem) {
+        dismissMe(completion: nil)
+    }
+    
+    public func dismissMe(completion: (() -> Void)? = nil) {
         sourceView.alpha = 1.0
         UIView.animate(withDuration: 0.235, animations: {
             self.view.alpha = 0.0
         }) { _ in
-            self.dismiss(animated: false, completion: nil)
+            self.dismiss(animated: false, completion: completion)
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
+    @objc
+    func diTapRightNavBarItem(_ sender:UIBarButtonItem) {
+        guard let _delegate = rightNavItemDelegate,
+            let _firstVC = viewControllers?.first as? ImageViewerController
+            else { return }
+        _delegate.imageViewer(self, didTapRightNavItem: _firstVC.index)
+    }
+    
+    override public var preferredStatusBarStyle: UIStatusBarStyle {
         if theme == .dark {
             return .lightContent
         }
@@ -118,7 +146,7 @@ class ImageCarouselViewController:UIPageViewController {
 }
 
 extension ImageCarouselViewController:UIPageViewControllerDataSource {
-    func pageViewController(
+    public func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
@@ -135,7 +163,7 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
             delegate: self)
     }
     
-    func pageViewController(
+    public func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController) -> UIViewController? {
         

@@ -92,8 +92,18 @@ extension WithURLsViewController:UICollectionViewDataSource {
         // Setup Image Viewer with [URL]
         cell.imageView.setupImageViewer(
             urls: Data.imageUrls,
-            initialIndex: indexPath.item)
+            initialIndex: indexPath.item,
+            options: [
+                .theme(.dark),
+                .rightNavItemTitle("Info", delegate: self)
+            ])
         
         return cell
+    }
+}
+
+extension WithURLsViewController:RightNavItemDelegate {
+    func imageViewer(_ imageViewer: ImageCarouselViewController, didTapRightNavItem index: Int) {
+        print("TAPPED", index)
     }
 }
