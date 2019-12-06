@@ -44,7 +44,7 @@ public class ImageCarouselViewController:UIPageViewController {
             title: NSLocalizedString("Close", comment: "Close button title"),
             style: .plain,
             target: self,
-            action: #selector(dismissMe))
+            action: #selector(dismiss(_:)))
         
         navItem.leftBarButtonItem = closeBarButton
         navItem.leftBarButtonItem?.tintColor = theme.tintColor
@@ -116,6 +116,10 @@ public class ImageCarouselViewController:UIPageViewController {
     }
     
     @objc
+    private func dismiss(_ sender:UIBarButtonItem) {
+        dismissMe(completion: nil)
+    }
+    
     public func dismissMe(completion: (() -> Void)? = nil) {
         sourceView.alpha = 1.0
         UIView.animate(withDuration: 0.235, animations: {
