@@ -38,6 +38,30 @@ public class ImageCarouselViewController:UIPageViewController {
     
     private(set) lazy var navItem = UINavigationItem()
     
+    public static func create(
+        sourceView:UIImageView,
+        imageDataSource: ImageDataSource?,
+        options:[ImageViewerOption] = [],
+        initialIndex:Int = 0) -> ImageCarouselViewController {
+        
+        let pageOptions = [UIPageViewController.OptionsKey.interPageSpacing: 20]
+        
+        let imageCarousel = ImageCarouselViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal,
+            options: pageOptions)
+        
+        imageCarousel.modalPresentationStyle = .overFullScreen
+        imageCarousel.modalPresentationCapturesStatusBarAppearance = true
+        
+        imageCarousel.sourceView = sourceView
+        imageCarousel.imageDatasource = imageDataSource
+        imageCarousel.options = options
+        imageCarousel.initialIndex = initialIndex
+       
+        return imageCarousel
+    }
+    
     private func addNavBar() {
         // Add Navigation Bar
         let closeBarButton = UIBarButtonItem(
