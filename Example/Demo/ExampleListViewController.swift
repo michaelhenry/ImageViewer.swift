@@ -38,6 +38,11 @@ class ExampleListViewController:UITableViewController {
     
     var items:[ExampleType] = ExampleType.allCases
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "ImageViewer.swift"
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

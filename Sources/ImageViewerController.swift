@@ -36,6 +36,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
    
     private var lastLocation:CGPoint = .zero
     private var isAnimating:Bool = false
+    private var maxZoomScale:CGFloat = 1.0
     
     init(sourceView:UIImageView? = nil) {
         super.init(nibName: nil, bundle: nil)
@@ -116,6 +117,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        updateConstraintsForSize(view.bounds.size)
         updateMinMaxZoomScaleForSize(view.bounds.size)
     }
     
@@ -204,11 +206,11 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
 
     func gestureRecognizerShouldBegin(
         _ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
-            let velocity = panGesture.velocity(in: scrollView)
-            return abs(velocity.y) > abs(velocity.x)
-        }
-        return false
+        guard scrollView.zoomScale == scrollView.minimumZoomScale,
+            let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+
+        let velocity = panGesture.velocity(in: scrollView)
+        return abs(velocity.y) > abs(velocity.x)
     }
 }
 
@@ -216,19 +218,21 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
 extension ImageViewerController {
     
     func updateMinMaxZoomScaleForSize(_ size: CGSize) {
-        let widthScale = size.width / imageView.bounds.width
-        let heightScale = size.height / imageView.bounds.height
+        let widthScale = (size.width + 1.0) / imageView.bounds.width
+        let heightScale = (size.height + 1.0) / imageView.bounds.height
         let minScale = min(widthScale, heightScale)
+        let maxScale = max(widthScale, heightScale)
         
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
-        scrollView.maximumZoomScale = max(1, minScale) * 2
+        maxZoomScale = maxScale
+        scrollView.maximumZoomScale = maxZoomScale * 1.1
     }
     
     
     func zoomInOrOut(at point:CGPoint) {
         let newZoomScale = scrollView.zoomScale == scrollView.minimumZoomScale
-            ? scrollView.maximumZoomScale : scrollView.minimumZoomScale
+            ? maxZoomScale : scrollView.minimumZoomScale
         let size = scrollView.bounds.size
         let w = size.width / newZoomScale
         let h = size.height / newZoomScale

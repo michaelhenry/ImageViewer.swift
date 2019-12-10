@@ -109,17 +109,13 @@ extension UIImageView {
     @objc
     private func showImageViewer(_ sender:TapWithDataRecognizer) {
         guard let sourceView = sender.view as? UIImageView else { return }
-        let imageCarousel = ImageCarouselViewController(
-            transitionStyle: .scroll,
-            navigationOrientation: .horizontal,
-            options: nil)
-        imageCarousel.sourceView = sourceView
-        imageCarousel.imageDatasource = sender.imageDatasource
-        imageCarousel.initialIndex = sender.initialIndex
-        imageCarousel.imageDatasource = sender.imageDatasource
-        imageCarousel.options = sender.options
-        imageCarousel.modalPresentationStyle = .overFullScreen
-        imageCarousel.modalPresentationCapturesStatusBarAppearance = true
+        
+        let imageCarousel = ImageCarouselViewController.create(
+            sourceView: sourceView,
+            imageDataSource: sender.imageDatasource,
+            options: sender.options,
+            initialIndex: sender.initialIndex)
+
         vc?.present(imageCarousel, animated: false, completion: nil)
     }
 }

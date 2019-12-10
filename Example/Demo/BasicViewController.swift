@@ -5,7 +5,7 @@ class BasicViewController:UIViewController {
     
     lazy var imageView:UIImageView = {
         let iv = UIImageView()
-        iv.image = Data.images[0].resize(targetSize: .thumbnail)
+        iv.image = Data.images[0]
         
         // Setup Image Viewer
         iv.setupImageViewer()
