@@ -29,7 +29,7 @@ pod 'ImageViewer.swift', '~> 3.0'
 
 ## How to use it
 
-The simplest way to to use this is by using the [UIImageView.setupImageViewer()](https://github.com/michaelhenry/MHFacebookImageViewer/blob/master/Example/Demo/BasicViewController.swift#L11)
+The simplest way to to use this is by using the [imageView.setupImageViewer()](https://github.com/michaelhenry/MHFacebookImageViewer/blob/master/Example/Demo/BasicViewController.swift#L11)
 
 
 ```swift
@@ -77,11 +77,10 @@ imageView.setupImageViewer(urls: urls)
 
 ### How to change the layout or options that are available
 
-You can check this file [ImageViewerOption](https://github.com/michaelhenry/ImageViewer.swift/blob/master/Sources/ImageViewerOption.swift) to see what are the available options.
+You can check this file [ImageViewerOption.swift](https://github.com/michaelhenry/ImageViewer.swift/blob/master/Sources/ImageViewerOption.swift) to see what are the available options that will fit to your needs.
 
 ```swift
 public enum ImageViewerOption {
-    
     case theme(ImageViewerTheme)
     case closeIcon(UIImage)
     case rightNavItemTitle(String, delegate: RightNavItemDelegate?)
