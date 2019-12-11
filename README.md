@@ -79,7 +79,7 @@ imageView.setupImageViewer(urls: urls)
 
 You can check this file [ImageViewerOption](https://github.com/michaelhenry/ImageViewer.swift/blob/master/Sources/ImageViewerOption.swift) to see what are the available options.
 
-```
+```swift
 public enum ImageViewerOption {
     
     case theme(ImageViewerTheme)
