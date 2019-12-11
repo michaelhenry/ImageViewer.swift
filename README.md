@@ -57,9 +57,9 @@ Or you might load it with an array of images `[UIImage]`
 
 ```swift
 let images = [
-	UIImage(named: "cat1"),
-	UIImage(named: "cat1"),
-	UIImage(named: "cat1")
+    UIImage(named: "cat1"),
+    UIImage(named: "cat1"),
+    UIImage(named: "cat1")
 ]
 imageView.setupImageViewer(images: images)
 ```
@@ -68,12 +68,27 @@ Or you might load it with an array of URL `[URL]`
 
 ```swift
 let urls = [
-	URL(string: "https://example.com/your-image-1.jpg")!,
-	URL(string: "https://example.com/your-image-2.jpg")!,
-	URL(string: "https://example.com/your-image-3.jpg")!
+    URL(string: "https://example.com/your-image-1.jpg")!,
+    URL(string: "https://example.com/your-image-2.jpg")!,
+    URL(string: "https://example.com/your-image-3.jpg")!
 ]
 imageView.setupImageViewer(urls: urls)
 ```
+
+### How to change the layout or options that are available
+
+You can check this file [ImageViewerOption](https://github.com/michaelhenry/ImageViewer.swift/blob/master/Sources/ImageViewerOption.swift) to see what are the available options.
+
+```
+public enum ImageViewerOption {
+    
+    case theme(ImageViewerTheme)
+    case closeIcon(UIImage)
+    case rightNavItemTitle(String, delegate: RightNavItemDelegate?)
+    case rightNavItemIcon(UIImage, delegate: RightNavItemDelegate?)
+}
+```
+
 
 You could also check the [Demo](Example) Project for more information.
 
