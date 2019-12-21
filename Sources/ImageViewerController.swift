@@ -218,10 +218,12 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
 extension ImageViewerController {
     
     func updateMinMaxZoomScaleForSize(_ size: CGSize) {
-        let widthScale = (size.width + 1.0) / imageView.bounds.width
-        let heightScale = (size.height + 1.0) / imageView.bounds.height
-        let minScale = min(widthScale, heightScale)
-        let maxScale = max(widthScale, heightScale)
+        let minScale = min(
+            size.width/imageView.bounds.width,
+            size.height/imageView.bounds.height)
+        let maxScale = max(
+            (size.width + 1.0) / imageView.bounds.width,
+            (size.height + 1.0) / imageView.bounds.height)
         
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
