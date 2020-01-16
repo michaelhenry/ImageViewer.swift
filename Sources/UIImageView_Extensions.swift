@@ -10,7 +10,9 @@ extension UIImageView {
     }
     
     private var vc:UIViewController? {
-        return UIApplication.shared.keyWindow?.rootViewController
+        guard let rootVC = UIApplication.shared.keyWindow?.rootViewController
+            else { return nil }
+        return rootVC.presentedViewController != nil ? rootVC.presentedViewController : rootVC
     }
     
     public func setupImageViewer(
