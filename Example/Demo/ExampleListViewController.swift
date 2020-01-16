@@ -70,8 +70,14 @@ class ExampleListViewController:UITableViewController {
     override func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath) {
+        let vc = items[indexPath.row].viewController
         
-        navigationController?.pushViewController(
-            items[indexPath.row].viewController, animated: true)
+        switch indexPath.row {
+            case 0:
+                present(vc, animated: true, completion: nil)
+            default:
+                navigationController?.pushViewController(
+                    vc, animated: true)
+        }
     }
 }
