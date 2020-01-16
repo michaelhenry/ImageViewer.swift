@@ -96,7 +96,8 @@ extension WithURLsViewController:UICollectionViewDataSource {
             options: [
                 .theme(.dark),
                 .rightNavItemTitle("Info", delegate: self)
-            ])
+            ],
+            from: self)
         
         return cell
     }
