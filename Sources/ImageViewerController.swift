@@ -96,8 +96,12 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
                 placeholderImage: placeholder ?? sourceView?.image,
                 options: [],
                 progress: nil) {[weak self] (img, err, type, url) in
-                    self?.imageView.layoutIfNeeded()
-            }
+                    DispatchQueue.main.async {
+                        UIView.performWithoutAnimation {
+                            self?.imageView.layoutIfNeeded()
+                        }
+                    }
+                }
         default:
             break
         }
