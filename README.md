@@ -108,7 +108,7 @@ http://www.iamkel.net
 
 # Dependency
 
-- [SDWebImage](https://github.com/SDWebImage/SDWebImage)
+- [SDWebImage](https://github.com/SDWebImage/SDWebImage), for downloading images via URL.
 
 
 # License
