@@ -106,6 +106,10 @@ Linked in: [ken119](http://ph.linkedin.com/in/ken119)
 http://www.iamkel.net
 
 
+# Dependency
+
+- [SDWebImage](https://github.com/SDWebImage/SDWebImage)
+
 
 # License
 
