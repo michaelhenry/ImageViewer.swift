@@ -22,6 +22,7 @@ extension UIImageView {
         setup(datasource: nil, options: options, from: from)
     }
     
+    #if canImport(SDWebImage)
     public func setupImageViewer(
         url:URL,
         initialIndex:Int = 0,
@@ -39,6 +40,7 @@ extension UIImageView {
             options: options,
             from: from)
     }
+    #endif
     
     public func setupImageViewer(
         images:[UIImage],
@@ -57,6 +59,7 @@ extension UIImageView {
             from: from)
     }
     
+    #if canImport(SDWebImage)
     public func setupImageViewer(
         urls:[URL],
         initialIndex:Int = 0,
@@ -74,6 +77,7 @@ extension UIImageView {
             options: options,
             from: from)
     }
+    #endif
     
     public func setupImageViewer(
         datasource:ImageDataSource,
