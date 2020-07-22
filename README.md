@@ -27,6 +27,13 @@ Using [cocoapods](https://cocoapods.org)
 pod 'ImageViewer.swift', '~> 3.0'
 ```
 
+If you need remote image fetching:
+
+```ruby
+pod 'ImageViewer.swift', '~> 3.0'
+pod 'ImageViewer.swift/Fetcher', '~> 3.0'
+```
+
 ## How to use it
 
 The simplest way to to use this is by using the [imageView.setupImageViewer()](https://github.com/michaelhenry/MHFacebookImageViewer/blob/master/Example/Demo/BasicViewController.swift#L11)

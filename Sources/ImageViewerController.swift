@@ -1,5 +1,7 @@
 import UIKit
+#if canImport(SDWebImage)
 import SDWebImage
+#endif
 
 protocol ImageViewerControllerDelegate:class {
     func imageViewerDidClose(_ imageViewer: ImageViewerController)
@@ -90,6 +92,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         case .image(let img):
             imageView.image = img
             imageView.layoutIfNeeded()
+        #if canImport(SDWebImage)
         case .url(let url, let placeholder):
             imageView.sd_setImage(
                 with: url,
@@ -102,6 +105,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
                         }
                     }
                 }
+        #endif
         default:
             break
         }

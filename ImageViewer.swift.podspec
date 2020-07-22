@@ -10,7 +10,6 @@ Pod::Spec.new do |s|
   }
   s.source_files = 'Sources/*'
   s.requires_arc = true
-  s.dependency 'SDWebImage'
   s.ios.deployment_target  = '10.0'
   s.swift_versions = ['4.0','4.2','5.0']
   s.license = {
@@ -26,4 +25,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 LICENSE
   }
+  
+  s.default_subspecs = :none
+  s.subspec 'Fetcher' do |cs|
+    cs.dependency 'SDWebImage'
+  end
 end
