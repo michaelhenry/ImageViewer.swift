@@ -1,0 +1,6 @@
+framework module SDWebImageMapKit {
+  umbrella header "SDWebImageMapKit.h"
+
+  export *
+  module * { export * }
+}

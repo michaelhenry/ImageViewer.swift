@@ -1,0 +1,37 @@
+BCSymbolMap Version: 2.0
+Apple clang version 11.0.3 (clang-1103.0.32.62)
+/Users/oscardemoya/Library/Caches/org.carthage.CarthageKit/DerivedData/11.6_11E708/SDWebImage/5.8.4/Build/Intermediates.noindex/ArchiveIntermediates/SDWebImageMapKit/IntermediateBuildFilesPath/SDWebImage.build/Release-appletvos/SDWebImageMapKit.build/DerivedSources/SDWebImageMapKit_vers.c
+/Users/oscardemoya/dev/ios-extras/forks/ImageViewer.swift/Carthage/Checkouts/SDWebImage
+-[MKAnnotationView(WebCache) sd_setImageWithURL:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:context:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:completed:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:completed:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:completed:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:progress:completed:]
+-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:context:progress:completed:]
+___101-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:context:progress:completed:]_block_invoke
+___copy_helper_block_e8_32w
+___destroy_helper_block_e8_32w
+___101-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:context:progress:completed:]_block_invoke.7
+___copy_helper_block_e8_32b
+___destroy_helper_block_e8_32s
+_OBJC_SELECTOR_REFERENCES_
+_OBJC_SELECTOR_REFERENCES_.2
+_OBJC_SELECTOR_REFERENCES_.4
+_OBJC_SELECTOR_REFERENCES_.6
+___block_descriptor_40_e8_32w_e41_v40?0"UIImage"8"NSData"16q24"NSURL"32l
+___block_descriptor_40_e8_32bs_e56_v52?0"UIImage"8"NSData"16"NSError"24q32B40"NSURL"44l
+_OBJC_SELECTOR_REFERENCES_.10
+__OBJC_$_CATEGORY_INSTANCE_METHODS_MKAnnotationView_$_WebCache
+__OBJC_$_CATEGORY_MKAnnotationView_$_WebCache
+_OBJC_LABEL_CATEGORY_$
+/Users/oscardemoya/dev/ios-extras/forks/ImageViewer.swift/Carthage/Checkouts/SDWebImage/SDWebImageMapKit/MapKit/MKAnnotationView+WebCache.m
+__destroy_helper_block_e8_32s
+__copy_helper_block_e8_32b
+__101-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:context:progress:completed:]_block_invoke.7
+SDWebImageMapKit/MapKit/MKAnnotationView+WebCache.m
+__destroy_helper_block_e8_32w
+__copy_helper_block_e8_32w
+__101-[MKAnnotationView(WebCache) sd_setImageWithURL:placeholderImage:options:context:progress:completed:]_block_invoke
