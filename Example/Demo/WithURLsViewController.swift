@@ -95,16 +95,12 @@ extension WithURLsViewController:UICollectionViewDataSource {
             initialIndex: indexPath.item,
             options: [
                 .theme(.dark),
-                .rightNavItemTitle("Info", delegate: self)
+                .rightNavItemTitle("Info", onTap: { i in
+                    print("TAPPED", i)
+                })
             ],
             from: self)
         
         return cell
-    }
-}
-
-extension WithURLsViewController:RightNavItemDelegate {
-    func imageViewer(_ imageViewer: ImageCarouselViewController, didTapRightNavItem index: Int) {
-        print("TAPPED", index)
     }
 }

@@ -8,8 +8,10 @@ public protocol ImageDataSource:class {
 public class ImageCarouselViewController:UIPageViewController {
     
     weak var imageDatasource:ImageDataSource?
+    weak var sourceView:UIImageView!
+    
     var initialIndex = 0
-    var sourceView:UIImageView!
+    
     var theme:ImageViewerTheme = .light {
         didSet {
             navItem.leftBarButtonItem?.tintColor = theme.tintColor
@@ -19,7 +21,7 @@ public class ImageCarouselViewController:UIPageViewController {
     
     var options:[ImageViewerOption] = []
     
-    weak var rightNavItemDelegate:RightNavItemDelegate?
+    private var onRightNavBarTapped:((Int) -> Void)?
     
     private(set) lazy var navBar:UINavigationBar = {
         let _navBar = UINavigationBar(frame: .zero)
@@ -91,20 +93,20 @@ public class ImageCarouselViewController:UIPageViewController {
                     self.theme = theme
                 case .closeIcon(let icon):
                     navItem.leftBarButtonItem?.image = icon
-                case .rightNavItemTitle(let title, let delegate):
+                case .rightNavItemTitle(let title, let onTap):
                     navItem.rightBarButtonItem = UIBarButtonItem(
                         title: title,
                         style: .plain,
                         target: self,
                         action: #selector(diTapRightNavBarItem(_:)))
-                    rightNavItemDelegate = delegate
-                case .rightNavItemIcon(let icon, let delegate):
+                    onRightNavBarTapped = onTap
+                case .rightNavItemIcon(let icon, let onTap):
                     navItem.rightBarButtonItem = UIBarButtonItem(
                         image: icon,
                         style: .plain,
                         target: self,
                         action: #selector(diTapRightNavBarItem(_:)))
-                    rightNavItemDelegate = delegate
+                    onRightNavBarTapped = onTap
             }
         }
     }
@@ -155,10 +157,10 @@ public class ImageCarouselViewController:UIPageViewController {
     
     @objc
     func diTapRightNavBarItem(_ sender:UIBarButtonItem) {
-        guard let _delegate = rightNavItemDelegate,
+        guard let onTap = onRightNavBarTapped,
             let _firstVC = viewControllers?.first as? ImageViewerController
             else { return }
-        _delegate.imageViewer(self, didTapRightNavItem: _firstVC.index)
+        onTap(_firstVC.index)
     }
     
     override public var preferredStatusBarStyle: UIStatusBarStyle {
