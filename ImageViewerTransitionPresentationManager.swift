@@ -91,6 +91,7 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         
         transitionView.addSubview(controller.view)
         controller.view.alpha = 0.0
+        
         UIView.animate(withDuration: duration, animations: {
             dummyImageView.contentMode = .scaleAspectFit
             dummyImageView.frame = UIScreen.main.bounds
@@ -115,7 +116,8 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         let targetView = transitionVC.targetView
         
         let dummyImageView = createDummyImageView(
-            frame: targetView?.frameRelativeToWindow() ?? UIScreen.main.bounds, image: targetView?.image)
+            frame: targetView?.frameRelativeToWindow() ?? UIScreen.main.bounds,
+            image: targetView?.image)
         transitionView.addSubview(dummyImageView)
         targetView?.isHidden = true
       

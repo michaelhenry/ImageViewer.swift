@@ -141,8 +141,7 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
         if let imageDatasource = imageDatasource {
             let initialVC:ImageViewerController = .init(
                 index: initialIndex,
-                imageItem: imageDatasource.imageItem(at: initialIndex),
-                initialImage: initialSourceView?.image)
+                imageItem: imageDatasource.imageItem(at: initialIndex))
             setViewControllers([initialVC], direction: .forward, animated: true)
         }
     }

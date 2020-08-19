@@ -7,8 +7,7 @@ class ImageViewerController:UIViewController,
 UIGestureRecognizerDelegate {
     
     var imageView: UIImageView = UIImageView(frame: .zero)
-    var initialImage: UIImage?
-    
+
     var backgroundView:UIView? {
         guard let _parent = parent as? ImageCarouselViewController
             else { return nil}
@@ -38,12 +37,10 @@ UIGestureRecognizerDelegate {
     
     init(
         index: Int,
-        imageItem:ImageItem,
-        initialImage: UIImage? = nil) {
+        imageItem:ImageItem) {
         
         self.index = index
         self.imageItem = imageItem
-        self.initialImage = initialImage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -53,7 +50,7 @@ UIGestureRecognizerDelegate {
     
     override func loadView() {
         let view = UIView()
-        
+    
         view.backgroundColor = .clear
         self.view = view
         
@@ -86,8 +83,6 @@ UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        imageView.image = initialImage
 
         switch imageItem {
         case .image(let img):
