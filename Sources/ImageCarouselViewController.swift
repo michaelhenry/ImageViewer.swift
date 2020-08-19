@@ -5,17 +5,31 @@ public protocol ImageDataSource:class {
     func imageItem(at index:Int) -> ImageItem
 }
 
-public class ImageCarouselViewController:UIPageViewController {
+class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionViewControllerConvertible {
+    
+    unowned var initialSourceView: UIImageView?
+    var sourceView: UIImageView? {
+        guard let vc = viewControllers?.first as? ImageViewerController else {
+            return nil
+        }
+        return initialIndex == vc.index ? initialSourceView : nil
+    }
+    
+    var targetView: UIImageView? {
+        guard let vc = viewControllers?.first as? ImageViewerController else {
+            return nil
+        }
+        return vc.imageView
+    }
     
     weak var imageDatasource:ImageDataSource?
-    weak var sourceView:UIImageView!
-    
+ 
     var initialIndex = 0
     
     var theme:ImageViewerTheme = .light {
         didSet {
             navItem.leftBarButtonItem?.tintColor = theme.tintColor
-            backgroundView.backgroundColor = theme.color
+            backgroundView?.backgroundColor = theme.color
         }
     }
     
@@ -31,7 +45,7 @@ public class ImageCarouselViewController:UIPageViewController {
         return _navBar
     }()
     
-    private(set) lazy var backgroundView:UIView = {
+    private(set) lazy var backgroundView:UIView? = {
         let _v = UIView()
         _v.backgroundColor = theme.color
         _v.alpha = 0.0
@@ -40,28 +54,31 @@ public class ImageCarouselViewController:UIPageViewController {
     
     private(set) lazy var navItem = UINavigationItem()
     
-    public static func create(
+    private let imageViewerPresentationDelegate = ImageViewerTransitionPresentationManager()
+    
+    public init(
         sourceView:UIImageView,
         imageDataSource: ImageDataSource?,
         options:[ImageViewerOption] = [],
-        initialIndex:Int = 0) -> ImageCarouselViewController {
+        initialIndex:Int = 0) {
         
+        self.initialSourceView = sourceView
+        self.initialIndex = initialIndex
+        self.options = options
+        self.imageDatasource = imageDataSource
         let pageOptions = [UIPageViewController.OptionsKey.interPageSpacing: 20]
-        
-        let imageCarousel = ImageCarouselViewController(
+        super.init(
             transitionStyle: .scroll,
             navigationOrientation: .horizontal,
             options: pageOptions)
         
-        imageCarousel.modalPresentationStyle = .overFullScreen
-        imageCarousel.modalPresentationCapturesStatusBarAppearance = true
-        
-        imageCarousel.sourceView = sourceView
-        imageCarousel.imageDatasource = imageDataSource
-        imageCarousel.options = options
-        imageCarousel.initialIndex = initialIndex
-       
-        return imageCarousel
+        transitioningDelegate = imageViewerPresentationDelegate
+        modalPresentationStyle = .custom
+        modalPresentationCapturesStatusBarAppearance = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func addNavBar() {
@@ -80,6 +97,7 @@ public class ImageCarouselViewController:UIPageViewController {
     }
     
     private func addBackgroundView() {
+        guard let backgroundView = backgroundView else { return }
         view.addSubview(backgroundView)
         backgroundView.bindFrameToSuperview()
         view.sendSubviewToBack(backgroundView)
@@ -118,41 +136,33 @@ public class ImageCarouselViewController:UIPageViewController {
         addNavBar()
         applyOptions()
         
-        view.backgroundColor = .clear
         dataSource = self
 
-        let initialVC = ImageViewerController(sourceView: sourceView)
-        initialVC.index = initialIndex
         if let imageDatasource = imageDatasource {
-            initialVC.imageItem = imageDatasource.imageItem(at: initialIndex)
-        } else {
-            // Use the image from source
-            initialVC.imageItem = .image(sourceView.image)
-        }
-        initialVC.animateOnDidAppear = true
-        initialVC.delegate = self
-        setViewControllers([initialVC], direction: .forward, animated: true, completion: nil)
-    }
-    
-    override public func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        UIView.animate(withDuration: 0.235) {
-            self.navBar.alpha = 1.0
+            let initialVC:ImageViewerController = .init(
+                index: initialIndex,
+                imageItem: imageDatasource.imageItem(at: initialIndex),
+                initialImage: initialSourceView?.image)
+            setViewControllers([initialVC], direction: .forward, animated: true)
         }
     }
-    
+
     @objc
     private func dismiss(_ sender:UIBarButtonItem) {
         dismissMe(completion: nil)
     }
     
     public func dismissMe(completion: (() -> Void)? = nil) {
-        sourceView.alpha = 1.0
+        sourceView?.alpha = 1.0
         UIView.animate(withDuration: 0.235, animations: {
             self.view.alpha = 0.0
         }) { _ in
             self.dismiss(animated: false, completion: completion)
         }
+    }
+    
+    deinit {
+        initialSourceView?.alpha = 1.0
     }
     
     @objc
@@ -181,12 +191,9 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
         guard vc.index > 0 else { return nil }
  
         let newIndex = vc.index - 1
-        let sourceView = newIndex == initialIndex ? self.sourceView : nil
-        return ImageViewerController.create(
+        return ImageViewerController.init(
             index: newIndex,
-            imageItem:  imageDatasource.imageItem(at: newIndex),
-            sourceView: sourceView,
-            delegate: self)
+            imageItem:  imageDatasource.imageItem(at: newIndex))
     }
     
     public func pageViewController(
@@ -198,17 +205,8 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
         guard vc.index <= (imageDatasource.numberOfImages() - 2) else { return nil }
         
         let newIndex = vc.index + 1
-        let sourceView = newIndex == initialIndex ? self.sourceView : nil
-        return ImageViewerController.create(
+        return ImageViewerController.init(
             index: newIndex,
-            imageItem:  imageDatasource.imageItem(at: newIndex),
-            sourceView: sourceView,
-            delegate: self)
-    }
-}
-
-extension ImageCarouselViewController:ImageViewerControllerDelegate {
-    func imageViewerDidClose(_ imageViewer: ImageViewerController) {
-        sourceView.alpha = 1.0
+            imageItem: imageDatasource.imageItem(at: newIndex))
     }
 }

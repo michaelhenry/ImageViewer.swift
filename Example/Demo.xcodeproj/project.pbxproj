@@ -19,6 +19,7 @@
 		A6BC0BE023913C66004A4E46 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC0BDF23913C66004A4E46 /* GalleryViewController.swift */; };
 		A6BC0BE223914239004A4E46 /* ThumbCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC0BE123914239004A4E46 /* ThumbCell.swift */; };
 		A6BC0BE823915420004A4E46 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC0BE723915420004A4E46 /* Data.swift */; };
+		A6FE4B4624EDDBAE00E9C754 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A6FE4B4524EDDBAE00E9C754 /* README.md */; };
 		D303414D23CA5F17FEDDCF7B /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10710A5B07A80798DED8269E /* Pods_Demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		A6BC0BDF23913C66004A4E46 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		A6BC0BE123914239004A4E46 /* ThumbCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbCell.swift; sourceTree = "<group>"; };
 		A6BC0BE723915420004A4E46 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		A6FE4B4524EDDBAE00E9C754 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		D023B1BBDAD100A2962FDC7E /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +85,7 @@
 		A6BC0BC6239139F8004A4E46 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				A6FE4B4524EDDBAE00E9C754 /* README.md */,
 				A6BC0BC7239139F8004A4E46 /* AppDelegate.swift */,
 				A6BC0BD0239139F9004A4E46 /* Assets.xcassets */,
 				A6BC0BD2239139F9004A4E46 /* LaunchScreen.storyboard */,
@@ -169,6 +172,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6FE4B4624EDDBAE00E9C754 /* README.md in Resources */,
 				A6BC0BD4239139F9004A4E46 /* LaunchScreen.storyboard in Resources */,
 				A6BC0BD1239139F9004A4E46 /* Assets.xcassets in Resources */,
 			);
