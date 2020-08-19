@@ -3,24 +3,20 @@ import UIKit
 import SDWebImage
 #endif
 
-protocol ImageViewerControllerDelegate:class {
-    func imageViewerDidClose(_ imageViewer: ImageViewerController)
-}
+class ImageViewerController:UIViewController,
+UIGestureRecognizerDelegate {
+    
+    var imageView: UIImageView = UIImageView(frame: .zero)
 
-class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
-    
-    var index:Int = 0
-    weak var delegate:ImageViewerControllerDelegate?
-    var imageItem:ImageItem!
-    var animateOnDidAppear:Bool = false
-    var sourceView:UIImageView?
-    
     var backgroundView:UIView? {
         guard let _parent = parent as? ImageCarouselViewController
             else { return nil}
         return _parent.backgroundView
     }
     
+    var index:Int = 0
+    var imageItem:ImageItem!
+
     var navBar:UINavigationBar? {
         guard let _parent = parent as? ImageCarouselViewController
             else { return nil}
@@ -33,19 +29,19 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     private var trailing:NSLayoutConstraint!
     private var bottom:NSLayoutConstraint!
     
-    private var imageView:UIImageView!
     private var scrollView:UIScrollView!
-   
+    
     private var lastLocation:CGPoint = .zero
     private var isAnimating:Bool = false
     private var maxZoomScale:CGFloat = 1.0
     
-    init(sourceView:UIImageView? = nil) {
+    init(
+        index: Int,
+        imageItem:ImageItem) {
+        
+        self.index = index
+        self.imageItem = imageItem
         super.init(nibName: nil, bundle: nil)
-        self.sourceView = sourceView
-     
-        modalPresentationStyle = .overFullScreen
-        modalPresentationCapturesStatusBarAppearance = true
     }
     
     required init?(coder: NSCoder) {
@@ -54,14 +50,14 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     
     override func loadView() {
         let view = UIView()
-        
+    
         view.backgroundColor = .clear
         self.view = view
         
         scrollView = UIScrollView()
         scrollView.delegate = self
         scrollView.showsVerticalScrollIndicator = false
-      
+        
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .never
         } else {
@@ -70,8 +66,6 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         view.addSubview(scrollView)
         scrollView.bindFrameToSuperview()
         scrollView.backgroundColor = .clear
-        
-        imageView = UIImageView(frame: .zero)
         scrollView.addSubview(imageView)
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -84,28 +78,28 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         leading.isActive = true
         trailing.isActive = true
         bottom.isActive = true
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         switch imageItem {
         case .image(let img):
             imageView.image = img
             imageView.layoutIfNeeded()
-        #if canImport(SDWebImage)
+            #if canImport(SDWebImage)
         case .url(let url, let placeholder):
             imageView.sd_setImage(
                 with: url,
-                placeholderImage: placeholder ?? sourceView?.image,
+                placeholderImage: placeholder,
                 options: [],
-                progress: nil) {[weak self] (img, err, type, url) in
-                    DispatchQueue.main.async {
-                        UIView.performWithoutAnimation {
-                            self?.imageView.layoutIfNeeded()
-                        }
+                progress: nil) {(img, err, type, url) in
+                    DispatchQueue.main.async {[weak self] in
+                        self?.layout()
                     }
-                }
-        #endif
+            }
+            #endif
         default:
             break
         }
@@ -115,16 +109,20 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard animateOnDidAppear == true else {
-            // skip animation
-            return
-        }
-        animateOnDidAppear = false
-        executeOpeningAnimation()
+        self.navBar?.alpha = 1.0
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.navBar?.alpha = 0.0
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        layout()
+    }
+    
+    private func layout() {
         updateConstraintsForSize(view.bounds.size)
         updateMinMaxZoomScaleForSize(view.bounds.size)
     }
@@ -137,7 +135,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         panGesture.cancelsTouchesInView = false
         panGesture.delegate = self
         scrollView.addGestureRecognizer(panGesture)
-
+        
         let pinchRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(didPinch(_:)))
         pinchRecognizer.numberOfTapsRequired = 1
@@ -155,7 +153,7 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         doubleTapRecognizer.numberOfTapsRequired = 2
         doubleTapRecognizer.numberOfTouchesRequired = 1
         scrollView.addGestureRecognizer(doubleTapRecognizer)
-       
+        
         singleTapGesture.require(toFail: doubleTapRecognizer)
     }
     
@@ -178,12 +176,12 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
                 x: lastLocation.x + translation.x,
                 y: lastLocation.y + translation.y)
         }
-
+        
         let diffY = view.center.y - container.center.y
         backgroundView?.alpha = 1.0 - abs(diffY/view.center.y)
         if gestureRecognizer.state == .ended {
             if abs(diffY) > 60 {
-                executeViewDismissalAnimation(diffY)
+                dismiss(animated: true)
             } else {
                 executeCancelAnimation()
             }
@@ -211,31 +209,36 @@ class ImageViewerController:UIViewController, UIGestureRecognizerDelegate {
         let pointInView = recognizer.location(in: imageView)
         zoomInOrOut(at: pointInView)
     }
-
+    
     func gestureRecognizerShouldBegin(
         _ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard scrollView.zoomScale == scrollView.minimumZoomScale,
-            let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return false }
-
+            let panGesture = gestureRecognizer as? UIPanGestureRecognizer
+            else { return false }
+        
         let velocity = panGesture.velocity(in: scrollView)
         return abs(velocity.y) > abs(velocity.x)
     }
+    
+    
 }
 
 // MARK: Adjusting the dimensions
 extension ImageViewerController {
     
     func updateMinMaxZoomScaleForSize(_ size: CGSize) {
-        if imageView.bounds.width == 0 || imageView.bounds.height == 0 {
+        
+        let targetSize = imageView.bounds.size
+        if targetSize.width == 0 || targetSize.height == 0 {
             return
         }
         
         let minScale = min(
-            size.width/imageView.bounds.width,
-            size.height/imageView.bounds.height)
+            size.width/targetSize.width,
+            size.height/targetSize.height)
         let maxScale = max(
-            (size.width + 1.0) / imageView.bounds.width,
-            (size.height + 1.0) / imageView.bounds.height)
+            (size.width + 1.0) / targetSize.width,
+            (size.height + 1.0) / targetSize.height)
         
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
@@ -257,6 +260,7 @@ extension ImageViewerController {
     }
     
     func updateConstraintsForSize(_ size: CGSize) {
+        
         let yOffset = max(0, (size.height - imageView.frame.height) / 2)
         top.constant = yOffset
         bottom.constant = yOffset
@@ -266,43 +270,11 @@ extension ImageViewerController {
         trailing.constant = xOffset
         view.layoutIfNeeded()
     }
-
+    
 }
 
 // MARK: Animation Related stuff
 extension ImageViewerController {
-    
-    private func executeOpeningAnimation() {
-        
-        guard let _sourceView = sourceView else { return }
-        
-        let dummyImageView:UIImageView = UIImageView(
-            frame: _sourceView.frameRelativeToWindow())
-        dummyImageView.clipsToBounds = true
-        dummyImageView.contentMode = .scaleAspectFill
-        dummyImageView.alpha = 1.0
-        dummyImageView.image = imageView.image
-        view.addSubview(dummyImageView)
-        view.sendSubviewToBack(dummyImageView)
-        
-        _sourceView.alpha = 1.0
-        imageView.alpha = 0.0
-        backgroundView?.alpha = 0.0
-        isAnimating = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
-            guard let _self = self else { return }
-            UIView.animate(withDuration: 0.237, animations: {
-                dummyImageView.contentMode = .scaleAspectFit
-                dummyImageView.frame = _self.view.frame
-                _self.backgroundView?.alpha = 1.0
-                _sourceView.alpha = 0.0
-            }) { _ in
-                _self.imageView.alpha = 1.0
-                dummyImageView.removeFromSuperview()
-                _self.isAnimating = false
-            }
-        }
-    }
     
     private func executeCancelAnimation() {
         self.isAnimating = true
@@ -313,43 +285,6 @@ extension ImageViewerController {
                 self.backgroundView?.alpha = 1.0
         }) {[weak self] _ in
             self?.isAnimating = false
-        }
-    }
-    
-    private func executeViewDismissalAnimation(_ diffY:CGFloat) {
-        isAnimating = true
-        
-        let dummyImageView:UIImageView = UIImageView(frame: imageView.frame)
-        dummyImageView.image = imageView.image
-        dummyImageView.clipsToBounds = false
-        dummyImageView.contentMode = .scaleAspectFill
-        view.addSubview(dummyImageView)
-        imageView.isHidden = true
-        
-        let exitFrame:CGRect = { () -> CGRect in
-            guard let _sourceFrame = self.sourceView?.frameRelativeToWindow()
-                else {
-                    var imageViewFrame = self.imageView.frame
-                    if diffY > 0 {
-                        imageViewFrame.origin.y = -imageViewFrame.size.height
-                    } else {
-                        imageViewFrame.origin.y = view.frame.size.height
-                    }
-                    return imageViewFrame
-            }
-            return _sourceFrame
-        }()
-        
-        UIView.animate(withDuration: 0.237, animations: {
-            dummyImageView.frame = exitFrame
-            dummyImageView.clipsToBounds = true
-            self.backgroundView?.alpha = 0.0
-            self.navBar?.alpha = 0.0
-        }) { _ in
-            self.dismiss(animated: false) {
-                dummyImageView.removeFromSuperview()
-                self.delegate?.imageViewerDidClose(self)
-            }
         }
     }
 }
@@ -365,21 +300,3 @@ extension ImageViewerController:UIScrollViewDelegate {
     }
 }
 
-
-// MARK: Shortcuts
-extension ImageViewerController {
-    
-    static func create(
-        index: Int,
-        imageItem:ImageItem,
-        sourceView:UIImageView?,
-        delegate:ImageViewerControllerDelegate) -> ImageViewerController {
-        
-        let newVC = ImageViewerController()
-        newVC.index = index
-        newVC.imageItem = imageItem
-        newVC.sourceView = sourceView
-        newVC.delegate = delegate
-        return newVC
-    }
-}
