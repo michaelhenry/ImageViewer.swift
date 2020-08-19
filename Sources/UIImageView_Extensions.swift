@@ -4,7 +4,7 @@ extension UIImageView {
     
     // Data holder tap recognizer
     private class TapWithDataRecognizer:UITapGestureRecognizer {
-        var from:UIViewController?
+        weak var from:UIViewController?
         var imageDatasource:ImageDataSource?
         var initialIndex:Int = 0
         var options:[ImageViewerOption] = []

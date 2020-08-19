@@ -90,8 +90,8 @@ You can check this file [ImageViewerOption.swift](https://github.com/michaelhenr
 public enum ImageViewerOption {
     case theme(ImageViewerTheme)
     case closeIcon(UIImage)
-    case rightNavItemTitle(String, delegate: RightNavItemDelegate?)
-    case rightNavItemIcon(UIImage, delegate: RightNavItemDelegate?)
+    case rightNavItemTitle(String, onTap: ((Int) -> Void)?)
+    case rightNavItemIcon(UIImage, onTap: ((Int) -> Void)?)
 }
 ```
 
