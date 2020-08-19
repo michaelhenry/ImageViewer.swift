@@ -48,7 +48,7 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
     private(set) lazy var backgroundView:UIView? = {
         let _v = UIView()
         _v.backgroundColor = theme.color
-        _v.alpha = 0.0
+        _v.alpha = 1.0
         return _v
     }()
     
