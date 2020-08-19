@@ -19,7 +19,10 @@ extension UIImageView {
     public func setupImageViewer(
         options:[ImageViewerOption] = [],
         from:UIViewController? = nil) {
-        setup(datasource: nil, options: options, from: from)
+        setup(
+            datasource: SimpleImageDatasource(imageItems: [.image(image)]),
+            options: options,
+            from: from)
     }
     
     #if canImport(SDWebImage)
@@ -127,13 +130,12 @@ extension UIImageView {
     @objc
     private func showImageViewer(_ sender:TapWithDataRecognizer) {
         guard let sourceView = sender.view as? UIImageView else { return }
-        
-        let imageCarousel = ImageCarouselViewController.create(
+        let imageCarousel = ImageCarouselViewController.init(
             sourceView: sourceView,
             imageDataSource: sender.imageDatasource,
             options: sender.options,
             initialIndex: sender.initialIndex)
         let presentFromVC = sender.from ?? vc
-        presentFromVC?.present(imageCarousel, animated: false, completion: nil)
+        presentFromVC?.present(imageCarousel, animated: true)
     }
 }
