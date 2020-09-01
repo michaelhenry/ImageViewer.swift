@@ -21,6 +21,8 @@ An easy to use Image Viewer that is inspired by Facebook
 
 ## Installation
 
+### CocoaPods
+
 Using [cocoapods](https://cocoapods.org)
 
 ```ruby
@@ -32,6 +34,14 @@ If you need remote image fetching:
 ```ruby
 pod 'ImageViewer.swift', '~> 3.0'
 pod 'ImageViewer.swift/Fetcher', '~> 3.0'
+```
+
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate Alamofire into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "michaelhenry/ImageViewer.swift" ~> 3.2
 ```
 
 ## How to use it
