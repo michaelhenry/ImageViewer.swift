@@ -1,7 +1,0 @@
-platform :ios, '10.0'
-use_frameworks!
-
-target 'Demo' do
-  pod 'ImageViewer.swift', :path => './../'
-  pod 'ImageViewer.swift/Fetcher', :path => './../'
-end
