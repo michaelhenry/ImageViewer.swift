@@ -77,26 +77,27 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         completed: @escaping((Bool) -> Void)) {
 
         guard
-            let transitionVC = controller as? ImageViewerTransitionViewControllerConvertible
+            let transitionVC = controller as? ImageViewerTransitionViewControllerConvertible,
+            let sourceView = transitionVC.sourceView
         else { return }
-        
-        let sourceView = transitionVC.sourceView
-        
-        let dummyImageView = createDummyImageView(
-            frame: sourceView?.frameRelativeToWindow() ?? .zero,
-            image: sourceView?.image)
-        transitionView.addSubview(dummyImageView)
-        
-        sourceView?.alpha = 0.0
-        
-        transitionView.addSubview(controller.view)
+    
+        sourceView.alpha = 0.0
         controller.view.alpha = 0.0
         
+        transitionView.addSubview(controller.view)
+        transitionVC.targetView?.alpha = 0.0
+        
+        let dummyImageView = createDummyImageView(
+            frame: sourceView.frameRelativeToWindow(),
+            image: sourceView.image)
+        dummyImageView.contentMode = .scaleAspectFit
+        transitionView.addSubview(dummyImageView)
+        
         UIView.animate(withDuration: duration, animations: {
-            dummyImageView.contentMode = .scaleAspectFit
             dummyImageView.frame = UIScreen.main.bounds
             controller.view.alpha = 1.0
         }) { finished in
+            transitionVC.targetView?.alpha = 1.0
             dummyImageView.removeFromSuperview()
             completed(finished)
         }
