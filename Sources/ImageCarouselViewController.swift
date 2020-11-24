@@ -34,6 +34,8 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
     }
     
     var options:[ImageViewerOption] = []
+
+    private var blurredImageBackgroundView: UIImageView?
     
     private var onRightNavBarTapped:((Int) -> Void)?
     
@@ -44,7 +46,7 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
         _navBar.shadowImage = UIImage()
         return _navBar
     }()
-    
+
     private(set) lazy var backgroundView:UIView? = {
         let _v = UIView()
         _v.backgroundColor = theme.color
@@ -103,6 +105,49 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
         view.sendSubviewToBack(backgroundView)
     }
     
+    private func addBlurredImageBackgroundView() {
+        guard let backgroundView = backgroundView else { return }
+
+        blurredImageBackgroundView = UIImageView()
+        guard let blurredImageBackgroundView = blurredImageBackgroundView else {
+            return
+        }
+        
+        backgroundView.addSubview(blurredImageBackgroundView)
+        blurredImageBackgroundView.bindFrameToSuperview()
+
+        blurredImageBackgroundView.image = initialSourceView?.image
+        blurredImageBackgroundView.contentMode = .scaleAspectFill
+
+        let effect = UIBlurEffect(style: .dark)
+        let effectView = UIVisualEffectView(effect: effect)
+        effectView.frame = blurredImageBackgroundView.bounds
+        effectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        effectView.alpha = 1
+        blurredImageBackgroundView.addSubview(effectView)
+    }
+    
+    private func updateBlurredImageBackgroundView(imageDatasourceIndex: Int) {
+        guard let imageDatasource = imageDatasource else {
+            return
+        }
+
+        let imageItem = imageDatasource.imageItem(at: imageDatasourceIndex)
+
+        switch imageItem {
+        case .image(let image):
+            if let image = image {
+                blurredImageBackgroundView?.image = image
+            }
+        #if canImport(SDWebImage)
+        case .url(_, let placeholder):
+            if let placeholder = placeholder {
+                blurredImageBackgroundView?.image = placeholder
+            }
+        #endif
+        }
+    }
+    
     private func applyOptions() {
         
         options.forEach {
@@ -125,6 +170,10 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
                         target: self,
                         action: #selector(diTapRightNavBarItem(_:)))
                     onRightNavBarTapped = onTap
+                case .enableBlurredImageBackgroundView(let enabled):
+                    if enabled {
+                        addBlurredImageBackgroundView()
+                    }
             }
         }
     }
@@ -189,6 +238,10 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
         guard let imageDatasource = imageDatasource else { return nil }
         guard vc.index > 0 else { return nil }
  
+        if let _ = blurredImageBackgroundView {
+            updateBlurredImageBackgroundView(imageDatasourceIndex: vc.index)
+        }
+        
         let newIndex = vc.index - 1
         return ImageViewerController.init(
             index: newIndex,
@@ -203,6 +256,10 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
         guard let imageDatasource = imageDatasource else { return nil }
         guard vc.index <= (imageDatasource.numberOfImages() - 2) else { return nil }
         
+        if let _ = blurredImageBackgroundView {
+            updateBlurredImageBackgroundView(imageDatasourceIndex: vc.index)
+        }
+
         let newIndex = vc.index + 1
         return ImageViewerController.init(
             index: newIndex,
