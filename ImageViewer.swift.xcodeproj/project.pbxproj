@@ -3,25 +3,42 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032D118A259411D30001404D /* ImageViewerTransitionPresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032D1189259411D30001404D /* ImageViewerTransitionPresentationManager.swift */; };
+		032D118F259412CA0001404D /* SDWebImage.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032D118E259412CA0001404D /* SDWebImage.xcframework */; };
+		032D1190259412CA0001404D /* SDWebImage.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 032D118E259412CA0001404D /* SDWebImage.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3FBC5E8C24E5910E00E68938 /* UIImageView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8024E5910E00E68938 /* UIImageView_Extensions.swift */; };
 		3FBC5E8D24E5910E00E68938 /* ImageViewer_swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FBC5E8124E5910E00E68938 /* ImageViewer_swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3FBC5E8E24E5910E00E68938 /* UIView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8224E5910E00E68938 /* UIView_Extensions.swift */; };
 		3FBC5E8F24E5910E00E68938 /* UINavigationBar_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8324E5910E00E68938 /* UINavigationBar_Extensions.swift */; };
 		3FBC5E9024E5910E00E68938 /* ImageCarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8424E5910E00E68938 /* ImageCarouselViewController.swift */; };
 		3FBC5E9124E5910E00E68938 /* ImageViewerOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8524E5910E00E68938 /* ImageViewerOption.swift */; };
-		3FBC5E9224E5910E00E68938 /* RightNavItemDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8624E5910E00E68938 /* RightNavItemDelegate.swift */; };
 		3FBC5E9324E5910E00E68938 /* ImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8724E5910E00E68938 /* ImageItem.swift */; };
 		3FBC5E9424E5910E00E68938 /* ImageViewerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8824E5910E00E68938 /* ImageViewerTheme.swift */; };
 		3FBC5E9524E5910E00E68938 /* ImageViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8924E5910E00E68938 /* ImageViewerController.swift */; };
 		3FBC5E9624E5910E00E68938 /* SimpleImageDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBC5E8A24E5910E00E68938 /* SimpleImageDatasource.swift */; };
-		3FBC5E9D24E595AB00E68938 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBC5E9C24E595AB00E68938 /* SDWebImage.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		032D1191259412CA0001404D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				032D1190259412CA0001404D /* SDWebImage.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		032D1189259411D30001404D /* ImageViewerTransitionPresentationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerTransitionPresentationManager.swift; sourceTree = "<group>"; };
+		032D118E259412CA0001404D /* SDWebImage.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SDWebImage.xcframework; path = Carthage/Build/SDWebImage.xcframework; sourceTree = SOURCE_ROOT; };
 		3FBC5E7424E5908400E68938 /* ImageViewer_swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageViewer_swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBC5E8024E5910E00E68938 /* UIImageView_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView_Extensions.swift; sourceTree = "<group>"; };
 		3FBC5E8124E5910E00E68938 /* ImageViewer_swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewer_swift.h; sourceTree = "<group>"; };
@@ -29,13 +46,11 @@
 		3FBC5E8324E5910E00E68938 /* UINavigationBar_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBar_Extensions.swift; sourceTree = "<group>"; };
 		3FBC5E8424E5910E00E68938 /* ImageCarouselViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCarouselViewController.swift; sourceTree = "<group>"; };
 		3FBC5E8524E5910E00E68938 /* ImageViewerOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerOption.swift; sourceTree = "<group>"; };
-		3FBC5E8624E5910E00E68938 /* RightNavItemDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavItemDelegate.swift; sourceTree = "<group>"; };
 		3FBC5E8724E5910E00E68938 /* ImageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
 		3FBC5E8824E5910E00E68938 /* ImageViewerTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerTheme.swift; sourceTree = "<group>"; };
 		3FBC5E8924E5910E00E68938 /* ImageViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerController.swift; sourceTree = "<group>"; };
 		3FBC5E8A24E5910E00E68938 /* SimpleImageDatasource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleImageDatasource.swift; sourceTree = "<group>"; };
 		3FBC5E9924E591CB00E68938 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3FBC5E9C24E595AB00E68938 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FBC5E9D24E595AB00E68938 /* SDWebImage.framework in Frameworks */,
+				032D118F259412CA0001404D /* SDWebImage.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,8 +92,8 @@
 				3FBC5E8324E5910E00E68938 /* UINavigationBar_Extensions.swift */,
 				3FBC5E8424E5910E00E68938 /* ImageCarouselViewController.swift */,
 				3FBC5E8524E5910E00E68938 /* ImageViewerOption.swift */,
-				3FBC5E8624E5910E00E68938 /* RightNavItemDelegate.swift */,
 				3FBC5E8724E5910E00E68938 /* ImageItem.swift */,
+				032D1189259411D30001404D /* ImageViewerTransitionPresentationManager.swift */,
 				3FBC5E8824E5910E00E68938 /* ImageViewerTheme.swift */,
 				3FBC5E8924E5910E00E68938 /* ImageViewerController.swift */,
 				3FBC5E8A24E5910E00E68938 /* SimpleImageDatasource.swift */,
@@ -97,7 +112,7 @@
 		3FBC5E9B24E5959C00E68938 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3FBC5E9C24E595AB00E68938 /* SDWebImage.framework */,
+				032D118E259412CA0001404D /* SDWebImage.xcframework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -124,7 +139,7 @@
 				3FBC5E7024E5908400E68938 /* Sources */,
 				3FBC5E7124E5908400E68938 /* Frameworks */,
 				3FBC5E7224E5908400E68938 /* Resources */,
-				3FBC5E9E24E595ED00E68938 /* ShellScript */,
+				032D1191259412CA0001404D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,28 +192,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		3FBC5E9E24E595ED00E68938 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		3FBC5E7024E5908400E68938 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -206,12 +199,12 @@
 			files = (
 				3FBC5E9024E5910E00E68938 /* ImageCarouselViewController.swift in Sources */,
 				3FBC5E9424E5910E00E68938 /* ImageViewerTheme.swift in Sources */,
+				032D118A259411D30001404D /* ImageViewerTransitionPresentationManager.swift in Sources */,
 				3FBC5E9524E5910E00E68938 /* ImageViewerController.swift in Sources */,
 				3FBC5E8E24E5910E00E68938 /* UIView_Extensions.swift in Sources */,
 				3FBC5E9624E5910E00E68938 /* SimpleImageDatasource.swift in Sources */,
 				3FBC5E8C24E5910E00E68938 /* UIImageView_Extensions.swift in Sources */,
 				3FBC5E9124E5910E00E68938 /* ImageViewerOption.swift in Sources */,
-				3FBC5E9224E5910E00E68938 /* RightNavItemDelegate.swift in Sources */,
 				3FBC5E9324E5910E00E68938 /* ImageItem.swift in Sources */,
 				3FBC5E8F24E5910E00E68938 /* UINavigationBar_Extensions.swift in Sources */,
 			);
