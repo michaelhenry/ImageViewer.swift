@@ -33,6 +33,7 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
         }
     }
     
+    var imageContentMode: UIView.ContentMode = .scaleAspectFill
     var options:[ImageViewerOption] = []
     
     private var onRightNavBarTapped:((Int) -> Void)?
@@ -54,7 +55,7 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
     
     private(set) lazy var navItem = UINavigationItem()
     
-    private let imageViewerPresentationDelegate = ImageViewerTransitionPresentationManager()
+    private let imageViewerPresentationDelegate: ImageViewerTransitionPresentationManager
     
     public init(
         sourceView:UIImageView,
@@ -67,6 +68,19 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
         self.options = options
         self.imageDatasource = imageDataSource
         let pageOptions = [UIPageViewController.OptionsKey.interPageSpacing: 20]
+        
+        var _imageContentMode = imageContentMode
+        options.forEach {
+            switch $0 {
+            case .contentMode(let contentMode):
+                _imageContentMode = contentMode
+            default:
+                break
+            }
+        }
+        imageContentMode = _imageContentMode
+        
+        self.imageViewerPresentationDelegate = ImageViewerTransitionPresentationManager(imageContentMode: imageContentMode)
         super.init(
             transitionStyle: .scroll,
             navigationOrientation: .horizontal,
@@ -109,6 +123,8 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
             switch $0 {
                 case .theme(let theme):
                     self.theme = theme
+                case .contentMode(let contentMode):
+                    self.imageContentMode = contentMode
                 case .closeIcon(let icon):
                     navItem.leftBarButtonItem?.image = icon
                 case .rightNavItemTitle(let title, let onTap):
@@ -148,16 +164,7 @@ class ImageCarouselViewController:UIPageViewController, ImageViewerTransitionVie
 
     @objc
     private func dismiss(_ sender:UIBarButtonItem) {
-        dismissMe(completion: nil)
-    }
-    
-    public func dismissMe(completion: (() -> Void)? = nil) {
-        sourceView?.alpha = 1.0
-        UIView.animate(withDuration: 0.235, animations: {
-            self.view.alpha = 0.0
-        }) { _ in
-            self.dismiss(animated: false, completion: completion)
-        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     deinit {

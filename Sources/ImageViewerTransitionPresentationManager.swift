@@ -20,9 +20,11 @@ protocol ImageViewerTransitionViewControllerConvertible {
 final class ImageViewerTransitionPresentationAnimator:NSObject {
     
     let isPresenting: Bool
+    let imageContentMode: UIView.ContentMode
     
-    init(isPresenting: Bool) {
+    init(isPresenting: Bool, imageContentMode: UIView.ContentMode) {
         self.isPresenting = isPresenting
+        self.imageContentMode = imageContentMode
         super.init()
     }
 }
@@ -64,7 +66,7 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         -> UIImageView {
             let dummyImageView:UIImageView = UIImageView(frame: frame)
             dummyImageView.clipsToBounds = true
-            dummyImageView.contentMode = .scaleAspectFill
+            dummyImageView.contentMode = imageContentMode
             dummyImageView.alpha = 1.0
             dummyImageView.image = image
             return dummyImageView
@@ -155,6 +157,11 @@ final class ImageViewerTransitionPresentationController: UIPresentationControlle
 }
 
 final class ImageViewerTransitionPresentationManager: NSObject {
+    private let imageContentMode: UIView.ContentMode
+    
+    public init(imageContentMode: UIView.ContentMode) {
+        self.imageContentMode = imageContentMode
+    }
     
 }
 
@@ -177,13 +184,13 @@ extension ImageViewerTransitionPresentationManager: UIViewControllerTransitionin
         source: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
  
-        return ImageViewerTransitionPresentationAnimator(isPresenting: true)
+        return ImageViewerTransitionPresentationAnimator(isPresenting: true, imageContentMode: imageContentMode)
     }
     
     func animationController(
         forDismissed dismissed: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
-        return ImageViewerTransitionPresentationAnimator(isPresenting: false)
+        return ImageViewerTransitionPresentationAnimator(isPresenting: false, imageContentMode: imageContentMode)
     }
 }
 

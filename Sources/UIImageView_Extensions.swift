@@ -110,7 +110,18 @@ extension UIImageView {
         }
         
         isUserInteractionEnabled = true
-        contentMode = .scaleAspectFill
+        
+        var imageContentMode: UIView.ContentMode = .scaleAspectFill
+        options.forEach {
+            switch $0 {
+            case .contentMode(let contentMode):
+                imageContentMode = contentMode
+            default:
+                break
+            }
+        }
+        contentMode = imageContentMode
+        
         clipsToBounds = true
         
         if _tapRecognizer == nil {
