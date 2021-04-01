@@ -1,13 +1,11 @@
 import UIKit
-#if canImport(SDWebImage)
-import SDWebImage
-#endif
 
 class ImageViewerController:UIViewController,
 UIGestureRecognizerDelegate {
     
     var imageView: UIImageView = UIImageView(frame: .zero)
-
+    let imageLoader: ImageLoader
+    
     var backgroundView:UIView? {
         guard let _parent = parent as? ImageCarouselViewController
             else { return nil}
@@ -37,10 +35,12 @@ UIGestureRecognizerDelegate {
     
     init(
         index: Int,
-        imageItem:ImageItem) {
-        
+        imageItem:ImageItem,
+        imageLoader: ImageLoader) {
+
         self.index = index
         self.imageItem = imageItem
+        self.imageLoader = imageLoader
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -88,18 +88,12 @@ UIGestureRecognizerDelegate {
         case .image(let img):
             imageView.image = img
             imageView.layoutIfNeeded()
-            #if canImport(SDWebImage)
         case .url(let url, let placeholder):
-            imageView.sd_setImage(
-                with: url,
-                placeholderImage: placeholder,
-                options: [],
-                progress: nil) {(img, err, type, url) in
-                    DispatchQueue.main.async {[weak self] in
-                        self?.layout()
-                    }
+            imageLoader.loadImage(url, placeholder: placeholder, imageView: imageView) { (image) in
+                DispatchQueue.main.async {[weak self] in
+                    self?.layout()
+                }
             }
-            #endif
         default:
             break
         }
