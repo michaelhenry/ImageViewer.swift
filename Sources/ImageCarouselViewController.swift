@@ -23,6 +23,7 @@ public class ImageCarouselViewController:UIPageViewController, ImageViewerTransi
     }
     
     weak var imageDatasource:ImageDataSource?
+    let imageLoader:ImageLoader
  
     var initialIndex = 0
     
@@ -59,6 +60,7 @@ public class ImageCarouselViewController:UIPageViewController, ImageViewerTransi
     public init(
         sourceView:UIImageView,
         imageDataSource: ImageDataSource?,
+        imageLoader: ImageLoader,
         options:[ImageViewerOption] = [],
         initialIndex:Int = 0) {
         
@@ -66,6 +68,7 @@ public class ImageCarouselViewController:UIPageViewController, ImageViewerTransi
         self.initialIndex = initialIndex
         self.options = options
         self.imageDatasource = imageDataSource
+        self.imageLoader = imageLoader
         let pageOptions = [UIPageViewController.OptionsKey.interPageSpacing: 20]
         super.init(
             transitionStyle: .scroll,
@@ -141,7 +144,8 @@ public class ImageCarouselViewController:UIPageViewController, ImageViewerTransi
         if let imageDatasource = imageDatasource {
             let initialVC:ImageViewerController = .init(
                 index: initialIndex,
-                imageItem: imageDatasource.imageItem(at: initialIndex))
+                imageItem: imageDatasource.imageItem(at: initialIndex),
+                imageLoader: imageLoader)
             setViewControllers([initialVC], direction: .forward, animated: true)
         }
     }
@@ -192,7 +196,8 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
         let newIndex = vc.index - 1
         return ImageViewerController.init(
             index: newIndex,
-            imageItem:  imageDatasource.imageItem(at: newIndex))
+            imageItem:  imageDatasource.imageItem(at: newIndex),
+            imageLoader: vc.imageLoader)
     }
     
     public func pageViewController(
@@ -206,6 +211,7 @@ extension ImageCarouselViewController:UIPageViewControllerDataSource {
         let newIndex = vc.index + 1
         return ImageViewerController.init(
             index: newIndex,
-            imageItem: imageDatasource.imageItem(at: newIndex))
+            imageItem: imageDatasource.imageItem(at: newIndex),
+            imageLoader: vc.imageLoader)
     }
 }
