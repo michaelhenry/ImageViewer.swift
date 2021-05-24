@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
     :git => 'https://github.com/michaelhenry/ImageViewer.swift.git',
     :tag => s.version.to_s
   }
-  s.source_files = 'Sources/*'
+  s.source_files = 'Sources/ImageViewer_swift/*'
   s.requires_arc = true
   s.ios.deployment_target  = '10.0'
   s.swift_versions = ['4.0','4.2','5.0']
