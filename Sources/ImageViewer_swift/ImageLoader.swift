@@ -23,6 +23,7 @@ public struct URLSessionImageLoader: ImageLoader {
 
             DispatchQueue.main.async {
                 imageView.image = image
+                completion(image)
             }
         }
     }
