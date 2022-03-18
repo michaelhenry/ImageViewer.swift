@@ -88,11 +88,13 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         
         transitionView.addSubview(controller.view)
         transitionVC.targetView?.alpha = 0.0
+        transitionVC.targetView?.tintColor = sourceView.tintColor
         
         let dummyImageView = createDummyImageView(
             frame: sourceView.frameRelativeToWindow(),
             image: sourceView.image)
         dummyImageView.contentMode = .scaleAspectFit
+        dummyImageView.tintColor = sourceView.tintColor
         transitionView.addSubview(dummyImageView)
         
         UIView.animate(withDuration: duration, animations: {
@@ -121,6 +123,7 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         let dummyImageView = createDummyImageView(
             frame: targetView?.frameRelativeToWindow() ?? UIScreen.main.bounds,
             image: targetView?.image)
+        dummyImageView.tintColor = sourceView?.tintColor
         transitionView.addSubview(dummyImageView)
         targetView?.isHidden = true
       
