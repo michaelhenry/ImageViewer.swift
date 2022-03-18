@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol ImageDataSource:class {
+public protocol ImageDataSource: AnyObject {
     func numberOfImages() -> Int
     func imageItem(at index:Int) -> ImageItem
 }
