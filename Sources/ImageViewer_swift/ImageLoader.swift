@@ -22,10 +22,8 @@ public struct URLSessionImageLoader: ImageLoader {
             }
 
             DispatchQueue.main.async {
-                UIView.setAnimationsEnabled(false)
                 imageView.image = image
                 completion(image)
-                UIView.setAnimationsEnabled(true)
             }
         }
     }
