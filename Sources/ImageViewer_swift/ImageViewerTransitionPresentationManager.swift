@@ -21,6 +21,8 @@ final class ImageViewerTransitionPresentationAnimator:NSObject {
     
     let isPresenting: Bool
     let imageContentMode: UIView.ContentMode
+
+    var observation: NSKeyValueObservation?
     
     init(isPresenting: Bool, imageContentMode: UIView.ContentMode) {
         self.isPresenting = isPresenting
@@ -100,10 +102,14 @@ extension ImageViewerTransitionPresentationAnimator: UIViewControllerAnimatedTra
         UIView.animate(withDuration: duration, animations: {
             dummyImageView.frame = UIScreen.main.bounds
             controller.view.alpha = 1.0
-        }) { finished in
-            transitionVC.targetView?.alpha = 1.0
-            dummyImageView.removeFromSuperview()
-            completed(finished)
+        }) { [weak self] finished in
+            self?.observation = transitionVC.targetView?.observe(\.image, options: [.new, .initial]) { img, change in
+                if img.image != nil {
+                    transitionVC.targetView?.alpha = 1.0
+                    dummyImageView.removeFromSuperview()
+                    completed(finished)
+                }
+            }
         }
     }
     

@@ -254,7 +254,6 @@ extension ImageViewerController {
     }
     
     func updateConstraintsForSize(_ size: CGSize) {
-        
         let yOffset = max(0, (size.height - imageView.frame.height) / 2)
         top.constant = yOffset
         bottom.constant = yOffset
