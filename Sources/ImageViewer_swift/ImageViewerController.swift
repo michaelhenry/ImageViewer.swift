@@ -71,8 +71,8 @@ UIGestureRecognizerDelegate {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         top = imageView.topAnchor.constraint(equalTo: scrollView.topAnchor)
         leading = imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor)
-        trailing = scrollView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor)
-        bottom = scrollView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor)
+        trailing = imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
+        bottom = imageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         
         top.isActive = true
         leading.isActive = true

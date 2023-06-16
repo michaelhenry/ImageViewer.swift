@@ -19,9 +19,9 @@ EXTERNAL SOURCES:
     :path: "./../"
 
 SPEC CHECKSUMS:
-  ImageViewer.swift: 5a7de1366351c307023daf71f907dedee968b5d0
+  ImageViewer.swift: 3debbc46f4f0b8187e7dac95bc5badc41626bb20
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
 
 PODFILE CHECKSUM: e724d0d4011b46b198571c9f9ed6734d40b74bc4
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.3
