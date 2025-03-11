@@ -102,6 +102,17 @@ extension UIImageView {
             imageLoader: imageLoader)
     }
     
+    public func cleanupImageViewer() {
+        if let gestureRecognizers = gestureRecognizers {
+            for recognizer in gestureRecognizers {
+                if let tapRecognizer = recognizer as? TapWithDataRecognizer {
+                    removeGestureRecognizer(tapRecognizer)
+                    return
+                }
+            }
+        }
+    }
+    
     private func setup(
         datasource:ImageDataSource?,
         initialIndex:Int = 0,
